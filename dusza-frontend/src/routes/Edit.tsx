@@ -1,11 +1,9 @@
 import React from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
-import { GetRegistrationConfig } from "../components/TeamFormConfigs.tsx";
+import { GetEditConfig } from "../components/TeamFormConfigs.tsx";
 
-export const Registration = () => {
+export const Edit = () => {
   const [fields, setFields] = React.useState({
-    username: "",
-    password: "",
     name1: "",
     class1: "",
     name2: "",
@@ -15,12 +13,14 @@ export const Registration = () => {
     extraName: "",
     extraClass: "",
     teacher: "",
-    teamName: "",
     language: "",
-    schoolName: "",
   });
 
-  const onChange = (fieldName: string, value: string) => {
+  const onChange = (
+    // fields keys
+    fieldName: keyof typeof fields,
+    value: string,
+  ) => {
     setFields({
       ...fields,
       [fieldName]: value,
@@ -29,9 +29,9 @@ export const Registration = () => {
 
   return (
     <div>
-      <h1>Registration</h1>
+      <h1>Edit</h1>
 
-      <FormFactory configs={GetRegistrationConfig(onChange, fields)} />
+      <FormFactory configs={GetEditConfig(onChange, fields)} />
     </div>
   );
 };
