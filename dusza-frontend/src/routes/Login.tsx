@@ -2,6 +2,7 @@ import React from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
 import { GetLoginConfig } from "../components/TeamFormConfigs.tsx";
 import axios from "axios";
+import { Artboard } from "react-daisyui";
 
 export const Login = () => {
   const [fields, setFields] = React.useState({
@@ -27,12 +28,15 @@ export const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-
-      <FormFactory configs={GetLoginConfig(onChange, fields)} />
-
-      <button onClick={onSubmit}>Submit</button>
-    </div>
+    <Artboard className="gap-2 p-4">
+      <h1 className="text-2xl">Login</h1>
+      <FormFactory
+        configs={GetLoginConfig(onChange, fields)}
+        submit={{
+          onSubmit,
+          text: "Login",
+        }}
+      />
+    </Artboard>
   );
 };

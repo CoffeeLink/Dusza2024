@@ -1,10 +1,11 @@
 import "./App.scss";
 import { Link, Outlet } from "react-router-dom";
 import { Header } from "./components/Header.tsx";
+import { Theme } from "react-daisyui";
 
 function App() {
   return (
-    <>
+    <Theme dataTheme={"light"}>
       {/*Common things between routes*/}
       <Header />
       <p>Welcome</p>
@@ -16,8 +17,10 @@ function App() {
       <br />
       <Link to={"/login"}>Login</Link>
       {/*Route specific things*/}
-      <Outlet />
-    </>
+      <div className="w-fit mx-auto">
+        <Outlet />
+      </div>
+    </Theme>
   );
 }
 

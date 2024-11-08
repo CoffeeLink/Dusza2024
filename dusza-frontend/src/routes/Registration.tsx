@@ -3,6 +3,7 @@ import { FormFactory } from "../components/FormFactory.tsx";
 import { GetRegistrationConfig } from "../components/TeamFormConfigs.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
+import { Artboard } from "react-daisyui";
 
 export const Registration = () => {
   const [fields, setFields] = React.useState({
@@ -16,7 +17,7 @@ export const Registration = () => {
     class3: "",
     extraName: "",
     extraClass: "",
-    teachers: [] as string[],
+    teachers: [""],
     teamName: "",
     language: "",
     schoolName: "",
@@ -49,12 +50,15 @@ export const Registration = () => {
     });
   };
   return (
-    <div>
-      <h1>Registration</h1>
-
-      <FormFactory configs={GetRegistrationConfig(onChange, fields)} />
-
-      <button onClick={onSubmit}>Submit</button>
-    </div>
+    <Artboard className="gap-2 p-4">
+      <h1 className="text-2xl">Registration</h1>
+      <FormFactory
+        configs={GetRegistrationConfig(onChange, fields)}
+        submit={{
+          onSubmit,
+          text: "Register",
+        }}
+      />
+    </Artboard>
   );
 };

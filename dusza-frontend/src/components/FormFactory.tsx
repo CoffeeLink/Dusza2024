@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Input, Select } from "react-daisyui";
 
 type ConfigBase = {
   key: string;
@@ -33,93 +34,71 @@ export type SingleConfig = ConfigInput | ConfigDropdown | ConfigRadio;
 export type MultiConfig<T extends SingleConfig = SingleConfig> = ConfigBase & {
   type: "multi-input";
   configs: T[];
-  onAdd: () => void;
-  onRemove: (index: number) => void;
+  getAddButton: () => React.ReactNode;
+  getRemoveButton: (index: number) => React.ReactNode;
   values: T["value"][];
 };
 
-export type Config = SingleConfig | MultiConfig;
+export type Config = (SingleConfig | MultiConfig) | Config[];
 
 export type GetConfig<FIELDS> = (
   onChange: (fieldName: keyof FIELDS, value: FIELDS[keyof FIELDS]) => void,
   fieldValues: { [key in keyof FIELDS]: FIELDS[key] },
 ) => Config[];
 
-export const FormFactory = ({ configs }: { configs: Config[] }) => {
+const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
   const getElement = (config: SingleConfig) => {
     const { key, label, errorFlag, errorMsg, value, type, onChange } = config;
 
+    const Wrapper = ({ children }: { children: React.ReactNode }) => {
+      return <div className="flex flex-col w-full">{children}</div>;
+    };
+
     switch (type) {
       case "text":
-        return (
-          <div key={key}>
-            <label>{label}</label>
-            <input type="text" onChange={onChange} value={value} />
-            {errorFlag && <span>{errorMsg}</span>}
-          </div>
-        );
-
       case "email":
-        return (
-          <div key={key}>
-            <label>{label}</label>
-            <input type="email" onChange={onChange} value={value} />
-            {errorFlag && <span>{errorMsg}</span>}
-          </div>
-        );
-
       case "number":
-        return (
-          <div key={key}>
-            <label>{label}</label>
-            <input type="number" onChange={onChange} value={value} />
-            {errorFlag && <span>{errorMsg}</span>}
-          </div>
-        );
-
       case "password":
-        return (
-          <div key={key}>
-            <label>{label}</label>
-            <input type="password" onChange={onChange} value={value} />
-            {errorFlag && <span>{errorMsg}</span>}
-          </div>
-        );
-
       case "date":
         return (
-          <div key={key}>
-            <label>{label}</label>
-            <input type="date" onChange={onChange} value={value} />
+          <Wrapper key={key}>
+            <label className="label">
+              <span className="label-text">{label}</span>
+            </label>
+            <Input onChange={onChange} value={value} type={type} />
             {errorFlag && <span>{errorMsg}</span>}
-          </div>
+          </Wrapper>
         );
 
       case "dropdown":
         return (
-          <div key={key}>
-            <label>{label}</label>
-            <select onChange={onChange} value={value}>
+          <Wrapper key={key}>
+            <label className="label">
+              <span className="label-text">{label}</span>
+            </label>
+            <Select onChange={onChange} value={value}>
               {config.options.map((option) => {
                 return (
-                  <option value={option} key={option}>
+                  <Select.Option value={option} key={option}>
                     {option}
-                  </option>
+                  </Select.Option>
                 );
               })}
-            </select>
+            </Select>
             {errorFlag && <span>{errorMsg}</span>}
-          </div>
+          </Wrapper>
         );
 
       case "radio":
         return (
-          <div key={key}>
-            <label>{label}</label>
+          <Wrapper key={key}>
+            <label className="label">
+              <span className="label-text">{label}</span>
+            </label>
             {config.options.map((option) => {
               return (
                 <div key={option}>
-                  <input
+                  <Input
                     type="radio"
                     value={option}
                     onChange={onChange}
@@ -130,40 +109,79 @@ export const FormFactory = ({ configs }: { configs: Config[] }) => {
               );
             })}
             {errorFlag && <span>{errorMsg}</span>}
-          </div>
+          </Wrapper>
         );
     }
   };
 
   const getMultiElement = (config: MultiConfig) => {
-    const { key, label, configs, onAdd, onRemove } = config;
+    const { key, label, configs, getAddButton, getRemoveButton } = config;
 
     return (
-      <div key={key}>
-        <label>{label}</label>
-        {configs.map((subConfig, index) => {
-          return (
-            <div key={index}>
-              {getElement(subConfig)}
-              <button onClick={() => onRemove(index)}>Remove</button>
-            </div>
-          );
-        })}
-        <button onClick={onAdd}>Add</button>
+      <div key={key} className={"flex flex-col pt-2"}>
+        <p>{label}</p>
+        <div className={"flex flex-col gap-2"}>
+          {configs.map((subConfig, index) => {
+            return (
+              <div key={index} className={"flex flex-row gap-2 items-end"}>
+                {getElement(subConfig)}
+                {getRemoveButton(index)}
+              </div>
+            );
+          })}
+          {getAddButton()}
+        </div>
       </div>
     );
   };
 
   return (
-    <div>
-      {configs.map((config) => {
-        // add key to each element
+    <>
+      {configs.map((config, indexA) => {
+        if (Array.isArray(config)) {
+          // recursively call FormFactory
+          return (
+            <div key={indexA} className="flex flex-row gap-2">
+              {config.map((subConfig, indexB) => (
+                <FormFactoryRecursive
+                  key={`${indexA}-${indexB}`}
+                  configs={[subConfig]}
+                />
+              ))}
+            </div>
+          );
+        }
+
         if (config.type === "multi-input") {
           return getMultiElement(config);
         } else {
           return getElement(config);
         }
       })}
+    </>
+  );
+};
+
+type Submit = {
+  text: string;
+  onSubmit: () => void;
+};
+
+export const FormFactory = ({
+  configs,
+  submit,
+}: {
+  configs: Config[];
+  submit?: Submit;
+}) => {
+  return (
+    <div className="form-control gap-2">
+      <FormFactoryRecursive configs={configs} />
+      {submit && (
+        <Button color="primary" className="w-full" onClick={submit.onSubmit}>
+          {submit.text}
+        </Button>
+      )}
     </div>
   );
 };

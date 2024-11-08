@@ -3,6 +3,7 @@ import { FormFactory } from "../components/FormFactory.tsx";
 import { GetEditConfig } from "../components/TeamFormConfigs.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
+import { Artboard } from "react-daisyui";
 
 export const Edit = () => {
   const [fields, setFields] = React.useState({
@@ -14,7 +15,7 @@ export const Edit = () => {
     class3: "",
     extraName: "",
     extraClass: "",
-    teachers: [] as string[],
+    teachers: [""],
     language: "",
   });
 
@@ -46,12 +47,15 @@ export const Edit = () => {
   };
 
   return (
-    <div>
-      <h1>Edit</h1>
-
-      <FormFactory configs={GetEditConfig(onChange, fields)} />
-
-      <button onClick={onSubmit}>Submit</button>
-    </div>
+    <Artboard className="gap-2 p-4">
+      <h1 className="text-2xl">Edit</h1>
+      <FormFactory
+        configs={GetEditConfig(onChange, fields)}
+        submit={{
+          onSubmit,
+          text: "Edit",
+        }}
+      />
+    </Artboard>
   );
 };
