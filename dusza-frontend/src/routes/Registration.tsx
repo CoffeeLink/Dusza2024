@@ -14,7 +14,7 @@ export const Registration = () => {
   const [extraClass, setExtraClass] = React.useState('')
   const [teacher, setTeacher] = React.useState('')
   const [language, setLanguage] = React.useState('')
-  const [languages, setLanguages] = React.useState(['Python', 'Java', 'C++', 'JavaScript'])
+  const [languages/*, setLanguages*/] = React.useState(['Python', 'Java', 'C++', 'JavaScript'])
 
   return (
     <div>
