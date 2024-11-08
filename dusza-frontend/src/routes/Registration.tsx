@@ -1,6 +1,8 @@
 import React from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
 import { GetRegistrationConfig } from "../components/TeamFormConfigs.tsx";
+import axios from "axios";
+import { Optional } from "utility-types";
 
 export const Registration = () => {
   const [fields, setFields] = React.useState({
@@ -14,24 +16,46 @@ export const Registration = () => {
     class3: "",
     extraName: "",
     extraClass: "",
-    teacher: "",
+    teachers: [] as string[],
     teamName: "",
     language: "",
     schoolName: "",
   });
 
-  const onChange = (fieldName: string, value: string) => {
+  const onChange = (
+    // fields keys
+    fieldName: keyof typeof fields,
+    value: (typeof fields)[keyof typeof fields],
+  ) => {
     setFields({
       ...fields,
       [fieldName]: value,
     });
   };
 
+  const onSubmit = () => {
+    // /api/team/register
+    const newFields = { ...fields } as Optional<
+      typeof fields,
+      "extraName" | "extraClass"
+    >;
+
+    if (newFields.extraName === "") {
+      delete newFields.extraName;
+      delete newFields.extraClass;
+    }
+
+    axios.post("/api/team/register", newFields).then((res) => {
+      console.log(res.data);
+    });
+  };
   return (
     <div>
       <h1>Registration</h1>
 
       <FormFactory configs={GetRegistrationConfig(onChange, fields)} />
+
+      <button onClick={onSubmit}>Submit</button>
     </div>
   );
 };

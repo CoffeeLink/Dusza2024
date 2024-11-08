@@ -12,14 +12,14 @@ export const Edit = () => {
     class3: "",
     extraName: "",
     extraClass: "",
-    teacher: "",
+    teachers: [] as string[],
     language: "",
   });
 
   const onChange = (
     // fields keys
     fieldName: keyof typeof fields,
-    value: string,
+    value: (typeof fields)[keyof typeof fields],
   ) => {
     setFields({
       ...fields,

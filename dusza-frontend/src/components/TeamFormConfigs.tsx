@@ -1,17 +1,19 @@
-import { Config, FormElementTypes, GetConfig } from "./FormFactory.tsx";
+import { Config, GetConfig } from "./FormFactory.tsx";
 
-export const GetLoginConfig: GetConfig<["username", "password"]> = (
-  onChange,
-  fieldsValues,
-) => {
+type LoginFields = {
+  username: string;
+  password: string;
+};
+
+export const GetLoginConfig: GetConfig<LoginFields> = (onChange, fields) => {
   const config: Config[] = [
     {
       key: "username",
       label: "Username",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.username,
-      type: FormElementTypes.TEXT,
+      value: fields.username,
+      type: "text",
       onChange: (e) => onChange("username", e.target.value),
     },
     {
@@ -19,8 +21,8 @@ export const GetLoginConfig: GetConfig<["username", "password"]> = (
       label: "Password",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.password,
-      type: FormElementTypes.PASSWORD,
+      value: fields.password,
+      type: "password",
       onChange: (e) => onChange("password", e.target.value),
     },
   ];
@@ -28,28 +30,28 @@ export const GetLoginConfig: GetConfig<["username", "password"]> = (
   return config;
 };
 
-export const GetEditConfig: GetConfig<
-  [
-    "name1",
-    "class1",
-    "name2",
-    "class2",
-    "name3",
-    "class3",
-    "extraName",
-    "extraClass",
-    "teacher",
-    "language",
-  ]
-> = (onChange, fieldsValues) => {
+type EditFields = {
+  name1: string;
+  class1: string;
+  name2: string;
+  class2: string;
+  name3: string;
+  class3: string;
+  extraName: string;
+  extraClass: string;
+  teachers: string[];
+  language: string;
+};
+
+export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
   const config: Config[] = [
     {
       key: "name1",
       label: "Name 1",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.name1,
-      type: FormElementTypes.TEXT,
+      value: fields.name1,
+      type: "text",
       onChange: (e) => onChange("name1", e.target.value),
     },
     {
@@ -57,8 +59,8 @@ export const GetEditConfig: GetConfig<
       label: "Class 1",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.class1,
-      type: FormElementTypes.TEXT,
+      value: fields.class1,
+      type: "text",
       onChange: (e) => onChange("class1", e.target.value),
     },
     {
@@ -66,8 +68,8 @@ export const GetEditConfig: GetConfig<
       label: "Name 2",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.name2,
-      type: FormElementTypes.TEXT,
+      value: fields.name2,
+      type: "text",
       onChange: (e) => onChange("name2", e.target.value),
     },
     {
@@ -75,8 +77,8 @@ export const GetEditConfig: GetConfig<
       label: "Class 2",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.class2,
-      type: FormElementTypes.TEXT,
+      value: fields.class2,
+      type: "text",
       onChange: (e) => onChange("class2", e.target.value),
     },
     {
@@ -84,8 +86,8 @@ export const GetEditConfig: GetConfig<
       label: "Name 3",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.name3,
-      type: FormElementTypes.TEXT,
+      value: fields.name3,
+      type: "text",
       onChange: (e) => onChange("name3", e.target.value),
     },
     {
@@ -93,8 +95,8 @@ export const GetEditConfig: GetConfig<
       label: "Class 3",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.class3,
-      type: FormElementTypes.TEXT,
+      value: fields.class3,
+      type: "text",
       onChange: (e) => onChange("class3", e.target.value),
     },
     {
@@ -102,8 +104,8 @@ export const GetEditConfig: GetConfig<
       label: "Extra name",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.extraName,
-      type: FormElementTypes.TEXT,
+      value: fields.extraName,
+      type: "text",
       onChange: (e) => onChange("extraName", e.target.value),
     },
     {
@@ -111,26 +113,46 @@ export const GetEditConfig: GetConfig<
       label: "Extra class",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.extraClass,
-      type: FormElementTypes.TEXT,
+      value: fields.extraClass,
+      type: "text",
       onChange: (e) => onChange("extraClass", e.target.value),
     },
     {
-      key: "teacher",
-      label: "Teacher",
+      key: "teachers",
+      label: "Teachers",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.teacher,
-      type: FormElementTypes.TEXT,
-      onChange: (e) => onChange("teacher", e.target.value),
+      type: "multi-input",
+      values: fields.teachers,
+      onAdd: () => {
+        onChange("teachers", [...fields.teachers, ""]);
+      },
+      onRemove: (index) => {
+        const newTeachers = fields.teachers.slice();
+        newTeachers.splice(index, 1);
+        onChange("teachers", newTeachers);
+      },
+      configs: fields.teachers.map((teacher, index) => ({
+        key: `teacher-${index}`,
+        label: `Teacher ${index + 1}`,
+        errorFlag: false,
+        errorMsg: "",
+        value: teacher,
+        type: "text",
+        onChange: (e) => {
+          const newTeachers = fields.teachers.slice();
+          newTeachers[index] = e.target.value;
+          onChange("teachers", newTeachers);
+        },
+      })),
     },
     {
       key: "language",
       label: "Programming language",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.language,
-      type: FormElementTypes.DROPDOWN,
+      value: fields.language,
+      type: "dropdown",
       onChange: (e) => onChange("language", e.target.value),
       options: ["C++", "Java", "Python"],
     },
@@ -139,38 +161,30 @@ export const GetEditConfig: GetConfig<
   return config;
 };
 
-export const GetRegistrationConfig: GetConfig<
-  [
-    "username",
-    "password",
-    "schoolName",
-    "teamName",
-    "name1",
-    "class1",
-    "name2",
-    "class2",
-    "name3",
-    "class3",
-    "extraName",
-    "extraClass",
-    "teacher",
-    "language",
-  ]
-> = (onChange, fieldsValues) => {
+type RegistrationFields = LoginFields &
+  EditFields & {
+    schoolName: string;
+    teamName: string;
+  };
+
+export const GetRegistrationConfig: GetConfig<RegistrationFields> = (
+  onChange,
+  fields,
+) => {
   // extend LoginConfig
   let config = GetLoginConfig(onChange, {
-    username: fieldsValues.username,
-    password: fieldsValues.password,
+    username: fields.username,
+    password: fields.password,
   });
-  config = config.concat(GetEditConfig(onChange, fieldsValues));
+  config = config.concat(GetEditConfig(onChange, fields));
   config = config.concat([
     {
       key: "schoolName",
       label: "School name",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.schoolName,
-      type: FormElementTypes.TEXT,
+      value: fields.schoolName,
+      type: "text",
       onChange: (e) => onChange("schoolName", e.target.value),
     },
     {
@@ -178,8 +192,8 @@ export const GetRegistrationConfig: GetConfig<
       label: "Team name",
       errorFlag: false,
       errorMsg: "",
-      value: fieldsValues.teamName,
-      type: FormElementTypes.TEXT,
+      value: fields.teamName,
+      type: "text",
       onChange: (e) => onChange("teamName", e.target.value),
     },
   ]);
