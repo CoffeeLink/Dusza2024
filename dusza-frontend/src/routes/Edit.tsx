@@ -1,6 +1,8 @@
 import React from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
 import { GetEditConfig } from "../components/TeamFormConfigs.tsx";
+import axios from "axios";
+import { Optional } from "utility-types";
 
 export const Edit = () => {
   const [fields, setFields] = React.useState({
@@ -27,11 +29,29 @@ export const Edit = () => {
     });
   };
 
+  const onSubmit = () => {
+    const newFields = { ...fields } as Optional<
+      typeof fields,
+      "extraName" | "extraClass"
+    >;
+
+    if (newFields.extraName === "") {
+      delete newFields.extraName;
+      delete newFields.extraClass;
+    }
+
+    axios.post("/api/team/edit", newFields).then((res) => {
+      console.log(res.data);
+    });
+  };
+
   return (
     <div>
       <h1>Edit</h1>
 
       <FormFactory configs={GetEditConfig(onChange, fields)} />
+
+      <button onClick={onSubmit}>Submit</button>
     </div>
   );
 };
