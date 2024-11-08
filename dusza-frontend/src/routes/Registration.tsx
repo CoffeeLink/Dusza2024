@@ -34,7 +34,6 @@ export const Registration = () => {
   };
 
   const onSubmit = () => {
-    // /api/team/register
     const newFields = { ...fields } as Optional<
       typeof fields,
       "extraName" | "extraClass"
