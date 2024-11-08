@@ -1,7 +1,12 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json"},
-    { "path": "./tsconfig.node.json"}
-  ]
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "include": ["src/**/*.ts"],
+  "compilerOptions": {
+    "types": ["babel__generator"],
+    "typeRoots": ["node_modules/@types", "node_modules/@babel/types"]
+  }
 }
