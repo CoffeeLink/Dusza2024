@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormFactory } from "../../../components/FormFactory.tsx";
 import { GetEditCategoryConfig } from "../../../helpers/form-configs/Category.tsx";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
+import { AXIOS_INSTANCE } from "../../../main.tsx";
+import { Category } from "../../../helpers/models.ts";
 
 export const EditCategory = () => {
   const { id } = useParams<{ id: string }>();
 
-  const [fields, setFields] = useState({
-    name: "",
-    description: "",
-    deadline: "",
+  const [fields, setFields] = useState<Category>({
+    category_name: "",
+    category_description: "",
+    category_deadline: "",
+    category_state: "open",
+  });
+
+  useEffect(() => {
+    AXIOS_INSTANCE.get(`/category/${id}`).then((res) => {
+      const data = JSON.parse(res.data);
+      setFields(data);
+    });
   });
 
   const onChange = (key: string, value: string) => {
@@ -19,8 +28,8 @@ export const EditCategory = () => {
   };
 
   const onSubmit = () => {
-    axios.put("/api/categories", { ...fields, id }).then(() => {
-      console.log("Edited category with name", fields.name);
+    AXIOS_INSTANCE.put(`/category/${id}`, { ...fields }).then(() => {
+      console.log("Edited category with name", fields.category_name);
     });
   };
 

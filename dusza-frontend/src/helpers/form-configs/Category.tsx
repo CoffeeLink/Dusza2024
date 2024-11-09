@@ -1,15 +1,7 @@
 import { Config, GetConfig } from "../../components/FormFactory.tsx";
+import { Category } from "../models.ts";
 
-type CategoryFields = {
-  name: string;
-  description: string;
-  deadline: string;
-};
-
-export const GetAddCategoryConfig: GetConfig<CategoryFields> = (
-  onChange,
-  fields,
-) => {
+export const GetAddCategoryConfig: GetConfig<Category> = (onChange, fields) => {
   const config: Config[] = [
     [
       {
@@ -17,19 +9,19 @@ export const GetAddCategoryConfig: GetConfig<CategoryFields> = (
         label: "Név",
         errorFlag: false,
         errorMsg: "",
-        value: fields.name,
+        value: fields.category_name,
         type: "text",
         required: true,
-        onChange: (e) => onChange("name", e.target.value),
+        onChange: (e) => onChange("category_name", e.target.value),
       },
       {
         key: "description",
         label: "Rövid leírás",
         errorFlag: false,
         errorMsg: "",
-        value: fields.description,
+        value: fields.category_description,
         type: "text",
-        onChange: (e) => onChange("description", e.target.value),
+        onChange: (e) => onChange("category_description", e.target.value),
       },
     ],
     {
@@ -37,17 +29,17 @@ export const GetAddCategoryConfig: GetConfig<CategoryFields> = (
       label: "Jelentkezési határidő",
       errorFlag: false,
       errorMsg: "",
-      value: fields.deadline,
+      value: fields.category_deadline,
       type: "date",
       required: true,
-      onChange: (e) => onChange("deadline", e.target.value),
+      onChange: (e) => onChange("category_deadline", e.target.value),
     },
   ];
 
   return config;
 };
 
-export const GetEditCategoryConfig: GetConfig<CategoryFields> = (
+export const GetEditCategoryConfig: GetConfig<Category> = (
   onChange,
   fields,
 ) => {

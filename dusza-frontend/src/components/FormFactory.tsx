@@ -270,7 +270,12 @@ export const FormFactory = ({
   return (
     <Form
       className="form-control gap-2"
-      onSubmit={submit?.onSubmit}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (submit) {
+          submit.onSubmit(e);
+        }
+      }}
       ref={formRef}
     >
       <FormFactoryRecursive configs={configs} />

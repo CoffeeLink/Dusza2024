@@ -39,7 +39,7 @@ export const MiddlePanel = ({
           <div className="text-gray-500 ml-4">{rightButton}</div>
         )}
       </div>
-      <Artboard className="bg-transparent shadow-none">{children}</Artboard>
+      <Artboard className="bg-transparent shadow-none flex justify-start items-start">{children}</Artboard>
     </div>
   );
 };

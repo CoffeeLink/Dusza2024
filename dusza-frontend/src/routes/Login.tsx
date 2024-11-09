@@ -29,8 +29,7 @@ export const Login = () => {
     });
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = () => {
     AXIOS_INSTANCE.post("/login", fields).then((res) => {
       console.log(res.data);
     });
