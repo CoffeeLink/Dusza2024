@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
+import { AcademicCapIcon } from "@heroicons/react/16/solid";
 
 type School = {
   id: number;
@@ -52,7 +53,7 @@ export const Schools = () => {
       title="Iskolák"
       rightButton={
         <Link to="/host/schools/add">
-          <Button color="success">Új iskola</Button>
+          <Button className="text-white bg-green-700 hover:bg-green-600 active:bg-green-800"><AcademicCapIcon className="w-5" /> Új iskola</Button>
         </Link>
       }
     >

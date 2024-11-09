@@ -3,6 +3,7 @@ import { Button, Table } from "react-daisyui";
 import { useState } from "react";
 import axios from "axios";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
+import { SquaresPlusIcon } from "@heroicons/react/16/solid";
 
 type Category = {
   id: number;
@@ -40,7 +41,7 @@ export const Categories = () => {
       title="Kategóriák"
       rightButton={
         <Link to="/host/categories/add">
-          <Button color="success">Új kategória</Button>
+          <Button className="text-white bg-green-700 hover:bg-green-600 active:bg-green-800"><SquaresPlusIcon className="w-5" /> Új kategória</Button>
         </Link>
       }
     >
