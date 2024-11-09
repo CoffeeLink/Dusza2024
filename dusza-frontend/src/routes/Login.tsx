@@ -1,11 +1,9 @@
 import React from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
 import { GetLoginConfig } from "../helpers/form-configs/Team.tsx";
-import axios from "axios";
-
 import { MiddlePanel } from "../components/middle/MiddlePanel.tsx";
 import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
-
+import { AXIOS_INSTANCE } from "../main.tsx";
 
 export const Login = () => {
   const [fields, setFields] = React.useState({
@@ -13,9 +11,10 @@ export const Login = () => {
     password: "",
   });
 
-  const loginButtonText: string | JSX.Element = (
+  const loginButtonText: string | React.ReactNode = (
     <>
-      Bejelentkezés <ArrowRightEndOnRectangleIcon className="pt-0.5 h-4.5 w-5" />
+      Bejelentkezés{" "}
+      <ArrowRightEndOnRectangleIcon className="pt-0.5 h-4.5 w-5" />
     </>
   );
 
@@ -30,28 +29,32 @@ export const Login = () => {
     });
   };
 
-  const onSubmit = () => {
-    axios.post("/api/login", fields).then((res) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    AXIOS_INSTANCE.post("/login", fields).then((res) => {
       console.log(res.data);
     });
   };
 
-
   return (
     <div className="max-w-3xl flex flex-col gap-4 justify-center">
-    <MiddlePanel title="Bejelentkezés" leftButtonTitle={"Főoldal"} leftButtonURL={"/"}>
-    <div className="w-full flex flex-col gap-2 items-center">
-      <div className="form-width">
-        <FormFactory
-          configs={GetLoginConfig(onChange, fields, null)}
-          submit={{
-          onSubmit,
-          text: loginButtonText,
-          }}
-        />
-      </div>
-    </div>
-    </MiddlePanel>
+      <MiddlePanel
+        title="Bejelentkezés"
+        leftButtonTitle={"Főoldal"}
+        leftButtonURL={"/"}
+      >
+        <div className="w-full flex flex-col gap-2 items-center">
+          <div className="form-width">
+            <FormFactory
+              configs={GetLoginConfig(onChange, fields, null)}
+              submit={{
+                onSubmit,
+                text: loginButtonText,
+              }}
+            />
+          </div>
+        </div>
+      </MiddlePanel>
     </div>
   );
 };

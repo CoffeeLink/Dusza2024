@@ -217,7 +217,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
 
 type Submit = {
   text: string | React.ReactNode;
-  onSubmit: () => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
 export const FormFactory = ({

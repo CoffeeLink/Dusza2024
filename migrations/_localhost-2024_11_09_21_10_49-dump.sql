@@ -4,7 +4,6 @@
 -- ------------------------------------------------------
 -- Server version	10.5.23-MariaDB
 
-use dusza_db;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -40,7 +39,7 @@ CREATE TABLE `auth_tokens` (
 
 LOCK TABLES `auth_tokens` WRITE;
 /*!40000 ALTER TABLE `auth_tokens` DISABLE KEYS */;
-INSERT INTO `auth_tokens` VALUES ('ÔøΩÔøΩ|¬¢ÔøΩMÔøΩ≈ñH}',4,'2024-11-11 11:17:56','2024-11-09 11:17:56');
+INSERT INTO `auth_tokens` VALUES ('ì•|¬¢£MŸ≈ñH}',4,'2024-11-11 11:17:56','2024-11-09 11:17:56'),('ìÌ7Üs`ô§ØÏA)',4,'2024-11-11 18:16:19','2024-11-09 18:16:19'),('ìE£àq–±x¶\Z◊±\Z8',4,'2024-11-11 19:52:54','2024-11-09 19:52:54'),('ìd(”zpòœnÈ##',4,'2024-11-11 20:26:14','2024-11-09 20:26:14'),('ìpEºp±Å∂ï Œæ',4,'2024-11-11 20:39:28','2024-11-09 20:39:28');
 /*!40000 ALTER TABLE `auth_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,6 +53,9 @@ DROP TABLE IF EXISTS `competition_category`;
 CREATE TABLE `competition_category` (
   `category_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `category_name` varchar(255) NOT NULL,
+  `category_description` varchar(1024) DEFAULT NULL,
+  `category_deadline` datetime NOT NULL,
+  `category_state` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `competition_category_pk_2` (`category_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
@@ -114,7 +116,7 @@ CREATE TABLE `programming_language` (
 
 LOCK TABLES `programming_language` WRITE;
 /*!40000 ALTER TABLE `programming_language` DISABLE KEYS */;
-INSERT INTO `programming_language` VALUES (4,'C# 8.1'),(3,'Javascript'),(1,'Python'),(2,'Rust');
+INSERT INTO `programming_language` VALUES (4,'C# 8.1'),(3,'Javascript'),(2,'Rust');
 /*!40000 ALTER TABLE `programming_language` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +228,7 @@ CREATE TABLE `user` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(52) NOT NULL,
   `password` binary(32) NOT NULL,
-  `user_type` enum('TEAM_ACCOUNT','SCHOOL_REPRESENTATIVE','ORGANIZER') NOT NULL,
+  `user_type` tinyint(3) unsigned NOT NULL,
   `team_data_id` int(10) unsigned DEFAULT NULL,
   `school_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`user_id`),
@@ -236,7 +238,7 @@ CREATE TABLE `user` (
   KEY `user_school_data_id_fk` (`school_id`),
   CONSTRAINT `user_school_data_id_fk` FOREIGN KEY (`school_id`) REFERENCES `school_data` (`school_id`) ON DELETE CASCADE,
   CONSTRAINT `user_team_data_team_id_fk` FOREIGN KEY (`team_data_id`) REFERENCES `team_data` (`team_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +247,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (4,'test','ÔøΩY Ñ\\ÔøΩ5ÔøΩt9ÔøΩRﬁçÔøΩÔøΩ|ÔøΩÔøΩ<PÔøΩXÔøΩÔøΩzÔøΩQ','ORGANIZER',NULL,NULL);
+INSERT INTO `user` VALUES (4,'test','∆Y Ñ\\ö5˙t9¶Rﬁçˇ›|§±<P˜X˛¬zÅQ',3,NULL,NULL),(5,'aron','∆Y Ñ\\ö5˙t9¶Rﬁçˇ›|§±<P˜X˛¬zÅQ',1,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -258,4 +260,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-09 18:10:51
+-- Dump completed on 2024-11-09 21:10:49

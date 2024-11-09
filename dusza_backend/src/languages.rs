@@ -37,7 +37,7 @@ pub enum LangErr {
 
 impl ResponseError for LangErr {
     fn status_code(&self) -> StatusCode {
-        StatusCode::UNAUTHORIZED
+        StatusCode::NOT_FOUND
     }
 }
 
@@ -46,7 +46,7 @@ pub struct LangPayload {
     lang_name: String,
 }
 
-#[post("/create")]
+#[post("/")]
 async fn lang_create(
     db: web::Data<Pool<MySql>>,
     create_lang_payload: web::Json<LangPayload>,

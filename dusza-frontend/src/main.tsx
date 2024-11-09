@@ -25,6 +25,17 @@ import { Languages } from "./routes/host/language/Languages.tsx";
 import { AddLanguage } from "./routes/host/language/AddLanguage.tsx";
 import { EditLanguage } from "./routes/host/language/EditLanguage.tsx";
 import { Statistics } from "./routes/host/statistics/statistics.tsx";
+import { Team } from "./routes/team/Team.tsx";
+import { Applications } from "./routes/team/application/Applications.tsx";
+import axios from "axios";
+
+export const API_URL = "http://localhost:8080/api";
+
+export const AXIOS_INSTANCE = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
+});
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,7 +57,8 @@ const router = createBrowserRouter(
         <Route path="languages/:id" element={<EditLanguage />} />
         <Route path="statistics" element={<Statistics />} />
       </Route>
-      <Route path="team">
+      <Route path="team" element={<Team />}>
+        <Route path="applications" element={<Applications />} />
         <Route path="edit" element={<Edit />} />
       </Route>
     </Route>,

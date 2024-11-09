@@ -81,7 +81,7 @@ pub async fn verify_permission_level(auth_token: AuthToken, perm_level: UserType
     Ok(true)
 }
 
-fn salt(passwd: String, auth_config: &AuthConfig) -> Vec<u8> {
+pub fn salt(passwd: String, auth_config: &AuthConfig) -> Vec<u8> {
     let mut hasher = sha2::Sha256::new();
     hasher.update((passwd + &auth_config.password_salt).as_bytes());
     let result = hasher.finalize();
@@ -116,7 +116,6 @@ pub async fn login_post(
     auth_config: web::Data<AuthConfig>,
 ) -> Result<impl Responder, DuszaBackendError<LoginError>> {
     let user_id = validate_user(&login_data, &db, &auth_config).await?;
-
     let token = AuthTokenData::create_token_for_user_by_id(user_id, &db)
         .await
         .map_err(|e| {

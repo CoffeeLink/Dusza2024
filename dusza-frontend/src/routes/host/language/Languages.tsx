@@ -1,32 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { Link } from "react-router-dom";
 import { Button, Table } from "react-daisyui";
 import axios from "axios";
-
-type Language = {
-  id: number;
-  name: string;
-};
+import { LanguageWithId } from "../../../helpers/models.ts";
+import { AXIOS_INSTANCE } from "../../../main.tsx";
 
 export const Languages = () => {
-  const [languages] = useState<Language[]>([
-    {
-      id: 1,
-      name: "Language 1",
-    },
-    {
-      id: 2,
-      name: "Language 2",
-    },
-    {
-      id: 3,
-      name: "Language 3",
-    },
-  ]);
+  const [languages, setLanguages] = useState<LanguageWithId[]>([]);
+
+  useEffect(() => {
+    AXIOS_INSTANCE.get("/language/").then((response) => {
+      const data: LanguageWithId[] = JSON.parse(response.data);
+
+      setLanguages(data);
+    });
+  }, []);
 
   const onDelete = (id: number) => {
-    axios.delete(`/api/languages/${id}`).then(() => {
+    AXIOS_INSTANCE.delete(`/language/${id}`).then(() => {
       console.log("Deleted language with id", id);
     });
   };
@@ -47,13 +39,16 @@ export const Languages = () => {
         </Table.Head>
         <Table.Body>
           {languages.map((language) => (
-            <Table.Row key={language.id}>
-              <span>{language.name}</span>
+            <Table.Row key={language.lang_id}>
+              <span>{language.lang_name}</span>
               <span className="flex gap-2">
-                <Link to={`/host/languages/${language.id}`}>
+                <Link to={`/host/languages/${language.lang_id}`}>
                   <Button>Szerkesztés</Button>
                 </Link>
-                <Button color="error" onClick={() => onDelete(language.id)}>
+                <Button
+                  color="error"
+                  onClick={() => onDelete(language.lang_id)}
+                >
                   Törlés
                 </Button>
               </span>

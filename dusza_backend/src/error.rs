@@ -39,3 +39,7 @@ where
 
 #[derive(Debug, Display, Clone)]
 pub enum NoError {}
+
+impl ResponseError for NoError {
+
+}
