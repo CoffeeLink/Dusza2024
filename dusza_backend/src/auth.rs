@@ -1,5 +1,6 @@
 // Need a FromRequest data type to handle auth
 
+use crate::error::AuthorizationError::Unauthorized;
 use crate::error::{AuthorizationError, DuszaBackendError, NoError};
 use crate::models::auth_token::AuthTokenData;
 use crate::models::user::{User, UserId, UserType};
@@ -17,7 +18,6 @@ use sha2::Digest;
 use sqlx::{MySql, Pool};
 use std::str::FromStr;
 use uuid::Uuid;
-use crate::error::AuthorizationError::Unauthorized;
 
 pub const AUTH_COOKIE_NAME: &'static str = "Authorization";
 
@@ -63,7 +63,11 @@ impl ResponseError for LoginError {
     }
 }
 
-pub async fn verify_permission_level(auth_token: AuthToken, perm_level: UserType, db: &Pool<MySql>) -> Result<bool, DuszaBackendError<NoError>> {
+pub async fn verify_permission_level(
+    auth_token: AuthToken,
+    perm_level: UserType,
+    db: &Pool<MySql>,
+) -> Result<bool, DuszaBackendError<NoError>> {
     let user = User::from_auth_token(auth_token.token, &db)
         .await
         .map_err(|e| {
@@ -76,7 +80,7 @@ pub async fn verify_permission_level(auth_token: AuthToken, perm_level: UserType
     }
 
     if !user.unwrap().user_type.can_access(&perm_level) {
-        return Ok(false)
+        return Ok(false);
     }
     Ok(true)
 }

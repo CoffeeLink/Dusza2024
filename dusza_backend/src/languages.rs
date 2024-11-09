@@ -20,7 +20,7 @@ pub fn configure_language_endpoints(cfg: &mut ServiceConfig) {
             .service(lang_get_by_id)
             .service(lang_create)
             .service(lang_put_update)
-            .service(lang_del)
+            .service(lang_del),
     );
 }
 
@@ -82,9 +82,9 @@ async fn lang_create(
 #[put("/{id}")]
 async fn lang_put_update(
     db: web::Data<Pool<MySql>>,
-    id: web::Path<(u32, )>,
+    id: web::Path<(u32,)>,
     lang_payload: web::Json<LangPayload>,
-    auth_token: AuthToken
+    auth_token: AuthToken,
 ) -> Result<impl Responder, DuszaBackendError<LangErr>> {
     // get permission level (Org)
     let user = User::from_auth_token(auth_token.token, &db)
@@ -116,8 +116,8 @@ async fn lang_put_update(
 #[delete("/{id}")]
 async fn lang_del(
     db: web::Data<Pool<MySql>>,
-    id: web::Path<(u32, )>,
-    auth_token: AuthToken
+    id: web::Path<(u32,)>,
+    auth_token: AuthToken,
 ) -> Result<impl Responder, DuszaBackendError<LangErr>> {
     let user = User::from_auth_token(auth_token.token, &db)
         .await
