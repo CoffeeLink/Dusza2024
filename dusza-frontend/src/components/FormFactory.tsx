@@ -117,7 +117,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
             <Select
               onChange={onChange}
               value={value}
-              className={`bg-base-200 ${errorFlag ? "border-error" : ""}`}
+              className={`bg-slate-50 ${errorFlag ? "border-error" : ""}`}
               required={required}
             >
               {config.options.map((option) => {
@@ -285,6 +285,7 @@ export const FormFactory = ({
         >
           {submit.text}
         </Button>
+        </>
       )}
     </Form>
   );
