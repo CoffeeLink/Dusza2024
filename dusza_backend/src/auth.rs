@@ -30,7 +30,7 @@ impl FromRequest for AuthToken {
     type Error = AuthorizationError;
     type Future = Ready<Result<Self, Self::Error>>;
 
-    fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
+    fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
         match req.cookie(AUTH_COOKIE_NAME) {
             None => err(AuthorizationError::Unauthorized),
             Some(auth_token) => {
