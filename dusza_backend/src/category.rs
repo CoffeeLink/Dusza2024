@@ -73,7 +73,7 @@ pub struct CreateCategoryPayload {
     category_name: String,
     category_description: Option<String>,
     category_deadline: NaiveDateTime,
-    category_application_state: CategoryState
+    category_state: CategoryState
 }
 
 #[post("/")]
