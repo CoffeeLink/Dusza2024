@@ -1,0 +1,22 @@
+@use 'fonts';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.form-width {
+    width: 400px;
+
+    @media (max-width: 600px) {
+        width: 300px;
+    }
+
+    @media (max-width: 400px) {
+        width: 200px;
+    }
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+}
