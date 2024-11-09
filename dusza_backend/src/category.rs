@@ -75,7 +75,7 @@ pub struct CreateCategoryPayload {
     category_application_state: CategoryState
 }
 
-#[post("/create")]
+#[post("/")]
 async fn category_create(
     db: web::Data<Pool<MySql>>,
     payload: web::Json<CreateCategoryPayload>,
