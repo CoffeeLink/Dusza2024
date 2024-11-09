@@ -21,6 +21,9 @@ import { Teams } from "./routes/host/team/Teams.tsx";
 import { AddCategory } from "./routes/host/category/AddCategory.tsx";
 import { EditCategory } from "./routes/host/category/EditCategory.tsx";
 import { Home } from "./routes/Home.tsx";
+import { Languages } from "./routes/host/language/Languages.tsx";
+import { AddLanguage } from "./routes/host/language/AddLanguage.tsx";
+import { EditLanguage } from "./routes/host/language/EditLanguage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +40,9 @@ const router = createBrowserRouter(
         <Route path="categories" element={<Categories />} />
         <Route path="categories/add" element={<AddCategory />} />
         <Route path="categories/:id" element={<EditCategory />} />
+        <Route path="languages" element={<Languages />} />
+        <Route path="languages/add" element={<AddLanguage />} />
+        <Route path="languages/:id" element={<EditLanguage />} />
       </Route>
       <Route path="team">
         <Route path="edit" element={<Edit />} />

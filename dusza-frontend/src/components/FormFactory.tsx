@@ -102,7 +102,6 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
               className={`bg-base-100 text-lg p-2 border-2 border-gray-300 rounded-md ${errorFlag ? "border-error" : ""}`}
               required={required}
             />
-            {errorFlag && <span>{errorMsg}</span>}
           </Wrapper>
         );
 
@@ -128,7 +127,6 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
                 );
               })}
             </Select>
-            {errorFlag && <span>{errorMsg}</span>}
           </Wrapper>
         );
 
@@ -278,15 +276,15 @@ export const FormFactory = ({
       <FormFactoryRecursive configs={configs} />
       {submit && (
         <>
-        <br />
-        <Button
-          color="primary"
-          className="w-full btn"
-          type="submit"
-          disabled={!isFilled() || hasError(configs)}
-        >
-          {submit.text}
-        </Button>
+          {/*<br />*/}
+          <Button
+            color="primary"
+            className="w-full btn mt-4"
+            type="submit"
+            disabled={!isFilled() || hasError(configs)}
+          >
+            {submit.text}
+          </Button>
         </>
       )}
     </Form>

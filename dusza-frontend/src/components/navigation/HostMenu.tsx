@@ -15,7 +15,10 @@ export const HostMenu = () => {
           <Link to="/host/teams">Csapatok</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/host/categories">Kategoriak</Link>
+          <Link to="/host/categories">Kategóriák</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link to="/host/languages">Nyelvek</Link>
         </Menu.Item>
         <Menu.Item>
           <Link to="/host/statistics">Statisztika</Link>
