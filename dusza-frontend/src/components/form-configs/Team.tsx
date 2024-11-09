@@ -10,7 +10,7 @@ export const GetLoginConfig: GetConfig<LoginFields> = (onChange, fields) => {
   const config: Config[] = [
     {
       key: "username",
-      label: "Username",
+      label: "Felhasználónév",
       errorFlag: false,
       errorMsg: "",
       value: fields.username,
@@ -19,7 +19,7 @@ export const GetLoginConfig: GetConfig<LoginFields> = (onChange, fields) => {
     },
     {
       key: "password",
-      label: "Password",
+      label: "Jelszó",
       errorFlag: false,
       errorMsg: "",
       value: fields.password,

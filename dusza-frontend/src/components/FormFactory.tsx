@@ -69,7 +69,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
               onChange={onChange}
               value={value}
               type={type}
-              className="bg-base-200"
+              className="bg-base-100 text-lg p-2 border-2 border-gray-300 rounded-md"
             />
             {errorFlag && <span>{errorMsg}</span>}
           </Wrapper>
@@ -168,7 +168,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
 };
 
 type Submit = {
-  text: string;
+  text: string | React.ReactNode;
   onSubmit: () => void;
 };
 
@@ -183,9 +183,12 @@ export const FormFactory = ({
     <Form className="form-control gap-2">
       <FormFactoryRecursive configs={configs} />
       {submit && (
-        <Button color="primary" className="w-full" onClick={submit.onSubmit}>
+        <>
+        <br />
+        <Button color="primary" className="w-full btn" onClick={submit.onSubmit}>
           {submit.text}
         </Button>
+        </>
       )}
     </Form>
   );

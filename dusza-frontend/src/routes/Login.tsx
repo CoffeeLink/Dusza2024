@@ -2,13 +2,22 @@ import React from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
 import { GetLoginConfig } from "../components/form-configs/Team.tsx";
 import axios from "axios";
-import { Artboard } from "react-daisyui";
+
+import { MiddlePanel } from "../components/middle/MiddlePanel.tsx";
+import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/16/solid";
+
 
 export const Login = () => {
   const [fields, setFields] = React.useState({
     username: "",
     password: "",
   });
+
+  const loginButtonText: string | JSX.Element = (
+    <>
+      Bejelentkezés <ArrowRightEndOnRectangleIcon className="pt-0.5 h-4.5 w-5" />
+    </>
+  );
 
   const onChange = (
     // fields keys
@@ -27,18 +36,22 @@ export const Login = () => {
     });
   };
 
+
   return (
+    <div className="max-w-3xl flex flex-col gap-4 justify-center">
+    <MiddlePanel title="Bejelentkezés" leftButtonTitle={"Főoldal"} leftButtonURL={"/"}>
     <div className="w-full flex flex-col gap-2 items-center">
-      <h1 className="text-center text-4xl w-fit">Login</h1>
-      <Artboard className="gap-2 p-4 bg-white w-fit">
+      <div className="form-width">
         <FormFactory
           configs={GetLoginConfig(onChange, fields)}
           submit={{
-            onSubmit,
-            text: "Login",
+          onSubmit,
+          text: loginButtonText,
           }}
         />
-      </Artboard>
+      </div>
+    </div>
+    </MiddlePanel>
     </div>
   );
 };
