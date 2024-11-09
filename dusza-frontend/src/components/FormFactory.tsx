@@ -66,7 +66,7 @@ const Wrapper = ({
   return (
     <div className="flex flex-col w-full">
       <label className="label">
-        <span className="label-text">
+        <span className="label-text text-l">
           {label} {required && <span className="text-error">*</span>}
         </span>
       </label>
