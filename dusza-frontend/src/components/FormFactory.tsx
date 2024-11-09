@@ -55,16 +55,20 @@ const Wrapper = ({
   label,
   errorFlag,
   errorMsg,
+  required,
 }: {
   children: React.ReactNode;
   label: string;
   errorFlag: boolean;
   errorMsg: string;
+  required?: boolean;
 }) => {
   return (
     <div className="flex flex-col w-full">
       <label className="label">
-        <span className="label-text">{label}</span>
+        <span className="label-text">
+          {label} {required && <span className="text-error">*</span>}
+        </span>
       </label>
       {children}
       {errorFlag && <span className="text-error">{errorMsg}</span>}
@@ -89,6 +93,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
             label={label}
             errorFlag={errorFlag}
             errorMsg={errorMsg}
+            required={required}
           >
             <Input
               onChange={onChange}
@@ -223,11 +228,60 @@ export const FormFactory = ({
   configs: Config[];
   submit?: Submit;
 }) => {
+  // ref to the form
+  const formRef = React.useRef<HTMLFormElement>(null);
+
+  // Recursively check if errorFlag is true somewhere in the configs
+  // Crazy performance, trust me bro
+  const hasError = (configs: Config[]): boolean => {
+    for (const config of configs) {
+      if (Array.isArray(config)) {
+        if (hasError(config)) {
+          return true;
+        }
+      } else {
+        if (config.errorFlag) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
+  // Get if all fields with required are filled in the form
+  // NOT IN THE CONFIGS, IN THE ACTUAL FORM
+  const isFilled = () => {
+    if (!formRef.current) {
+      return false;
+    }
+
+    const inputs =
+      formRef.current.querySelectorAll<HTMLInputElement>("input, select");
+
+    for (const input of inputs) {
+      if (input.required && !input.value) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   return (
-    <Form className="form-control gap-2" onSubmit={submit?.onSubmit}>
+    <Form
+      className="form-control gap-2"
+      onSubmit={submit?.onSubmit}
+      ref={formRef}
+    >
       <FormFactoryRecursive configs={configs} />
       {submit && (
-        <Button color="primary" className="w-full" type="submit">
+        <Button
+          color="primary"
+          className="w-full"
+          type="submit"
+          disabled={!isFilled() || hasError(configs)}
+        >
           {submit.text}
         </Button>
       )}

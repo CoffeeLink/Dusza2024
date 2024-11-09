@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FormFactory } from "../../components/FormFactory.tsx";
-import { GetRegistrationConfig } from "../../components/form-configs/Team.tsx";
+import { GetRegistrationConfig } from "../../helpers/form-configs/Team.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
 import { Artboard } from "react-daisyui";

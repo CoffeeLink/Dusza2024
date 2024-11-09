@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GetAddCategoryConfig } from "../../../components/form-configs/Category.tsx";
+import { GetAddCategoryConfig } from "../../../helpers/form-configs/Category.tsx";
 import { FormFactory } from "../../../components/FormFactory.tsx";
 import { useState } from "react";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";

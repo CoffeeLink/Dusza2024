@@ -1,6 +1,6 @@
 import React from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
-import { GetLoginConfig } from "../components/form-configs/Team.tsx";
+import { GetLoginConfig } from "../helpers/form-configs/Team.tsx";
 import axios from "axios";
 import { Artboard } from "react-daisyui";
 

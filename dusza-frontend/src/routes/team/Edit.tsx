@@ -1,6 +1,6 @@
 import React from "react";
 import { FormFactory } from "../../components/FormFactory.tsx";
-import { GetEditConfig } from "../../components/form-configs/Team.tsx";
+import { GetEditConfig } from "../../helpers/form-configs/Team.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
 import { Artboard } from "react-daisyui";

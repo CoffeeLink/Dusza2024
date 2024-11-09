@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FormFactory } from "../../../components/FormFactory.tsx";
-import { GetEditCategoryConfig } from "../../../components/form-configs/Category.tsx";
+import { GetEditCategoryConfig } from "../../../helpers/form-configs/Category.tsx";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";

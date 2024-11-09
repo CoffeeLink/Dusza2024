@@ -1,6 +1,6 @@
 import axios from "axios";
 import { FormFactory } from "../../../components/FormFactory.tsx";
-import { GetAddSchoolConfig } from "../../../components/form-configs/School.tsx";
+import { GetAddSchoolConfig } from "../../../helpers/form-configs/School.tsx";
 import { useState } from "react";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 

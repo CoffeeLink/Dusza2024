@@ -1,4 +1,3 @@
-import "./App.scss";
 import { Outlet } from "react-router-dom";
 import { Header } from "./components/navigation/Header.tsx";
 import { Theme } from "react-daisyui";

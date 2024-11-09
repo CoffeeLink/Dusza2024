@@ -1,4 +1,4 @@
-import { Config, GetConfig } from "../FormFactory.tsx";
+import { Config, GetConfig } from "../../components/FormFactory.tsx";
 
 type SchoolFields = {
   name: string;
@@ -22,6 +22,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
         errorMsg: "",
         value: fields.name,
         type: "text",
+        required: true,
         onChange: (e) => onChange("name", e.target.value),
       },
       {
@@ -31,6 +32,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
         errorMsg: "",
         value: fields.location,
         type: "text",
+        required: true,
         onChange: (e) => onChange("location", e.target.value),
       },
     ],
@@ -42,6 +44,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
         errorMsg: "",
         value: fields.username,
         type: "text",
+        required: true,
         onChange: (e) => onChange("username", e.target.value),
       },
       {
@@ -51,6 +54,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
         errorMsg: "",
         value: fields.password,
         type: "password",
+        required: true,
         onChange: (e) => onChange("password", e.target.value),
       },
     ],

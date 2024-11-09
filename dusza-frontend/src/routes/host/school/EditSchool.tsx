@@ -1,6 +1,6 @@
 import axios from "axios";
 import { FormFactory } from "../../../components/FormFactory.tsx";
-import { GetEditSchoolConfig } from "../../../components/form-configs/School.tsx";
+import { GetEditSchoolConfig } from "../../../helpers/form-configs/School.tsx";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";

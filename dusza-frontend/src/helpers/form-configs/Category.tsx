@@ -1,4 +1,4 @@
-import { Config, GetConfig } from "../FormFactory.tsx";
+import { Config, GetConfig } from "../../components/FormFactory.tsx";
 
 type CategoryFields = {
   name: string;
@@ -19,6 +19,7 @@ export const GetAddCategoryConfig: GetConfig<CategoryFields> = (
         errorMsg: "",
         value: fields.name,
         type: "text",
+        required: true,
         onChange: (e) => onChange("name", e.target.value),
       },
       {
@@ -38,6 +39,7 @@ export const GetAddCategoryConfig: GetConfig<CategoryFields> = (
       errorMsg: "",
       value: fields.deadline,
       type: "date",
+      required: true,
       onChange: (e) => onChange("deadline", e.target.value),
     },
   ];

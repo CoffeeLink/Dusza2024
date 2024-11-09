@@ -1,6 +1,9 @@
-import { Config, GetConfig } from "../FormFactory.tsx";
+import {
+  Config,
+  GetConfig,
+  SingleConfig,
+} from "../../components/FormFactory.tsx";
 import { Button } from "react-daisyui";
-import { validateLength } from "../../helpers/validation.ts";
 
 type LoginFields = {
   username: string;
@@ -8,12 +11,6 @@ type LoginFields = {
 };
 
 export const GetLoginConfig: GetConfig<LoginFields> = (onChange, fields) => {
-  const passwordMinLength = 8;
-  const passwordValidation = validateLength(
-    fields.password.length,
-    passwordMinLength,
-  );
-
   const config: Config[] = [
     {
       key: "username",
@@ -28,8 +25,8 @@ export const GetLoginConfig: GetConfig<LoginFields> = (onChange, fields) => {
     {
       key: "password",
       label: "Password",
-      errorFlag: passwordValidation.errorFlag,
-      errorMsg: passwordValidation.errorMsg,
+      errorFlag: false,
+      errorMsg: "A jelszó túl rövid!",
       value: fields.password,
       type: "password",
       required: true,
@@ -55,6 +52,8 @@ type EditFields = {
 
 export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
   const classOptions = ["9", "10", "11", "12", "13"];
+  const isTeachersEnough = fields.teachers.length >= 1;
+
   const config: Config[] = [
     [
       {
@@ -149,11 +148,10 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
     {
       key: "teachers",
       label: "Teachers",
-      errorFlag: false,
-      errorMsg: "",
+      errorFlag: !isTeachersEnough,
+      errorMsg: "Min. egy tanár megadása kötelező!",
       type: "multi-input",
       values: fields.teachers,
-      required: true,
       getAddButton: () => (
         <Button
           onClick={() => {
@@ -236,6 +234,7 @@ export const GetRegistrationConfig: GetConfig<
       value: fields.schoolName,
       type: "dropdown",
       options: schools,
+      required: true,
       onChange: (e) => onChange("schoolName", e.target.value),
     },
     {
@@ -245,9 +244,31 @@ export const GetRegistrationConfig: GetConfig<
       errorMsg: "",
       value: fields.teamName,
       type: "text",
+      required: true,
       onChange: (e) => onChange("teamName", e.target.value),
     },
   ]);
+
+  const isPasswordTooShort = fields.password.length <= 8;
+
+  const findPassword = (config: Config[]): SingleConfig | null => {
+    for (const item of config) {
+      if (Array.isArray(item)) {
+        return findPassword(item);
+      } else {
+        if (item.key === "password") {
+          return item as SingleConfig;
+        }
+      }
+    }
+
+    return null;
+  };
+
+  const passwordField = findPassword(config);
+  if (passwordField) {
+    passwordField.errorFlag = isPasswordTooShort;
+  }
 
   return config;
 };
