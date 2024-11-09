@@ -82,6 +82,7 @@ async fn main() {
                       .allow_any_header()
                       .allow_any_method()
                       .allow_any_origin()
+                      .supports_credentials()
                       .max_age(3600)
             )
     })
