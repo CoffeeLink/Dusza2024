@@ -1,9 +1,0 @@
-[database]
-ip_address = "127.0.0.1"
-port = 3306
-user = "dusza_db_user"
-password = "Dusza2024"
-database = "dusza_db"
-
-[auth]
-password_salt = "DUSZAAAAAAA"
