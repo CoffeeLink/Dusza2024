@@ -24,7 +24,7 @@ import { Home } from "./routes/Home.tsx";
 import { Languages } from "./routes/host/language/Languages.tsx";
 import { AddLanguage } from "./routes/host/language/AddLanguage.tsx";
 import { EditLanguage } from "./routes/host/language/EditLanguage.tsx";
-import { Statistics } from "./routes/host/statistics/statistics.tsx";
+import { Statistics } from "./routes/host/statistics/Statistics.tsx";
 import { Team } from "./routes/team/Team.tsx";
 import { Applications } from "./routes/team/application/Applications.tsx";
 import axios from "axios";
@@ -35,7 +35,6 @@ export const AXIOS_INSTANCE = axios.create({
   baseURL: API_URL,
   withCredentials: true,
 });
-
 
 const router = createBrowserRouter(
   createRoutesFromElements(
