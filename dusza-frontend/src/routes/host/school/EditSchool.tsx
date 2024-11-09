@@ -34,7 +34,7 @@ export const EditSchool = () => {
   return (
     <MiddlePanel title={"Edit School"}>
       <FormFactory
-        configs={GetEditSchoolConfig(onChange, fields)}
+        configs={GetEditSchoolConfig(onChange, fields, null)}
         submit={{
           onSubmit,
           text: "Edit School",

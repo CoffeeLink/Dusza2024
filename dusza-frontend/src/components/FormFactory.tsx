@@ -41,9 +41,10 @@ export type MultiConfig<T extends SingleConfig = SingleConfig> = ConfigBase & {
 
 export type Config = (SingleConfig | MultiConfig) | Config[];
 
-export type GetConfig<FIELDS> = (
+export type GetConfig<FIELDS, DATA> = (
   onChange: (fieldName: keyof FIELDS, value: FIELDS[keyof FIELDS]) => void,
   fieldValues: { [key in keyof FIELDS]: FIELDS[key] },
+  data: DATA,
 ) => Config[];
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {

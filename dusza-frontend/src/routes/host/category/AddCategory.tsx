@@ -24,7 +24,7 @@ export const AddCategory = () => {
   return (
     <MiddlePanel title={"Add Category"}>
       <FormFactory
-        configs={GetAddCategoryConfig(onChange, fields)}
+        configs={GetAddCategoryConfig(onChange, fields, null)}
         submit={{
           text: "Add",
           onSubmit,

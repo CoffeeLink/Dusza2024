@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { FormFactory } from "../../components/FormFactory.tsx";
 import { GetRegistrationConfig } from "../../components/form-configs/Team.tsx";
 import axios from "axios";
@@ -6,7 +6,7 @@ import { Optional } from "utility-types";
 import { Artboard } from "react-daisyui";
 
 export const Registration = () => {
-  const [fields, setFields] = React.useState({
+  const [fields, setFields] = useState({
     username: "",
     password: "",
     name1: "",
@@ -22,6 +22,14 @@ export const Registration = () => {
     language: "",
     schoolName: "",
   });
+
+  const [schools, setSchools] = useState<string[]>([]);
+
+  useEffect(() => {
+    axios.get("/api/schools").then((res) => {
+      setSchools(res.data);
+    });
+  }, []);
 
   const onChange = (
     // fields keys
@@ -54,7 +62,7 @@ export const Registration = () => {
       <h1 className="text-center text-4xl w-fit">Register</h1>
       <Artboard className="gap-2 p-4 bg-white w-fit">
         <FormFactory
-          configs={GetRegistrationConfig(onChange, fields)}
+          configs={GetRegistrationConfig(onChange, fields, { schools })}
           submit={{
             onSubmit,
             text: "Register",

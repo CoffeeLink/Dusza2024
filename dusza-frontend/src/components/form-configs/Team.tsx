@@ -6,7 +6,10 @@ type LoginFields = {
   password: string;
 };
 
-export const GetLoginConfig: GetConfig<LoginFields> = (onChange, fields) => {
+export const GetLoginConfig: GetConfig<LoginFields, null> = (
+  onChange,
+  fields,
+) => {
   const config: Config[] = [
     {
       key: "username",
@@ -44,7 +47,10 @@ type EditFields = {
   language: string;
 };
 
-export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
+export const GetEditConfig: GetConfig<EditFields, null> = (
+  onChange,
+  fields,
+) => {
   const classOptions = ["9", "10", "11", "12", "13"];
   const config: Config[] = [
     [
@@ -195,16 +201,20 @@ type RegistrationFields = LoginFields &
     teamName: string;
   };
 
-export const GetRegistrationConfig: GetConfig<RegistrationFields> = (
-  onChange,
-  fields,
-) => {
+export const GetRegistrationConfig: GetConfig<
+  RegistrationFields,
+  { schools: string[] }
+> = (onChange, fields, { schools }): Config[] => {
   // extend LoginConfig
-  let config = GetLoginConfig(onChange, {
-    username: fields.username,
-    password: fields.password,
-  });
-  config = config.concat(GetEditConfig(onChange, fields));
+  let config = GetLoginConfig(
+    onChange,
+    {
+      username: fields.username,
+      password: fields.password,
+    },
+    null,
+  );
+  config = config.concat(GetEditConfig(onChange, fields, null));
   config = config.concat([
     {
       key: "schoolName",
@@ -212,7 +222,8 @@ export const GetRegistrationConfig: GetConfig<RegistrationFields> = (
       errorFlag: false,
       errorMsg: "",
       value: fields.schoolName,
-      type: "text",
+      type: "dropdown",
+      options: schools,
       onChange: (e) => onChange("schoolName", e.target.value),
     },
     {

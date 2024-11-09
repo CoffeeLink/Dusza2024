@@ -30,7 +30,7 @@ export const AddSchool = () => {
   return (
     <MiddlePanel title={"Add School"}>
       <FormFactory
-        configs={GetAddSchoolConfig(onChange, fields)}
+        configs={GetAddSchoolConfig(onChange, fields, null)}
         submit={{
           onSubmit,
           text: "Add School",

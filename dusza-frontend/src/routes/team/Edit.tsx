@@ -51,7 +51,7 @@ export const Edit = () => {
       <h1 className="text-center text-4xl w-fit">Edit team</h1>
       <Artboard className="gap-2 p-4 bg-white w-fit">
         <FormFactory
-          configs={GetEditConfig(onChange, fields)}
+          configs={GetEditConfig(onChange, fields, null)}
           submit={{
             onSubmit,
             text: "Edit",
