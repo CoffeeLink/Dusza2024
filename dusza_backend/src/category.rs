@@ -1,4 +1,4 @@
-use actix_web::{get, post, Responder, ResponseError};
+use actix_web::{get, post, HttpResponse, Responder, ResponseError};
 use actix_web::web::ServiceConfig;
 use actix_web::web;
 use chrono::NaiveDateTime;
@@ -75,11 +75,11 @@ pub struct CreateCategoryPayload {
     category_application_state: CategoryState
 }
 
-//#[post("/create")]
-//async fn category_create(
-//    db: web::Data<Pool<MySql>>,
-//    payload: CreateCategoryPayload,
-//    auth_token: AuthToken,
-//) -> Result<impl Responder, DuszaBackendError<CategoryError>> {
-//    todo!()
-//}
+#[post("/create")]
+async fn category_create(
+    db: web::Data<Pool<MySql>>,
+    payload: web::Json<CreateCategoryPayload>,
+    auth_token: AuthToken,
+) -> Result<impl Responder, DuszaBackendError<CategoryError>> {
+    Ok(HttpResponse::new(StatusCode::OK))
+}

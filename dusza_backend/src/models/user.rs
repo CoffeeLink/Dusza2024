@@ -5,14 +5,14 @@ use uuid::Uuid;
 use crate::models::user::UserType::{SchoolRepresentative, TeamAccount};
 
 pub type UserId = u32;
-
 #[derive(Debug, Type, Clone, Ord, PartialOrd, Eq, PartialEq, Copy, Serialize, Deserialize)]
-#[sqlx(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum UserType {
-    TeamAccount,
-    SchoolRepresentative,
-    Organizer,
+#[repr(u8)]
+pub enum UserType { // id-s set manually cuz it was an ENUM originally and MYSQL starts with 1. instead of 0
+    TeamAccount = 1,
+    SchoolRepresentative = 2,
+    Organizer = 3,
 }
+
 
 impl UserType {
     pub fn can_access(&self, level_needed: &Self) -> bool {

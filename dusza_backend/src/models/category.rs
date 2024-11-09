@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use sqlx::{query, query_as, FromRow, MySql, Pool, Type};
 
 #[derive(Debug, Type, Clone, Ord, PartialOrd, Eq, PartialEq, Copy, Serialize, Deserialize)]
-#[sqlx(rename_all = "SCREAMING_SNAKE_CASE")]
+#[repr(u8)]
 pub enum CategoryState {
     Open,
     Closed,
