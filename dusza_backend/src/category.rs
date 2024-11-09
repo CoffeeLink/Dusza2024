@@ -16,6 +16,7 @@ pub fn configure_category_endpoints(cfg: &mut ServiceConfig) {
     cfg.service(web::scope("/category/")
         .service(category_get_all)
         .service(category_get_by_id)
+        .service(category_create)
     );
 }
 
@@ -81,5 +82,8 @@ async fn category_create(
     payload: web::Json<CreateCategoryPayload>,
     auth_token: AuthToken,
 ) -> Result<impl Responder, DuszaBackendError<CategoryError>> {
+
+
+
     Ok(HttpResponse::new(StatusCode::OK))
 }
