@@ -3,8 +3,8 @@ use crate::error::{AuthorizationError, DuszaBackendError};
 use crate::languages::LangErr;
 use crate::models::category::{CategoryState, CompetitionCategory};
 use crate::models::user::UserType;
-use actix_web::{delete, put, web};
 use actix_web::web::{service, ServiceConfig};
+use actix_web::{delete, put, web};
 use actix_web::{get, post, HttpResponse, Responder, ResponseError};
 use chrono::NaiveDateTime;
 use derive_more::Display;
@@ -21,7 +21,7 @@ pub fn configure_category_endpoints(cfg: &mut ServiceConfig) {
             .service(category_get_by_id)
             .service(category_create)
             .service(category_update)
-            .service(category_delete)
+            .service(category_delete),
     );
 }
 
@@ -118,7 +118,7 @@ async fn category_create(
 async fn category_update(
     db: web::Data<Pool<MySql>>,
     payload: web::Json<CreateCategoryPayload>,
-    id: web::Path<(u32, )>,
+    id: web::Path<(u32,)>,
     auth_token: AuthToken,
 ) -> Result<impl Responder, DuszaBackendError<CategoryError>> {
     if !verify_permission_level(auth_token, UserType::Organizer, &db)
@@ -139,11 +139,11 @@ async fn category_update(
         category.category_state,
         &db,
     )
-        .await
-        .map_err(|e| {
-            error!("{e}");
-            DuszaBackendError::InternalError
-        })?;
+    .await
+    .map_err(|e| {
+        error!("{e}");
+        DuszaBackendError::InternalError
+    })?;
 
     Ok(serde_json::to_string_pretty(&category).map_err(|e| {
         error!("{e}");
@@ -154,8 +154,8 @@ async fn category_update(
 #[delete("/{id}")]
 async fn category_delete(
     db: web::Data<Pool<MySql>>,
-    id: web::Path<(u32, )>,
-    auth_token: AuthToken
+    id: web::Path<(u32,)>,
+    auth_token: AuthToken,
 ) -> Result<impl Responder, DuszaBackendError<CategoryError>> {
     if !verify_permission_level(auth_token, UserType::Organizer, &db)
         .await

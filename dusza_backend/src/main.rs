@@ -17,6 +17,7 @@ use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::process::exit;
 use std::sync::Arc;
+use crate::user::configure_user_endpoints;
 
 mod auth;
 mod category;
@@ -25,6 +26,9 @@ mod languages;
 mod models;
 mod schools;
 mod teams;
+mod user;
+
+pub type Database = Pool<MySql>;
 
 #[derive(Debug, Deserialize, Serialize)]
 struct DatabaseConfig {
@@ -79,6 +83,7 @@ async fn main() {
                     .configure(configure_team_endpoints)
                     .configure(configure_language_endpoints)
                     .configure(configure_category_endpoints)
+                    .configure(configure_user_endpoints)
                     .service(web::scope("/school").service(schools::register_school_post)),
             )
             .wrap(Logger::default())
@@ -141,7 +146,7 @@ fn config_dev_opts(cfg: &mut ServiceConfig) {
 
 #[post("/dev/register/{user}/{pass}")]
 async fn gen_user(
-    db: web::Data<Pool<MySql>>,
+    db: web::Data<Database>,
     path: web::Path<(String, String)>,
     auth_config: web::Data<AuthConfig>,
 ) -> Result<impl Responder, DuszaBackendError<NoError>> {

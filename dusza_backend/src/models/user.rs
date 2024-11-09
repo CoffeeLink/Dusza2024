@@ -1,8 +1,11 @@
+use log::error;
 use crate::models::user::UserType::{SchoolRepresentative, TeamAccount};
 use serde::{Deserialize, Serialize};
-use sqlx::mysql::MySqlTypeInfo;
-use sqlx::{Decode, Encode, FromRow, MySql, Type};
+use sqlx::{query_as, Decode, Encode, FromRow, MySql, Type};
 use uuid::Uuid;
+use crate::Database;
+use crate::error::DuszaBackendError;
+use crate::models::DBError;
 
 pub type UserId = u32;
 #[derive(Debug, Type, Clone, Ord, PartialOrd, Eq, PartialEq, Copy, Serialize, Deserialize)]
@@ -41,6 +44,49 @@ impl User {
             .bind(&auth_token.as_bytes()[..])
             .fetch_optional(pool)
             .await?;
+
+        Ok(user)
+    }
+
+    pub async fn get_by_id(id: u32, db: &Database) -> Result<Option<User>, DuszaBackendError<DBError>> {
+        let sql = r#"
+        SELECT
+            u.user_id,
+            u.username,
+            u.user_type
+        FROM
+            user u
+        WHERE
+            u.user_id = ?
+        "#;
+        let user: Option<User> = query_as(sql)
+            .bind(id)
+            .fetch_optional(db)
+            .await
+            .map_err(|e| {
+                error!("{e}");
+                DuszaBackendError::InternalError
+            })?;
+
+        Ok(user)
+    }
+
+    pub async fn get_all(db: &Database) -> Result<Vec<User>, DuszaBackendError<DBError>> {
+        let sql = r#"
+        SELECT
+            u.user_id,
+            u.username,
+            u.user_type
+        FROM
+            user u
+        "#;
+        let user: Vec<User> = query_as(sql)
+            .fetch_all(db)
+            .await
+            .map_err(|e| {
+                error!("{e}");
+                DuszaBackendError::InternalError
+            })?;
 
         Ok(user)
     }
