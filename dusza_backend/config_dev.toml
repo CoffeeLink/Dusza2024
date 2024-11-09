@@ -1,0 +1,14 @@
+[database]
+ip_address = "127.0.0.1"
+port = 3306
+user = "dusza_user"
+password = "dusza2023"
+database = "verseny_db_base"
+
+[auth]
+password_salt = "DUSZAAAAAAA"
+# Shitty lifetime format
+token_lifetime_weeks = 0
+token_lifetime_days = 2
+token_lifetime_hours = 12
+token_lifetime_minutes = 0
