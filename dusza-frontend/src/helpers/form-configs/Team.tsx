@@ -4,7 +4,7 @@ import {
   SingleConfig,
 } from "../../components/FormFactory.tsx";
 import { Button } from "react-daisyui";
-import { UserPlusIcon, UserMinusIcon } from "@heroicons/react/16/solid";
+import { UserPlusIcon, UserMinusIcon } from "@heroicons/react/24/outline";
 
 type LoginFields = {
   username: string;

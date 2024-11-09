@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
-import { AcademicCapIcon } from "@heroicons/react/16/solid";
+import { AcademicCapIcon } from "@heroicons/react/24/outline";
 
 type School = {
   id: number;

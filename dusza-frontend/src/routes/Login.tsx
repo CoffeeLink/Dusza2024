@@ -4,7 +4,7 @@ import { GetLoginConfig } from "../helpers/form-configs/Team.tsx";
 import axios from "axios";
 
 import { MiddlePanel } from "../components/middle/MiddlePanel.tsx";
-import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/16/solid";
+import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
 
 
 export const Login = () => {

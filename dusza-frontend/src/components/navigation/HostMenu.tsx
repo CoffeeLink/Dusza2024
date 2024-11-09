@@ -1,4 +1,4 @@
-import { AdjustmentsVerticalIcon, ArrowLeftStartOnRectangleIcon, ChartPieIcon, Squares2X2Icon, AcademicCapIcon, UserGroupIcon } from "@heroicons/react/24/outline";
+import { AdjustmentsVerticalIcon, ArrowLeftStartOnRectangleIcon, ChartPieIcon, Squares2X2Icon, AcademicCapIcon, UserGroupIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
 import { Artboard, Menu } from "react-daisyui";
 import { Link } from "react-router-dom";
 
@@ -20,7 +20,7 @@ export const HostMenu = () => {
             <Link to="/host/categories"><Squares2X2Icon className="w-5" /> Kategóriák</Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to="/host/languages">Nyelvek</Link>
+            <Link to="/host/languages"><CodeBracketIcon className="w-5" /> Programozási nyelvek</Link>
           </Menu.Item>
           <Menu.Item>
             <Link to="/host/statistics"><ChartPieIcon className="w-5" /> Statisztikák</Link>
