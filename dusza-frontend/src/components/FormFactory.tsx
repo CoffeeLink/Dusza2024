@@ -277,9 +277,11 @@ export const FormFactory = ({
     >
       <FormFactoryRecursive configs={configs} />
       {submit && (
+        <>
+        <br />
         <Button
           color="primary"
-          className="w-full"
+          className="w-full btn"
           type="submit"
           disabled={!isFilled() || hasError(configs)}
         >
