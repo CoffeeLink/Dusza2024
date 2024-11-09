@@ -6,7 +6,7 @@ type CategoryFields = {
   deadline: string;
 };
 
-export const GetAddCategoryConfig: GetConfig<CategoryFields, null> = (
+export const GetAddCategoryConfig: GetConfig<CategoryFields> = (
   onChange,
   fields,
 ) => {
@@ -45,7 +45,7 @@ export const GetAddCategoryConfig: GetConfig<CategoryFields, null> = (
   return config;
 };
 
-export const GetEditCategoryConfig: GetConfig<CategoryFields, null> = (
+export const GetEditCategoryConfig: GetConfig<CategoryFields> = (
   onChange,
   fields,
 ) => {

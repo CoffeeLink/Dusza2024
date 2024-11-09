@@ -26,9 +26,11 @@ export const Registration = () => {
   const [schools, setSchools] = useState<string[]>([]);
 
   useEffect(() => {
-    axios.get("/api/schools").then((res) => {
-      setSchools(res.data);
-    });
+    // axios.get("/api/schools").then((res) => {
+    //   setSchools(res.data);
+    // });
+
+    setSchools(["School 1", "School 2", "School 3"]);
   }, []);
 
   const onChange = (

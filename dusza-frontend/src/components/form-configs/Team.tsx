@@ -1,15 +1,19 @@
 import { Config, GetConfig } from "../FormFactory.tsx";
 import { Button } from "react-daisyui";
+import { validateLength } from "../../helpers/validation.ts";
 
 type LoginFields = {
   username: string;
   password: string;
 };
 
-export const GetLoginConfig: GetConfig<LoginFields, null> = (
-  onChange,
-  fields,
-) => {
+export const GetLoginConfig: GetConfig<LoginFields> = (onChange, fields) => {
+  const passwordMinLength = 8;
+  const passwordValidation = validateLength(
+    fields.password.length,
+    passwordMinLength,
+  );
+
   const config: Config[] = [
     {
       key: "username",
@@ -18,15 +22,17 @@ export const GetLoginConfig: GetConfig<LoginFields, null> = (
       errorMsg: "",
       value: fields.username,
       type: "text",
+      required: true,
       onChange: (e) => onChange("username", e.target.value),
     },
     {
       key: "password",
       label: "Password",
-      errorFlag: false,
-      errorMsg: "",
+      errorFlag: passwordValidation.errorFlag,
+      errorMsg: passwordValidation.errorMsg,
       value: fields.password,
       type: "password",
+      required: true,
       onChange: (e) => onChange("password", e.target.value),
     },
   ];
@@ -47,10 +53,7 @@ type EditFields = {
   language: string;
 };
 
-export const GetEditConfig: GetConfig<EditFields, null> = (
-  onChange,
-  fields,
-) => {
+export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
   const classOptions = ["9", "10", "11", "12", "13"];
   const config: Config[] = [
     [
@@ -61,6 +64,7 @@ export const GetEditConfig: GetConfig<EditFields, null> = (
         errorMsg: "",
         value: fields.name1,
         type: "text",
+        required: true,
         onChange: (e) => onChange("name1", e.target.value),
       },
       {
@@ -71,6 +75,7 @@ export const GetEditConfig: GetConfig<EditFields, null> = (
         value: fields.class1,
         type: "dropdown",
         options: classOptions,
+        required: true,
         onChange: (e) => onChange("class1", e.target.value),
       },
     ],
@@ -82,6 +87,7 @@ export const GetEditConfig: GetConfig<EditFields, null> = (
         errorMsg: "",
         value: fields.name2,
         type: "text",
+        required: true,
         onChange: (e) => onChange("name2", e.target.value),
       },
       {
@@ -92,6 +98,7 @@ export const GetEditConfig: GetConfig<EditFields, null> = (
         value: fields.class2,
         type: "dropdown",
         options: classOptions,
+        required: true,
         onChange: (e) => onChange("class2", e.target.value),
       },
     ],
@@ -103,6 +110,7 @@ export const GetEditConfig: GetConfig<EditFields, null> = (
         errorMsg: "",
         value: fields.name3,
         type: "text",
+        required: true,
         onChange: (e) => onChange("name3", e.target.value),
       },
       {
@@ -113,6 +121,7 @@ export const GetEditConfig: GetConfig<EditFields, null> = (
         value: fields.class3,
         type: "dropdown",
         options: classOptions,
+        required: true,
         onChange: (e) => onChange("class3", e.target.value),
       },
     ],
@@ -144,6 +153,7 @@ export const GetEditConfig: GetConfig<EditFields, null> = (
       errorMsg: "",
       type: "multi-input",
       values: fields.teachers,
+      required: true,
       getAddButton: () => (
         <Button
           onClick={() => {
@@ -173,6 +183,7 @@ export const GetEditConfig: GetConfig<EditFields, null> = (
         errorMsg: "",
         value: teacher,
         type: "text",
+        required: true,
         onChange: (e) => {
           const newTeachers = fields.teachers.slice();
           newTeachers[index] = e.target.value;
@@ -187,6 +198,7 @@ export const GetEditConfig: GetConfig<EditFields, null> = (
       errorMsg: "",
       value: fields.language,
       type: "dropdown",
+      required: true,
       onChange: (e) => onChange("language", e.target.value),
       options: ["C++", "Java", "Python"],
     },

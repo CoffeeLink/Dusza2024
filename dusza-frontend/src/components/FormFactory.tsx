@@ -30,7 +30,10 @@ export type ConfigRadio = ConfigSelect & {
   value: string[];
 };
 
-export type SingleConfig = ConfigInput | ConfigDropdown | ConfigRadio;
+export type SingleConfig = (ConfigInput | ConfigDropdown | ConfigRadio) & {
+  required?: boolean;
+};
+
 export type MultiConfig<T extends SingleConfig = SingleConfig> = ConfigBase & {
   type: "multi-input";
   configs: T[];
@@ -41,19 +44,38 @@ export type MultiConfig<T extends SingleConfig = SingleConfig> = ConfigBase & {
 
 export type Config = (SingleConfig | MultiConfig) | Config[];
 
-export type GetConfig<FIELDS, DATA> = (
+export type GetConfig<FIELDS, DATA = null> = (
   onChange: (fieldName: keyof FIELDS, value: FIELDS[keyof FIELDS]) => void,
   fieldValues: { [key in keyof FIELDS]: FIELDS[key] },
   data: DATA,
 ) => Config[];
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => {
-  return <div className="flex flex-col w-full">{children}</div>;
+const Wrapper = ({
+  children,
+  label,
+  errorFlag,
+  errorMsg,
+}: {
+  children: React.ReactNode;
+  label: string;
+  errorFlag: boolean;
+  errorMsg: string;
+}) => {
+  return (
+    <div className="flex flex-col w-full">
+      <label className="label">
+        <span className="label-text">{label}</span>
+      </label>
+      {children}
+      {errorFlag && <span className="text-error">{errorMsg}</span>}
+    </div>
+  );
 };
 
 const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
   const getElement = (config: SingleConfig) => {
-    const { key, label, errorFlag, errorMsg, value, type, onChange } = config;
+    const { key, label, errorFlag, errorMsg, value, type, onChange, required } =
+      config;
 
     switch (type) {
       case "text":
@@ -62,27 +84,37 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
       case "password":
       case "date":
         return (
-          <Wrapper key={key}>
-            <label className="label">
-              <span className="label-text">{label}</span>
-            </label>
+          <Wrapper
+            key={key}
+            label={label}
+            errorFlag={errorFlag}
+            errorMsg={errorMsg}
+          >
             <Input
               onChange={onChange}
               value={value}
               type={type}
-              className="bg-base-200"
+              // className="bg-base-200"
+              className={`bg-base-200 ${errorFlag ? "border-error" : ""}`}
+              required={required}
             />
-            {errorFlag && <span>{errorMsg}</span>}
           </Wrapper>
         );
 
       case "dropdown":
         return (
-          <Wrapper key={key}>
-            <label className="label">
-              <span className="label-text">{label}</span>
-            </label>
-            <Select onChange={onChange} value={value} className="bg-base-200">
+          <Wrapper
+            key={key}
+            label={label}
+            errorFlag={errorFlag}
+            errorMsg={errorMsg}
+          >
+            <Select
+              onChange={onChange}
+              value={value}
+              className={`bg-base-200 ${errorFlag ? "border-error" : ""}`}
+              required={required}
+            >
               {config.options.map((option) => {
                 return (
                   <Select.Option value={option} key={option}>
@@ -91,16 +123,17 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
                 );
               })}
             </Select>
-            {errorFlag && <span>{errorMsg}</span>}
           </Wrapper>
         );
 
       case "radio":
         return (
-          <Wrapper key={key}>
-            <label className="label">
-              <span className="label-text">{label}</span>
-            </label>
+          <Wrapper
+            key={key}
+            label={label}
+            errorFlag={errorFlag}
+            errorMsg={errorMsg}
+          >
             {config.options.map((option) => {
               return (
                 <div key={option}>
@@ -109,23 +142,33 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
                     value={option}
                     onChange={onChange}
                     checked={value.includes(option)}
+                    required={required}
                   />
                   <label>{option}</label>
                 </div>
               );
             })}
-            {errorFlag && <span>{errorMsg}</span>}
           </Wrapper>
         );
     }
   };
 
   const getMultiElement = (config: MultiConfig) => {
-    const { key, label, configs, getAddButton, getRemoveButton } = config;
+    const {
+      key,
+      label,
+      configs,
+      getAddButton,
+      getRemoveButton,
+      errorFlag,
+      errorMsg,
+    } = config;
 
     return (
       <div key={key} className={"flex flex-col pt-2"}>
-        <p>{label}</p>
+        <p>
+          {label} {errorFlag && <span className="text-error">{errorMsg}</span>}
+        </p>
         <div className={"flex flex-col gap-2"}>
           {configs.map((subConfig, index) => {
             return (
@@ -181,10 +224,10 @@ export const FormFactory = ({
   submit?: Submit;
 }) => {
   return (
-    <Form className="form-control gap-2">
+    <Form className="form-control gap-2" onSubmit={submit?.onSubmit}>
       <FormFactoryRecursive configs={configs} />
       {submit && (
-        <Button color="primary" className="w-full" onClick={submit.onSubmit}>
+        <Button color="primary" className="w-full" type="submit">
           {submit.text}
         </Button>
       )}

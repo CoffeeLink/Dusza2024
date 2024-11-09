@@ -9,7 +9,7 @@ type SchoolFields = {
   contactEmail: string;
 };
 
-export const GetAddSchoolConfig: GetConfig<SchoolFields, null> = (
+export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
   onChange,
   fields,
 ) => {
@@ -79,7 +79,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields, null> = (
   return config;
 };
 
-export const GetEditSchoolConfig: GetConfig<SchoolFields, null> = (
+export const GetEditSchoolConfig: GetConfig<SchoolFields> = (
   onChange,
   fields,
 ) => {

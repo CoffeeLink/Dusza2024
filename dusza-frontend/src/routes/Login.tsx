@@ -32,7 +32,7 @@ export const Login = () => {
       <h1 className="text-center text-4xl w-fit">Login</h1>
       <Artboard className="gap-2 p-4 bg-white w-fit">
         <FormFactory
-          configs={GetLoginConfig(onChange, fields)}
+          configs={GetLoginConfig(onChange, fields, null)}
           submit={{
             onSubmit,
             text: "Login",
