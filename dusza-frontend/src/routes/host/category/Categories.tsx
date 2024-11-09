@@ -3,7 +3,7 @@ import { Button, Table } from "react-daisyui";
 import { useState } from "react";
 import axios from "axios";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
-import { SquaresPlusIcon } from "@heroicons/react/16/solid";
+import { SquaresPlusIcon } from "@heroicons/react/24/outline";
 
 type Category = {
   id: number;

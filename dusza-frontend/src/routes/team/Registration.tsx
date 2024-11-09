@@ -3,7 +3,7 @@ import { FormFactory } from "../../components/FormFactory.tsx";
 import { GetRegistrationConfig } from "../../helpers/form-configs/Team.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
-import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
+import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { MiddlePanel } from "../../components/middle/MiddlePanel.tsx";
 
 export const Registration = () => {
