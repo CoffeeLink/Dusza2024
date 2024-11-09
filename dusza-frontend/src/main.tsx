@@ -24,6 +24,7 @@ import { Home } from "./routes/Home.tsx";
 import { Languages } from "./routes/host/language/Languages.tsx";
 import { AddLanguage } from "./routes/host/language/AddLanguage.tsx";
 import { EditLanguage } from "./routes/host/language/EditLanguage.tsx";
+import { Statistics } from "./routes/host/statistics/statistics.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -43,6 +44,7 @@ const router = createBrowserRouter(
         <Route path="languages" element={<Languages />} />
         <Route path="languages/add" element={<AddLanguage />} />
         <Route path="languages/:id" element={<EditLanguage />} />
+        <Route path="statistics" element={<Statistics />} />
       </Route>
       <Route path="team">
         <Route path="edit" element={<Edit />} />
