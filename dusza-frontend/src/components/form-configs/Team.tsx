@@ -1,4 +1,4 @@
-import { Config, GetConfig } from "./FormFactory.tsx";
+import { Config, GetConfig } from "../FormFactory.tsx";
 import { Button } from "react-daisyui";
 
 type LoginFields = {

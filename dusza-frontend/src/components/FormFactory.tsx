@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input, Select } from "react-daisyui";
+import { Button, Form, Input, Select } from "react-daisyui";
 
 type ConfigBase = {
   key: string;
@@ -46,13 +46,13 @@ export type GetConfig<FIELDS> = (
   fieldValues: { [key in keyof FIELDS]: FIELDS[key] },
 ) => Config[];
 
+const Wrapper = ({ children }: { children: React.ReactNode }) => {
+  return <div className="flex flex-col w-full">{children}</div>;
+};
+
 const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
   const getElement = (config: SingleConfig) => {
     const { key, label, errorFlag, errorMsg, value, type, onChange } = config;
-
-    const Wrapper = ({ children }: { children: React.ReactNode }) => {
-      return <div className="flex flex-col w-full">{children}</div>;
-    };
 
     switch (type) {
       case "text":
@@ -65,7 +65,12 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
             <label className="label">
               <span className="label-text">{label}</span>
             </label>
-            <Input onChange={onChange} value={value} type={type} />
+            <Input
+              onChange={onChange}
+              value={value}
+              type={type}
+              className="bg-base-200"
+            />
             {errorFlag && <span>{errorMsg}</span>}
           </Wrapper>
         );
@@ -76,7 +81,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
             <label className="label">
               <span className="label-text">{label}</span>
             </label>
-            <Select onChange={onChange} value={value}>
+            <Select onChange={onChange} value={value} className="bg-base-200">
               {config.options.map((option) => {
                 return (
                   <Select.Option value={option} key={option}>
@@ -175,13 +180,13 @@ export const FormFactory = ({
   submit?: Submit;
 }) => {
   return (
-    <div className="form-control gap-2">
+    <Form className="form-control gap-2">
       <FormFactoryRecursive configs={configs} />
       {submit && (
         <Button color="primary" className="w-full" onClick={submit.onSubmit}>
           {submit.text}
         </Button>
       )}
-    </div>
+    </Form>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
-import { FormFactory } from "../components/FormFactory.tsx";
-import { GetEditConfig } from "../components/TeamFormConfigs.tsx";
+import { FormFactory } from "../../components/FormFactory.tsx";
+import { GetEditConfig } from "../../components/form-configs/Team.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
 import { Artboard } from "react-daisyui";
@@ -47,15 +47,17 @@ export const Edit = () => {
   };
 
   return (
-    <Artboard className="gap-2 p-4">
-      <h1 className="text-2xl">Edit</h1>
-      <FormFactory
-        configs={GetEditConfig(onChange, fields)}
-        submit={{
-          onSubmit,
-          text: "Edit",
-        }}
-      />
-    </Artboard>
+    <div className="w-full flex flex-col gap-2 items-center">
+      <h1 className="text-center text-4xl w-fit">Edit team</h1>
+      <Artboard className="gap-2 p-4 bg-white w-fit">
+        <FormFactory
+          configs={GetEditConfig(onChange, fields)}
+          submit={{
+            onSubmit,
+            text: "Edit",
+          }}
+        />
+      </Artboard>
+    </div>
   );
 };

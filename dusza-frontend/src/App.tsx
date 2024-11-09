@@ -1,23 +1,15 @@
 import "./App.scss";
-import { Link, Outlet } from "react-router-dom";
-import { Header } from "./components/Header.tsx";
+import { Outlet } from "react-router-dom";
+import { Header } from "./components/navigation/Header.tsx";
 import { Theme } from "react-daisyui";
 
 function App() {
   return (
-    <Theme dataTheme={"light"}>
+    <Theme dataTheme={"light"} className="bg-base-300 min-h-screen">
       {/*Common things between routes*/}
-      <Header />
-      <p>Welcome</p>
-      <Link to={"/"}>Home</Link>
-      <br />
-      <Link to="/registration">Registration</Link>
-      <br />
-      <Link to={"/edit"}>Edit</Link>
-      <br />
-      <Link to={"/login"}>Login</Link>
       {/*Route specific things*/}
-      <div className="w-fit mx-auto">
+      <Header />
+      <div className="w-full flex flex-col gap-4 justify-center items-center p-4">
         <Outlet />
       </div>
     </Theme>

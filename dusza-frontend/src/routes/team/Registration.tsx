@@ -1,6 +1,6 @@
 import React from "react";
-import { FormFactory } from "../components/FormFactory.tsx";
-import { GetRegistrationConfig } from "../components/TeamFormConfigs.tsx";
+import { FormFactory } from "../../components/FormFactory.tsx";
+import { GetRegistrationConfig } from "../../components/form-configs/Team.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
 import { Artboard } from "react-daisyui";
@@ -50,15 +50,17 @@ export const Registration = () => {
     });
   };
   return (
-    <Artboard className="gap-2 p-4">
-      <h1 className="text-2xl">Registration</h1>
-      <FormFactory
-        configs={GetRegistrationConfig(onChange, fields)}
-        submit={{
-          onSubmit,
-          text: "Register",
-        }}
-      />
-    </Artboard>
+    <div className="w-full flex flex-col gap-2 items-center">
+      <h1 className="text-center text-4xl w-fit">Register</h1>
+      <Artboard className="gap-2 p-4 bg-white w-fit">
+        <FormFactory
+          configs={GetRegistrationConfig(onChange, fields)}
+          submit={{
+            onSubmit,
+            text: "Register",
+          }}
+        />
+      </Artboard>
+    </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
-import { GetLoginConfig } from "../components/TeamFormConfigs.tsx";
+import { GetLoginConfig } from "../components/form-configs/Team.tsx";
 import axios from "axios";
 import { Artboard } from "react-daisyui";
 
@@ -28,15 +28,17 @@ export const Login = () => {
   };
 
   return (
-    <Artboard className="gap-2 p-4">
-      <h1 className="text-2xl">Login</h1>
-      <FormFactory
-        configs={GetLoginConfig(onChange, fields)}
-        submit={{
-          onSubmit,
-          text: "Login",
-        }}
-      />
-    </Artboard>
+    <div className="w-full flex flex-col gap-2 items-center">
+      <h1 className="text-center text-4xl w-fit">Login</h1>
+      <Artboard className="gap-2 p-4 bg-white w-fit">
+        <FormFactory
+          configs={GetLoginConfig(onChange, fields)}
+          submit={{
+            onSubmit,
+            text: "Login",
+          }}
+        />
+      </Artboard>
+    </div>
   );
 };
