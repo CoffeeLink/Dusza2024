@@ -16,7 +16,7 @@ pub enum UserType {
 
 impl UserType {
     pub fn can_access(&self, level_needed: &Self) -> bool {
-        match Self {
+        match self {
             UserType::TeamAccount => { self == level_needed }
             UserType::SchoolRepresentative => { level_needed == &TeamAccount || level_needed == &SchoolRepresentative }
             UserType::Organizer => { true } // root
