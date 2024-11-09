@@ -37,7 +37,7 @@ pub enum LangErr {
 
 impl ResponseError for LangErr {
     fn status_code(&self) -> StatusCode {
-        StatusCode::UNAUTHORIZED
+        StatusCode::NOT_FOUND
     }
 }
 

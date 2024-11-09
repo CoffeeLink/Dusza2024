@@ -1,9 +1,9 @@
-use crate::auth::login_post;
+use crate::auth::{login_post, salt};
 use crate::languages::configure_language_endpoints;
 use crate::teams::configure_team_endpoints;
 use actix_web::middleware::Logger;
-use actix_web::web;
-use actix_web::web::Data;
+use actix_web::{post, web};
+use actix_web::web::{Data, ServiceConfig};
 use actix_web::{get, App, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
 use sqlx::mysql::MySqlPoolOptions;
@@ -12,7 +12,10 @@ use std::io::{BufWriter, Write};
 use std::process::exit;
 use std::sync::Arc;
 use actix_cors::Cors;
+use log::error;
+use sqlx::{query, MySql, Pool};
 use crate::category::configure_category_endpoints;
+use crate::error::{DuszaBackendError, NoError};
 
 mod auth;
 mod error;
@@ -49,9 +52,6 @@ async fn main() {
     env_logger::init();
 
     let conf = load_config();
-
-    dbg!(&conf); // TODO: rm this
-
     let pool = MySqlPoolOptions::new()
         .max_connections(5)
         .connect(&format!(
@@ -68,6 +68,7 @@ async fn main() {
         App::new()
             .app_data(Data::new(pool.clone()))
             .app_data(Data::new(conf.auth.clone())) // for AUTH apps
+            .configure(config_dev_opts)
             .service(
                 web::scope("/api")
                     .service(login_post)
@@ -125,4 +126,26 @@ fn load_config() -> Config {
     let contents = conf.unwrap();
     let config: Config = toml::from_str(&contents).unwrap();
     config
+}
+
+fn config_dev_opts(cfg: &mut ServiceConfig) {
+    #[cfg(not(release))]
+    cfg.service(gen_user);
+}
+
+#[post("/dev/register/{user}/{pass}")]
+async fn gen_user(
+    db: web::Data<Pool<MySql>>,
+    path: web::Path<(String, String, )>,
+    auth_config: web::Data<AuthConfig>,
+) -> Result<impl Responder, DuszaBackendError<NoError>> {
+    let (username, passwd) = path.into_inner();
+    let _ = query("INSERT INTO user (username, password) VALUES (?, ?)")
+        .bind(username)
+        .bind(salt(passwd, &auth_config))
+        .execute(&**db)
+        .await
+        .map_err(|e| {error!("{e}"); DuszaBackendError::InternalError})?;
+
+    Ok(web::Json("Success!"))
 }

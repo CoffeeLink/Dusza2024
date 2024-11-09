@@ -81,7 +81,7 @@ pub async fn verify_permission_level(auth_token: AuthToken, perm_level: UserType
     Ok(true)
 }
 
-fn salt(passwd: String, auth_config: &AuthConfig) -> Vec<u8> {
+pub fn salt(passwd: String, auth_config: &AuthConfig) -> Vec<u8> {
     let mut hasher = sha2::Sha256::new();
     hasher.update((passwd + &auth_config.password_salt).as_bytes());
     let result = hasher.finalize();
