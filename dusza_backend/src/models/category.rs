@@ -27,7 +27,7 @@ impl CompetitionCategory {
         db: &Pool<MySql>,
     ) -> Result<Option<CompetitionCategory>, sqlx::Error> {
         let lang: Option<CompetitionCategory> =
-            query_as("SELECT category_id, category_name, category_description, category_deadline, category_application_state FROM competition_category WHERE category_id = ?")
+            query_as("SELECT category_id, category_name, category_description, category_deadline, category_state FROM competition_category WHERE category_id = ?")
                 .bind(id)
                 .fetch_optional(db)
                 .await?;
@@ -36,7 +36,7 @@ impl CompetitionCategory {
 
     pub async fn get_all(db: &Pool<MySql>) -> Result<Vec<CompetitionCategory>, sqlx::Error> {
         let langs: Vec<CompetitionCategory> =
-            query_as("SELECT category_id, category_name, category_description, category_deadline, category_application_state FROM competition_category")
+            query_as("SELECT category_id, category_name, category_description, category_deadline, category_state FROM competition_category")
                 .fetch_all(db)
                 .await?;
         Ok(langs)

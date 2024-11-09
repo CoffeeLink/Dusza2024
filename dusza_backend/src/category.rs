@@ -13,7 +13,7 @@ use crate::languages::LangErr;
 use crate::models::category::{CategoryState, CompetitionCategory};
 
 pub fn configure_category_endpoints(cfg: &mut ServiceConfig) {
-    cfg.service(web::scope("/category/")
+    cfg.service(web::scope("/category")
         .service(category_get_all)
         .service(category_get_by_id)
     );
