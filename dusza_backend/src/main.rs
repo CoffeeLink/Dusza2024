@@ -141,7 +141,7 @@ async fn gen_user(
     auth_config: web::Data<AuthConfig>,
 ) -> Result<impl Responder, DuszaBackendError<NoError>> {
     let (username, passwd) = path.into_inner();
-    let _ = query("INSERT INTO user (username, password) VALUES (?, ?)")
+    let _ = query("INSERT INTO user (username, password, user_type) VALUES (?, ?, 3)") // user type 3 is ORGANIZER
         .bind(username)
         .bind(salt(passwd, &auth_config))
         .execute(&**db)
