@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { Artboard, Button, Table } from "react-daisyui";
+import { Button, Table } from "react-daisyui";
 import { useState } from "react";
 import axios from "axios";
+import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 
 type Category = {
   id: number;
@@ -35,39 +36,37 @@ export const Categories = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2">
-      <div className="relative">
-        <h1 className="w-full text-center text-4xl">Categories</h1>
-        <Link to="/host/categories/add" className="absolute -top-2 right-0">
+    <MiddlePanel
+      title={"Categories"}
+      rightButton={
+        <Link to="/host/categories/add">
           <Button color="success">Add Category</Button>
         </Link>
-      </div>
-
-      <Artboard className="w-full bg-white p-2">
-        <Table>
-          <Table.Head>
-            <span>Name</span>
-            <span>Description</span>
-            <span>Actions</span>
-          </Table.Head>
-          <Table.Body>
-            {categories.map((category) => (
-              <Table.Row key={category.id}>
-                <span>{category.name}</span>
-                <span>{category.description}</span>
-                <span className="flex gap-2">
-                  <Link to={`/host/categories/${category.id}`}>
-                    <Button>Edit</Button>
-                  </Link>
-                  <Button color="error" onClick={() => onDelete(category.id)}>
-                    Delete
-                  </Button>
-                </span>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
-      </Artboard>
-    </div>
+      }
+    >
+      <Table>
+        <Table.Head>
+          <span>Name</span>
+          <span>Description</span>
+          <span>Actions</span>
+        </Table.Head>
+        <Table.Body>
+          {categories.map((category) => (
+            <Table.Row key={category.id}>
+              <span>{category.name}</span>
+              <span>{category.description}</span>
+              <span className="flex gap-2">
+                <Link to={`/host/categories/${category.id}`}>
+                  <Button>Edit</Button>
+                </Link>
+                <Button color="error" onClick={() => onDelete(category.id)}>
+                  Delete
+                </Button>
+              </span>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </MiddlePanel>
   );
 };

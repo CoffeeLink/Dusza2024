@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Artboard, Button } from "react-daisyui";
+import { Button } from "react-daisyui";
 import { Link } from "react-router-dom";
+import { Overview as AbstractOverview } from "../../components/middle/Overview.tsx";
 
 // TODO: Export types into a shared file
 type Category = {
@@ -101,67 +102,60 @@ export const Overview = () => {
   ]);
 
   return (
-    <div className="w-full flex flex-col gap-2">
-      <h1 className="w-full text-center text-4xl">Overview</h1>
-      <div className="flex gap-4 flex-wrap content-stretch">
-        <Artboard className="gap-4 p-4 flex-1 min-w-72 justify-start h-fit bg-white">
-          <h2 className="text-2xl w-full">Categories</h2>
-          {categories.map((category, index) => (
-            <Artboard key={index} className="gap-2 p-4 bg-blue-200">
-              <h3 className="w-full font-bold">{category.name}</h3>
-              <div className="w-full flex flex-row justify-between gap-2">
-                <p className="">Time left: {countDown(category.deadline)}</p>
-                <p className="">Team Count: {category.teamCount}</p>
-              </div>
-            </Artboard>
-          ))}
-          <Link to="/host/categories" className="w-full">
-            <Button color="primary" className="w-full">
-              All categories
-            </Button>
-          </Link>
-        </Artboard>
+    <AbstractOverview title="Overview">
+      <AbstractOverview.Card title="Categories">
+        {categories.map((category, index) => (
+          <AbstractOverview.Card
+            key={index}
+            title={category.name}
+            className="bg-blue-200"
+          >
+            <p>Time left: {countDown(category.deadline)}</p>
+            <p>Team Count: {category.teamCount}</p>
+          </AbstractOverview.Card>
+        ))}
+        <Link to="/host/teams" className="w-full">
+          <Button color="primary" className="w-full">
+            All categories
+          </Button>
+        </Link>
+      </AbstractOverview.Card>
 
-        <Artboard className="gap-4 p-4 flex-1 min-w-72 justify-start h-fit bg-white">
-          <h2 className="text-2xl w-full">Teams</h2>
-          {teams.map((team, index) => (
-            <Artboard key={index} className="gap-2 p-4 bg-blue-200">
-              <h3 className="w-full font-bold">{team.name}</h3>
-              <div className="w-full flex flex-row justify-between gap-2">
-                <p className="">
-                  Registered at: {team.registeredAt.toDateString()}
-                </p>
-                <p className="">Category: {team.category}</p>
-              </div>
-            </Artboard>
-          ))}
-          <Link to="/host/teams" className="w-full">
-            <Button color="primary" className="w-full">
-              All teams
-            </Button>
-          </Link>
-        </Artboard>
+      <AbstractOverview.Card title="Teams">
+        {teams.map((team, index) => (
+          <AbstractOverview.Card
+            key={index}
+            title={team.name}
+            className="bg-blue-200"
+          >
+            <p>Registered at: {team.registeredAt.toDateString()}</p>
+            <p>Category: {team.category}</p>
+          </AbstractOverview.Card>
+        ))}
+        <Link to="/host/teams" className="w-full">
+          <Button color="primary" className="w-full">
+            All teams
+          </Button>
+        </Link>
+      </AbstractOverview.Card>
 
-        <Artboard className="gap-4 p-4 flex-1 min-w-72 justify-start h-fit bg-white">
-          <h2 className="text-2xl w-full">Pending teams</h2>
-          {pendingTeams.map((team, index) => (
-            <Artboard key={index} className="gap-2 p-4 bg-blue-200">
-              <h3 className="w-full font-bold">{team.name}</h3>
-              <div className="w-full flex flex-row justify-between gap-2">
-                <p className="">
-                  Registered at: {team.registeredAt.toDateString()}
-                </p>
-                <p className="">Category: {team.category}</p>
-              </div>
-            </Artboard>
-          ))}
-          <Link to="/host/teams/pending" className="w-full">
-            <Button color="primary" className="w-full">
-              All pending teams
-            </Button>
-          </Link>
-        </Artboard>
-      </div>
-    </div>
+      <AbstractOverview.Card title="Pending teams">
+        {pendingTeams.map((team, index) => (
+          <AbstractOverview.Card
+            key={index}
+            title={team.name}
+            className="bg-blue-200"
+          >
+            <p>Registered at: {team.registeredAt.toDateString()}</p>
+            <p>Category: {team.category}</p>
+          </AbstractOverview.Card>
+        ))}
+        <Link to="/host/teams" className="w-full">
+          <Button color="primary" className="w-full">
+            All pending teams
+          </Button>
+        </Link>
+      </AbstractOverview.Card>
+    </AbstractOverview>
   );
 };

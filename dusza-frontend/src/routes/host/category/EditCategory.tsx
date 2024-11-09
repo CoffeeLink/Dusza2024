@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Artboard } from "react-daisyui";
 import { FormFactory } from "../../../components/FormFactory.tsx";
 import { GetEditCategoryConfig } from "../../../components/form-configs/Category.tsx";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 
 export const EditCategory = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,18 +25,14 @@ export const EditCategory = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center">
-      <h1 className="w-full text-center text-4xl">Edit Category</h1>
-
-      <Artboard className="w-fit bg-white p-2">
-        <FormFactory
-          configs={GetEditCategoryConfig(onChange, fields)}
-          submit={{
-            text: "Edit",
-            onSubmit,
-          }}
-        />
-      </Artboard>
-    </div>
+    <MiddlePanel title={"Edit Category"}>
+      <FormFactory
+        configs={GetEditCategoryConfig(onChange, fields)}
+        submit={{
+          text: "Edit",
+          onSubmit,
+        }}
+      />
+    </MiddlePanel>
   );
 };

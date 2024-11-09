@@ -1,8 +1,8 @@
 import axios from "axios";
-import { Artboard } from "react-daisyui";
 import { FormFactory } from "../../../components/FormFactory.tsx";
 import { GetAddSchoolConfig } from "../../../components/form-configs/School.tsx";
 import { useState } from "react";
+import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 
 export const AddSchool = () => {
   const [fields, setFields] = useState({
@@ -28,18 +28,14 @@ export const AddSchool = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center">
-      <h1 className="w-full text-center text-4xl">Add school</h1>
-
-      <Artboard className="w-fit bg-white p-4 pt-2">
-        <FormFactory
-          configs={GetAddSchoolConfig(onChange, fields)}
-          submit={{
-            onSubmit,
-            text: "Add School",
-          }}
-        />
-      </Artboard>
-    </div>
+    <MiddlePanel title={"Add School"}>
+      <FormFactory
+        configs={GetAddSchoolConfig(onChange, fields)}
+        submit={{
+          onSubmit,
+          text: "Add School",
+        }}
+      />
+    </MiddlePanel>
   );
 };

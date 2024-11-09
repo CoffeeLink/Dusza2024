@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Artboard, Button, Table } from "react-daisyui";
+import { Button, Table } from "react-daisyui";
 import axios from "axios";
+import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 
 type Team = {
   id: number;
@@ -56,48 +57,44 @@ export const Teams = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2">
-      <h1 className="w-full text-center text-4xl">Teams</h1>
-
-      <Artboard className="w-full bg-white p-2">
-        <Table>
-          <Table.Head>
-            <span>Name</span>
-            <span>Registered At</span>
-            <span>Category</span>
-            <span>Members</span>
-            <span>Teachers</span>
-            <span>Language</span>
-            <span>School</span>
-            <span>School Approval</span>
-            <span>Host Approval</span>
-            <span>Actions</span>
-          </Table.Head>
-          <Table.Body>
-            {teams.map((team) => (
-              <Table.Row key={team.id}>
-                <span>{team.name}</span>
-                <span>{team.registeredAt.toDateString()}</span>
-                <span>{team.category}</span>
-                <span>{team.members.join(", ")}</span>
-                <span>{team.teachers.join(", ")}</span>
-                <span>{team.language}</span>
-                <span>{team.school}</span>
-                <span>{team.schoolApproval ? "Approved" : "Pending"}</span>
-                <span>{team.hostApproval ? "Approved" : "Pending"}</span>
-                <span className="flex gap-2">
-                  <Button color="success" onClick={() => onApprove(team.id)}>
-                    Approve
-                  </Button>
-                  <Button color="warning" onClick={() => onReject(team.id)}>
-                    Reject
-                  </Button>
-                </span>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
-      </Artboard>
-    </div>
+    <MiddlePanel title={"Teams"}>
+      <Table>
+        <Table.Head>
+          <span>Name</span>
+          <span>Registered At</span>
+          <span>Category</span>
+          <span>Members</span>
+          <span>Teachers</span>
+          <span>Language</span>
+          <span>School</span>
+          <span>School Approval</span>
+          <span>Host Approval</span>
+          <span>Actions</span>
+        </Table.Head>
+        <Table.Body>
+          {teams.map((team) => (
+            <Table.Row key={team.id}>
+              <span>{team.name}</span>
+              <span>{team.registeredAt.toDateString()}</span>
+              <span>{team.category}</span>
+              <span>{team.members.join(", ")}</span>
+              <span>{team.teachers.join(", ")}</span>
+              <span>{team.language}</span>
+              <span>{team.school}</span>
+              <span>{team.schoolApproval ? "Approved" : "Pending"}</span>
+              <span>{team.hostApproval ? "Approved" : "Pending"}</span>
+              <span className="flex gap-2">
+                <Button color="success" onClick={() => onApprove(team.id)}>
+                  Approve
+                </Button>
+                <Button color="warning" onClick={() => onReject(team.id)}>
+                  Reject
+                </Button>
+              </span>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </MiddlePanel>
   );
 };

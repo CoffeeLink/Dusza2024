@@ -1,8 +1,8 @@
 import axios from "axios";
-import { Artboard } from "react-daisyui";
 import { GetAddCategoryConfig } from "../../../components/form-configs/Category.tsx";
 import { FormFactory } from "../../../components/FormFactory.tsx";
 import { useState } from "react";
+import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 
 export const AddCategory = () => {
   const [fields, setFields] = useState({
@@ -22,18 +22,14 @@ export const AddCategory = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center">
-      <h1 className="w-full text-center text-4xl">Add Category</h1>
-
-      <Artboard className="w-fit bg-white p-2">
-        <FormFactory
-          configs={GetAddCategoryConfig(onChange, fields)}
-          submit={{
-            text: "Add",
-            onSubmit,
-          }}
-        />
-      </Artboard>
-    </div>
+    <MiddlePanel title={"Add Category"}>
+      <FormFactory
+        configs={GetAddCategoryConfig(onChange, fields)}
+        submit={{
+          text: "Add",
+          onSubmit,
+        }}
+      />
+    </MiddlePanel>
   );
 };
