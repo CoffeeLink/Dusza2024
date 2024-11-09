@@ -49,21 +49,21 @@ export const Schools = () => {
 
   return (
     <MiddlePanel
-      title={"Schools"}
+      title="Iskolák"
       rightButton={
         <Link to="/host/schools/add">
-          <Button color="success">Add School</Button>
+          <Button color="success">Új iskola</Button>
         </Link>
       }
     >
       <Table>
         <Table.Head>
-          <span>Name</span>
-          <span>Location</span>
-          <span>Username</span>
-          <span>Contact Name</span>
-          <span>Contact Email</span>
-          <span>Actions</span>
+          <span>Név</span>
+          <span>Lokáció</span>
+          <span>Felhasználónév</span>
+          <span>Kapcsolattartó</span>
+          <span>Kapcsolattartó email</span>
+          <span>Műveletek</span>
         </Table.Head>
         <Table.Body>
           {schools.map((school) => (
@@ -75,10 +75,10 @@ export const Schools = () => {
               <span>{school.contactEmail}</span>
               <span className="flex gap-2">
                 <Link to={`/host/schools/${school.id}`}>
-                  <Button>Edit</Button>
+                  <Button>Szerkesztés</Button>
                 </Link>
                 <Button color="error" onClick={() => onDelete(school.id)}>
-                  Delete
+                  Törlés
                 </Button>
               </span>
             </Table.Row>

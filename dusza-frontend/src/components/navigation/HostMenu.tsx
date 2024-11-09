@@ -6,19 +6,19 @@ export const HostMenu = () => {
     <Artboard className="bg-blue-100 h-fit">
       <Menu className="w-full h-fit">
         <Menu.Item className="border-b border-blue-200">
-          <Link to="/host">Overview</Link>
+          <Link to="/host">Áttekintés</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/host/schools">Schools</Link>
+          <Link to="/host/schools">Iskolák</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/host/teams">Teams</Link>
+          <Link to="/host/teams">Csapatok</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/host/categories">Categories</Link>
+          <Link to="/host/categories">Kategoriak</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/host/statistics">Statistics</Link>
+          <Link to="/host/statistics">Statisztika</Link>
         </Menu.Item>
       </Menu>
     </Artboard>

@@ -17,7 +17,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
     [
       {
         key: "name",
-        label: "Name",
+        label: "Iskola neve",
         errorFlag: false,
         errorMsg: "",
         value: fields.name,
@@ -27,7 +27,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
       },
       {
         key: "location",
-        label: "Location",
+        label: "Iskola címe",
         errorFlag: false,
         errorMsg: "",
         value: fields.location,
@@ -39,7 +39,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
     [
       {
         key: "username",
-        label: "Username",
+        label: "Iskola felhasználóneve",
         errorFlag: false,
         errorMsg: "",
         value: fields.username,
@@ -49,7 +49,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
       },
       {
         key: "password",
-        label: "Password",
+        label: "Iskola jelszava",
         errorFlag: false,
         errorMsg: "",
         value: fields.password,
@@ -61,7 +61,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
     [
       {
         key: "contactName",
-        label: "Contact Name",
+        label: "Kapcsolattartó neve",
         errorFlag: false,
         errorMsg: "",
         value: fields.contactName,
@@ -70,7 +70,7 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
       },
       {
         key: "contactEmail",
-        label: "Contact Email",
+        label: "Kapcsolattartó e-mail címe",
         errorFlag: false,
         errorMsg: "",
         value: fields.contactEmail,

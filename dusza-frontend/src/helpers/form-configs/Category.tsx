@@ -14,7 +14,7 @@ export const GetAddCategoryConfig: GetConfig<CategoryFields> = (
     [
       {
         key: "name",
-        label: "Name",
+        label: "Név",
         errorFlag: false,
         errorMsg: "",
         value: fields.name,
@@ -24,7 +24,7 @@ export const GetAddCategoryConfig: GetConfig<CategoryFields> = (
       },
       {
         key: "description",
-        label: "Description",
+        label: "Rövid leírás",
         errorFlag: false,
         errorMsg: "",
         value: fields.description,
@@ -34,7 +34,7 @@ export const GetAddCategoryConfig: GetConfig<CategoryFields> = (
     ],
     {
       key: "deadline",
-      label: "Deadline",
+      label: "Jelentkezési határidő",
       errorFlag: false,
       errorMsg: "",
       value: fields.deadline,

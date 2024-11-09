@@ -26,7 +26,7 @@ export const AddCategory = () => {
       <FormFactory
         configs={GetAddCategoryConfig(onChange, fields, null)}
         submit={{
-          text: "Add",
+          text: "Hozzáadás",
           onSubmit,
         }}
       />

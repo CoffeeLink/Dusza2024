@@ -37,18 +37,18 @@ export const Categories = () => {
 
   return (
     <MiddlePanel
-      title={"Categories"}
+      title="Kategóriák"
       rightButton={
         <Link to="/host/categories/add">
-          <Button color="success">Add Category</Button>
+          <Button color="success">Új kategória</Button>
         </Link>
       }
     >
       <Table>
         <Table.Head>
-          <span>Name</span>
-          <span>Description</span>
-          <span>Actions</span>
+          <span>Név</span>
+          <span>Leírás</span>
+          <span>Műveletek</span>
         </Table.Head>
         <Table.Body>
           {categories.map((category) => (
@@ -57,10 +57,10 @@ export const Categories = () => {
               <span>{category.description}</span>
               <span className="flex gap-2">
                 <Link to={`/host/categories/${category.id}`}>
-                  <Button>Edit</Button>
+                  <Button>Szerkesztés</Button>
                 </Link>
                 <Button color="error" onClick={() => onDelete(category.id)}>
-                  Delete
+                  Törlés
                 </Button>
               </span>
             </Table.Row>

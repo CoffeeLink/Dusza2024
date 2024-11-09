@@ -4,6 +4,7 @@ import {
   SingleConfig,
 } from "../../components/FormFactory.tsx";
 import { Button } from "react-daisyui";
+import { UserPlusIcon, UserMinusIcon } from "@heroicons/react/16/solid";
 
 type LoginFields = {
   username: string;
@@ -159,7 +160,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
           }}
           color={"primary"}
         >
-          Felkészítőtanár hozzáadása <UserPlusIcon className="w-5"/>
+          Felkészítőtanár hozzáadása <UserPlusIcon className="w-5" />
         </Button>
       ),
       getRemoveButton: (index) => (
@@ -171,7 +172,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
           }}
           color={"error"}
         >
-          <UserMinusIcon className="w-5 text-slate-50"/>
+          <UserMinusIcon className="w-5 text-slate-50" />
         </Button>
       ),
       configs: fields.teachers.map((teacher, index) => ({

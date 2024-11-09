@@ -57,19 +57,19 @@ export const Teams = () => {
   };
 
   return (
-    <MiddlePanel title={"Teams"}>
+    <MiddlePanel title="Csapatok">
       <Table>
         <Table.Head>
-          <span>Name</span>
-          <span>Registered At</span>
-          <span>Category</span>
-          <span>Members</span>
-          <span>Teachers</span>
-          <span>Language</span>
-          <span>School</span>
-          <span>School Approval</span>
-          <span>Host Approval</span>
-          <span>Actions</span>
+          <span>Csapatnév</span>
+          <span>Rögzítve</span>
+          <span>Kategória</span>
+          <span>Tagok</span>
+          <span>Tanárok</span>
+          <span>Prog. nyelv</span>
+          <span>Iskola</span>
+          <span>Igazgatói jóváhagyás</span>
+          <span>Szervezői jóváhagyás</span>
+          <span>Műveletek</span>
         </Table.Head>
         <Table.Body>
           {teams.map((team) => (
@@ -81,14 +81,14 @@ export const Teams = () => {
               <span>{team.teachers.join(", ")}</span>
               <span>{team.language}</span>
               <span>{team.school}</span>
-              <span>{team.schoolApproval ? "Approved" : "Pending"}</span>
-              <span>{team.hostApproval ? "Approved" : "Pending"}</span>
+              <span>{team.schoolApproval ? "Folyamatban" : "Jóváhagyva"}</span>
+              <span>{team.hostApproval ? "Folyamatban" : "Jóváhagyva"}</span>
               <span className="flex gap-2">
                 <Button color="success" onClick={() => onApprove(team.id)}>
-                  Approve
+                  Jóváhagy
                 </Button>
                 <Button color="warning" onClick={() => onReject(team.id)}>
-                  Reject
+                  Elutasít
                 </Button>
               </span>
             </Table.Row>

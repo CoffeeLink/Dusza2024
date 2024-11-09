@@ -25,11 +25,11 @@ export const EditCategory = () => {
   };
 
   return (
-    <MiddlePanel title={"Edit Category"}>
+    <MiddlePanel title={"Kategória szerkesztése"}>
       <FormFactory
         configs={GetEditCategoryConfig(onChange, fields, null)}
         submit={{
-          text: "Edit",
+          text: "Mentés",
           onSubmit,
         }}
       />

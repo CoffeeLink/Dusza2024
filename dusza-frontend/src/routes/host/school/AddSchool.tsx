@@ -28,12 +28,12 @@ export const AddSchool = () => {
   };
 
   return (
-    <MiddlePanel title={"Add School"}>
+    <MiddlePanel title={"Új iskola"}>
       <FormFactory
         configs={GetAddSchoolConfig(onChange, fields, null)}
         submit={{
           onSubmit,
-          text: "Add School",
+          text: "Hozzáadás",
         }}
       />
     </MiddlePanel>

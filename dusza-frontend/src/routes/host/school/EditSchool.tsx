@@ -32,12 +32,12 @@ export const EditSchool = () => {
   };
 
   return (
-    <MiddlePanel title={"Edit School"}>
+    <MiddlePanel title={"Iskola szerkesztése"}>
       <FormFactory
         configs={GetEditSchoolConfig(onChange, fields, null)}
         submit={{
           onSubmit,
-          text: "Edit School",
+          text: "Mentés",
         }}
       />
     </MiddlePanel>

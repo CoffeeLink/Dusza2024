@@ -28,7 +28,6 @@ const Overview = ({
 
 const Card = ({ title, children, className }: CardProps) => {
   return (
-    // <Artboard className="gap-4 p-4 flex-1 min-w-72 justify-start h-fit bg-white">
     <Artboard
       className={`gap-4 p-4 flex-1 min-w-72 justify-start h-fit bg-white ${className || ""}`}
     >

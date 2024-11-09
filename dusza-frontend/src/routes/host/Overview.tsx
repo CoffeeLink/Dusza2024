@@ -102,34 +102,34 @@ export const Overview = () => {
   ]);
 
   return (
-    <AbstractOverview title="Overview">
-      <AbstractOverview.Card title="Categories">
+    <AbstractOverview title="Áttekintés">
+      <AbstractOverview.Card title="Kategóriák">
         {categories.map((category, index) => (
           <AbstractOverview.Card
             key={index}
             title={category.name}
             className="bg-blue-200"
           >
-            <p>Time left: {countDown(category.deadline)}</p>
-            <p>Team Count: {category.teamCount}</p>
+            <p>Hátralévő idő: {countDown(category.deadline)}</p>
+            <p>Regisztrált csapatok: {category.teamCount}</p>
           </AbstractOverview.Card>
         ))}
         <Link to="/host/teams" className="w-full">
           <Button color="primary" className="w-full">
-            All categories
+            Összes kategória
           </Button>
         </Link>
       </AbstractOverview.Card>
 
-      <AbstractOverview.Card title="Teams">
+      <AbstractOverview.Card title="Regisztrált csapatok">
         {teams.map((team, index) => (
           <AbstractOverview.Card
             key={index}
             title={team.name}
             className="bg-blue-200"
           >
-            <p>Registered at: {team.registeredAt.toDateString()}</p>
-            <p>Category: {team.category}</p>
+            <p>Rögzítve: {team.registeredAt.toDateString()}</p>
+            <p>Kategória: {team.category}</p>
           </AbstractOverview.Card>
         ))}
         <Link to="/host/teams" className="w-full">
@@ -139,20 +139,20 @@ export const Overview = () => {
         </Link>
       </AbstractOverview.Card>
 
-      <AbstractOverview.Card title="Pending teams">
+      <AbstractOverview.Card title="Nem jóváhagyott csapatok">
         {pendingTeams.map((team, index) => (
           <AbstractOverview.Card
             key={index}
             title={team.name}
             className="bg-blue-200"
           >
-            <p>Registered at: {team.registeredAt.toDateString()}</p>
-            <p>Category: {team.category}</p>
+            <p>Rögzítve: {team.registeredAt.toDateString()}</p>
+            <p>Kategória: {team.category}</p>
           </AbstractOverview.Card>
         ))}
         <Link to="/host/teams" className="w-full">
           <Button color="primary" className="w-full">
-            All pending teams
+            Összes nem jóváhagyott csapat
           </Button>
         </Link>
       </AbstractOverview.Card>
