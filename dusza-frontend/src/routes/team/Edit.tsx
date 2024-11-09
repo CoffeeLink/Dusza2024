@@ -6,6 +6,16 @@ import { Optional } from "utility-types";
 import { Artboard } from "react-daisyui";
 
 export const Edit = () => {
+  const [languages, setLanguages] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    // axios.get("/api/languages").then((res) => {
+    //   setLanguages(res.data);
+    // });
+
+    setLanguages(["Language 1", "Language 2", "Language 3"]);
+  }, []);
+
   const [fields, setFields] = React.useState({
     name1: "",
     class1: "",
@@ -51,7 +61,7 @@ export const Edit = () => {
       <h1 className="text-center text-4xl w-fit">Edit team</h1>
       <Artboard className="gap-2 p-4 bg-white w-fit">
         <FormFactory
-          configs={GetEditConfig(onChange, fields, null)}
+          configs={GetEditConfig(onChange, fields, { languages })}
           submit={{
             onSubmit,
             text: "Edit",

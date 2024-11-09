@@ -24,6 +24,10 @@ import { Home } from "./routes/Home.tsx";
 import { Languages } from "./routes/host/language/Languages.tsx";
 import { AddLanguage } from "./routes/host/language/AddLanguage.tsx";
 import { EditLanguage } from "./routes/host/language/EditLanguage.tsx";
+import { Team } from "./routes/team/Team.tsx";
+import { Applications } from "./routes/team/application/Applications.tsx";
+
+export const API_URL = "http://localhost:8080/api";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,7 +48,8 @@ const router = createBrowserRouter(
         <Route path="languages/add" element={<AddLanguage />} />
         <Route path="languages/:id" element={<EditLanguage />} />
       </Route>
-      <Route path="team">
+      <Route path="team" element={<Team />}>
+        <Route path="applications" element={<Applications />} />
         <Route path="edit" element={<Edit />} />
       </Route>
     </Route>,

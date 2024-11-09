@@ -116,7 +116,6 @@ pub async fn login_post(
     auth_config: web::Data<AuthConfig>,
 ) -> Result<impl Responder, DuszaBackendError<LoginError>> {
     let user_id = validate_user(&login_data, &db, &auth_config).await?;
-
     let token = AuthTokenData::create_token_for_user_by_id(user_id, &db)
         .await
         .map_err(|e| {
