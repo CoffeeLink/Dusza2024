@@ -67,9 +67,9 @@ async fn main() {
         App::new()
             .app_data(Data::new(pool.clone()))
             .app_data(Data::new(conf.auth.clone())) // for AUTH apps
-            .service(login_post)
             .service(
                 web::scope("/api")
+                    .service(login_post)
                     .configure(configure_team_endpoints)
                     .configure(configure_language_endpoints)
                     .configure(configure_category_endpoints)
