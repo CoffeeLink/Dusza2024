@@ -11,6 +11,7 @@ use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::process::exit;
 use std::sync::Arc;
+use actix_cors::Cors;
 use crate::category::configure_category_endpoints;
 
 mod auth;
@@ -76,6 +77,12 @@ async fn main() {
                     .service(web::scope("/school").service(schools::register_school_post)),
             )
             .wrap(Logger::default())
+            .wrap(Cors::default()
+                      .allow_any_header()
+                      .allow_any_method()
+                      .allow_any_origin()
+                      .max_age(3600)
+            )
     })
     .bind(("127.0.0.1", 8080))
     .expect("Failed to bind on addr")
