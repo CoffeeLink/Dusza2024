@@ -1,14 +1,16 @@
-import axios from "axios";
 import { GetAddCategoryConfig } from "../../../helpers/form-configs/Category.tsx";
 import { FormFactory } from "../../../components/FormFactory.tsx";
 import { useState } from "react";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
+import { AXIOS_INSTANCE } from "../../../main.tsx";
+import { Category } from "../../../helpers/models.ts";
 
 export const AddCategory = () => {
-  const [fields, setFields] = useState({
-    name: "",
-    description: "",
-    deadline: "",
+  const [fields, setFields] = useState<Category>({
+    category_name: "",
+    category_description: "",
+    category_deadline: "",
+    category_state: "open",
   });
 
   const onChange = (key: string, value: string) => {
@@ -16,8 +18,8 @@ export const AddCategory = () => {
   };
 
   const onSubmit = () => {
-    axios.post("/api/categories", fields).then(() => {
-      console.log("Added category with name", fields.name);
+    AXIOS_INSTANCE.post("/category/", fields).then(() => {
+      console.log("Added category with name", fields.category_name);
     });
   };
 
