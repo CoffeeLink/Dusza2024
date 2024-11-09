@@ -1,29 +1,30 @@
 use crate::auth::{login_post, salt};
+use crate::category::configure_category_endpoints;
+use crate::error::{DuszaBackendError, NoError};
 use crate::languages::configure_language_endpoints;
 use crate::teams::configure_team_endpoints;
+use actix_cors::Cors;
 use actix_web::middleware::Logger;
-use actix_web::{post, web};
 use actix_web::web::{Data, ServiceConfig};
 use actix_web::{get, App, HttpServer, Responder};
+use actix_web::{post, web};
+use chrono::{Local, NaiveDateTime};
+use log::error;
 use serde::{Deserialize, Serialize};
 use sqlx::mysql::MySqlPoolOptions;
+use sqlx::{query, MySql, Pool};
 use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::process::exit;
 use std::sync::Arc;
-use actix_cors::Cors;
-use log::error;
-use sqlx::{query, MySql, Pool};
-use crate::category::configure_category_endpoints;
-use crate::error::{DuszaBackendError, NoError};
 
 mod auth;
+mod category;
 mod error;
 mod languages;
 mod models;
 mod schools;
 mod teams;
-mod category;
 
 #[derive(Debug, Deserialize, Serialize)]
 struct DatabaseConfig {
@@ -50,6 +51,9 @@ async fn main() {
     std::env::set_var("RUST_LOG", "debug");
     std::env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
+
+    // DEBUG
+    dbg!("{}", serde_json::to_string(&Local::now().naive_utc()));
 
     let conf = load_config();
     let pool = MySqlPoolOptions::new()
@@ -78,12 +82,13 @@ async fn main() {
                     .service(web::scope("/school").service(schools::register_school_post)),
             )
             .wrap(Logger::default())
-            .wrap(Cors::default()
-                      .allow_any_header()
-                      .allow_any_method()
-                      .allow_any_origin()
-                      .supports_credentials()
-                      .max_age(3600)
+            .wrap(
+                Cors::default()
+                    .allow_any_header()
+                    .allow_any_method()
+                    .allow_any_origin()
+                    .supports_credentials()
+                    .max_age(3600),
             )
     })
     .bind(("127.0.0.1", 8080))
@@ -137,7 +142,7 @@ fn config_dev_opts(cfg: &mut ServiceConfig) {
 #[post("/dev/register/{user}/{pass}")]
 async fn gen_user(
     db: web::Data<Pool<MySql>>,
-    path: web::Path<(String, String, )>,
+    path: web::Path<(String, String)>,
     auth_config: web::Data<AuthConfig>,
 ) -> Result<impl Responder, DuszaBackendError<NoError>> {
     let (username, passwd) = path.into_inner();
@@ -146,7 +151,10 @@ async fn gen_user(
         .bind(salt(passwd, &auth_config))
         .execute(&**db)
         .await
-        .map_err(|e| {error!("{e}"); DuszaBackendError::InternalError})?;
+        .map_err(|e| {
+            error!("{e}");
+            DuszaBackendError::InternalError
+        })?;
 
     Ok(web::Json("Success!"))
 }

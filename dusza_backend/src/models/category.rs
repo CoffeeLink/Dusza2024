@@ -9,16 +9,16 @@ pub enum CategoryState {
     Closed,
     Begun,
     Ended,
-    Results
+    Results,
 }
 
 #[derive(Debug, Deserialize, Serialize, FromRow, Clone)]
 pub struct CompetitionCategory {
-    category_id: u32,
-    category_name: String,
-    category_description: Option<String>,
-    category_deadline: NaiveDateTime,
-    category_application_state: CategoryState
+    pub category_id: u32,
+    pub category_name: String,
+    pub category_description: Option<String>,
+    pub category_deadline: NaiveDateTime,
+    pub category_state: CategoryState,
 }
 
 impl CompetitionCategory {
@@ -27,7 +27,7 @@ impl CompetitionCategory {
         db: &Pool<MySql>,
     ) -> Result<Option<CompetitionCategory>, sqlx::Error> {
         let lang: Option<CompetitionCategory> =
-            query_as("SELECT category_id, category_name, category_description, category_deadline, category_application_state FROM competition_category WHERE category_id = ?")
+            query_as("SELECT category_id, category_name, category_description, category_deadline, category_state FROM competition_category WHERE category_id = ?")
                 .bind(id)
                 .fetch_optional(db)
                 .await?;
@@ -36,7 +36,7 @@ impl CompetitionCategory {
 
     pub async fn get_all(db: &Pool<MySql>) -> Result<Vec<CompetitionCategory>, sqlx::Error> {
         let langs: Vec<CompetitionCategory> =
-            query_as("SELECT category_id, category_name, category_description, category_deadline, category_application_state FROM competition_category")
+            query_as("SELECT category_id, category_name, category_description, category_deadline, category_state FROM competition_category")
                 .fetch_all(db)
                 .await?;
         Ok(langs)
@@ -59,13 +59,12 @@ impl CompetitionCategory {
             .execute(db)
             .await?;
 
-        Ok(
-            Self {
+        Ok(Self {
             category_id,
             category_name: new_name,
             category_description: new_description,
             category_deadline: new_deadline,
-            category_application_state: new_state
+            category_state: new_state,
         })
     }
 
@@ -77,14 +76,14 @@ impl CompetitionCategory {
         Ok(())
     }
 
-    pub async fn create_lang(
+    pub async fn create_category(
         category_name: String,
         category_desc: Option<String>,
         category_deadline: NaiveDateTime,
         category_state: CategoryState,
         db: &Pool<MySql>,
     ) -> Result<CompetitionCategory, sqlx::Error> {
-        let id = query("INSERT INTO competition_category(category_name, category_description, category_deadline, category_application_state) VALUES (?)")
+        let id = query("INSERT INTO competition_category(category_name, category_description, category_deadline, category_state) VALUES (?,?,?,?)")
             .bind(category_name.clone())
             .bind(category_desc.clone())
             .bind(category_deadline.clone())
@@ -98,7 +97,7 @@ impl CompetitionCategory {
             category_name,
             category_description: category_desc,
             category_deadline,
-            category_application_state: category_state
+            category_state,
         })
     }
 }

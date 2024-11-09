@@ -1,25 +1,27 @@
+use crate::models::user::UserType::{SchoolRepresentative, TeamAccount};
 use serde::{Deserialize, Serialize};
 use sqlx::mysql::MySqlTypeInfo;
 use sqlx::{Decode, Encode, FromRow, MySql, Type};
 use uuid::Uuid;
-use crate::models::user::UserType::{SchoolRepresentative, TeamAccount};
 
 pub type UserId = u32;
 #[derive(Debug, Type, Clone, Ord, PartialOrd, Eq, PartialEq, Copy, Serialize, Deserialize)]
 #[repr(u8)]
-pub enum UserType { // id-s set manually cuz it was an ENUM originally and MYSQL starts with 1. instead of 0
+pub enum UserType {
+    // id-s set manually cuz it was an ENUM originally and MYSQL starts with 1. instead of 0
     TeamAccount = 1,
     SchoolRepresentative = 2,
     Organizer = 3,
 }
 
-
 impl UserType {
     pub fn can_access(&self, level_needed: &Self) -> bool {
         match self {
-            UserType::TeamAccount => { self == level_needed }
-            UserType::SchoolRepresentative => { level_needed == &TeamAccount || level_needed == &SchoolRepresentative }
-            UserType::Organizer => { true } // root
+            UserType::TeamAccount => self == level_needed,
+            UserType::SchoolRepresentative => {
+                level_needed == &TeamAccount || level_needed == &SchoolRepresentative
+            }
+            UserType::Organizer => true, // root
         }
     }
 }
