@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import { Button, Table } from "react-daisyui";
 import axios from "axios";
 import { LanguageWithId } from "../../../helpers/models.ts";
-import { API_URL } from "../../../main.tsx";
+import { AXIOS_INSTANCE } from "../../../main.tsx";
 
 export const Languages = () => {
   const [languages, setLanguages] = useState<LanguageWithId[]>([]);
 
   useEffect(() => {
-    axios.get(API_URL + "/language/").then((response) => {
+    AXIOS_INSTANCE.get("/language/").then((response) => {
       const data: LanguageWithId[] = JSON.parse(response.data);
 
       setLanguages(data);
@@ -18,7 +18,7 @@ export const Languages = () => {
   }, []);
 
   const onDelete = (id: number) => {
-    axios.delete(`/language/${id}`).then(() => {
+    AXIOS_INSTANCE.delete(`/language/${id}`).then(() => {
       console.log("Deleted language with id", id);
     });
   };

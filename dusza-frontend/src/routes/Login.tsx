@@ -1,11 +1,9 @@
 import React from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
 import { GetLoginConfig } from "../helpers/form-configs/Team.tsx";
-import axios from "axios";
-
 import { MiddlePanel } from "../components/middle/MiddlePanel.tsx";
 import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
-import { API_URL } from "../main.tsx";
+import { AXIOS_INSTANCE } from "../main.tsx";
 
 export const Login = () => {
   const [fields, setFields] = React.useState({
@@ -31,8 +29,9 @@ export const Login = () => {
     });
   };
 
-  const onSubmit = () => {
-    axios.post(API_URL + "/login", fields).then((res) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    AXIOS_INSTANCE.post("/login", fields).then((res) => {
       console.log(res.data);
     });
   };
