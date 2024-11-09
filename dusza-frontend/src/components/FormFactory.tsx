@@ -66,7 +66,7 @@ const Wrapper = ({
   return (
     <div className="flex flex-col w-full">
       <label className="label">
-        <span className="label-text">
+        <span className="label-text text-l">
           {label} {required && <span className="text-error">*</span>}
         </span>
       </label>
@@ -99,10 +99,10 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
               onChange={onChange}
               value={value}
               type={type}
-              // className="bg-base-200"
-              className={`bg-base-200 ${errorFlag ? "border-error" : ""}`}
+              className={`bg-base-100 text-lg p-2 border-2 border-gray-300 rounded-md ${errorFlag ? "border-error" : ""}`}
               required={required}
             />
+            {errorFlag && <span>{errorMsg}</span>}
           </Wrapper>
         );
 
@@ -117,7 +117,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
             <Select
               onChange={onChange}
               value={value}
-              className={`bg-base-200 ${errorFlag ? "border-error" : ""}`}
+              className={`bg-slate-50 ${errorFlag ? "border-error" : ""}`}
               required={required}
             >
               {config.options.map((option) => {
@@ -128,6 +128,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
                 );
               })}
             </Select>
+            {errorFlag && <span>{errorMsg}</span>}
           </Wrapper>
         );
 
@@ -217,7 +218,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
 };
 
 type Submit = {
-  text: string;
+  text: string | React.ReactNode;
   onSubmit: () => void;
 };
 
@@ -284,6 +285,7 @@ export const FormFactory = ({
         >
           {submit.text}
         </Button>
+        </>
       )}
     </Form>
   );
