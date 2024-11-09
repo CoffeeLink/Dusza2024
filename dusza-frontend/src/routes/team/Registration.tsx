@@ -25,6 +25,7 @@ export const Registration = () => {
   });
 
   const [schools, setSchools] = useState<string[]>([]);
+  const [languages, setLanguages] = useState<string[]>([]);
 
   useEffect(() => {
     // axios.get("/api/schools").then((res) => {
@@ -32,6 +33,14 @@ export const Registration = () => {
     // });
 
     setSchools(["School 1", "School 2", "School 3"]);
+  }, []);
+
+  useEffect(() => {
+    // axios.get("/api/languages").then((res) => {
+    //   setLanguages(res.data);
+    // });
+
+    setLanguages(["Language 1", "Language 2", "Language 3"]);
   }, []);
 
   const onChange = (
@@ -68,17 +77,22 @@ export const Registration = () => {
   };
   return (
     <div className="max-w-3xl flex flex-col gap-4 justify-center">
-      <MiddlePanel title="Regisztráció" leftButtonTitle={"Főoldal"} leftButtonURL={"/"}>
-      <div className="form-width">
-
-      
-        <FormFactory
-          configs={GetRegistrationConfig(onChange, fields, { schools })}
-          submit={{
-            onSubmit,
-            text: registrationButtonText,
-          }}
-        />
+      <MiddlePanel
+        title="Regisztráció"
+        leftButtonTitle={"Főoldal"}
+        leftButtonURL={"/"}
+      >
+        <div className="form-width">
+          <FormFactory
+            configs={GetRegistrationConfig(onChange, fields, {
+              schools,
+              languages,
+            })}
+            submit={{
+              onSubmit,
+              text: registrationButtonText,
+            }}
+          />
         </div>
       </MiddlePanel>
     </div>

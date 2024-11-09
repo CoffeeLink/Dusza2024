@@ -30,6 +30,12 @@ export const Categories = () => {
     },
   ]);
 
+  const onClose = (id: number) => {
+    axios.put(`/api/categories/${id}/close`).then(() => {
+      console.log("Closed category with id", id);
+    });
+  };
+
   const onDelete = (id: number) => {
     axios.delete(`/api/categories/${id}`).then(() => {
       console.log("Deleted category with id", id);
@@ -57,6 +63,9 @@ export const Categories = () => {
               <span>{category.name}</span>
               <span>{category.description}</span>
               <span className="flex gap-2">
+                <Button color="warning" onClick={() => onClose(category.id)}>
+                  Lezárás
+                </Button>
                 <Link to={`/host/categories/${category.id}`}>
                   <Button>Szerkesztés</Button>
                 </Link>

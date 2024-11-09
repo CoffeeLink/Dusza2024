@@ -4,6 +4,7 @@
 -- ------------------------------------------------------
 -- Server version	10.5.23-MariaDB
 
+use dusza_db;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -39,7 +40,7 @@ CREATE TABLE `auth_tokens` (
 
 LOCK TABLES `auth_tokens` WRITE;
 /*!40000 ALTER TABLE `auth_tokens` DISABLE KEYS */;
-INSERT INTO `auth_tokens` VALUES ('ì•|¬¢£MŸ≈ñH}',4,'2024-11-11 11:17:56','2024-11-09 11:17:56');
+INSERT INTO `auth_tokens` VALUES ('ÔøΩÔøΩ|¬¢ÔøΩMÔøΩ≈ñH}',4,'2024-11-11 11:17:56','2024-11-09 11:17:56');
 /*!40000 ALTER TABLE `auth_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +245,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (4,'test','∆Y Ñ\\ö5˙t9¶Rﬁçˇ›|§±<P˜X˛¬zÅQ','ORGANIZER',NULL,NULL);
+INSERT INTO `user` VALUES (4,'test','ÔøΩY Ñ\\ÔøΩ5ÔøΩt9ÔøΩRﬁçÔøΩÔøΩ|ÔøΩÔøΩ<PÔøΩXÔøΩÔøΩzÔøΩQ','ORGANIZER',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
