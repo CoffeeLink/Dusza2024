@@ -5,7 +5,7 @@ export const Home = () => {
     
     <div className="w-full max-w-3xl flex flex-col gap-4 justify-center">
       <MiddlePanel title={"Főoldal"}>
-        <h1 className="text-2xl text-center pb-8">
+        <h1 className="text-2xl text-center pb-8 pt-8">
           Üdvözlünk a <br />
           <span className="text-4xl font-bold text-amber-600">
             Dusza Árpád Programozási Emlékverseny
