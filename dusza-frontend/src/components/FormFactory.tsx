@@ -63,7 +63,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
         return (
           <Wrapper key={key}>
             <label className="label">
-              <span className="label-text">{label}</span>
+              <span className="label-text text-l">{label}</span>
             </label>
             <Input
               onChange={onChange}
@@ -81,7 +81,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
             <label className="label">
               <span className="label-text">{label}</span>
             </label>
-            <Select onChange={onChange} value={value} className="bg-base-200">
+            <Select onChange={onChange} value={value} className="bg-slate-50">
               {config.options.map((option) => {
                 return (
                   <Select.Option value={option} key={option}>

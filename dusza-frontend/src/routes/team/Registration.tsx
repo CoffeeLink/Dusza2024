@@ -3,7 +3,8 @@ import { FormFactory } from "../../components/FormFactory.tsx";
 import { GetRegistrationConfig } from "../../components/form-configs/Team.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
-import { Artboard } from "react-daisyui";
+import { PaperAirplaneIcon } from "@heroicons/react/16/solid";
+import { MiddlePanel } from "../../components/middle/MiddlePanel.tsx";
 
 export const Registration = () => {
   const [fields, setFields] = React.useState({
@@ -34,6 +35,12 @@ export const Registration = () => {
     });
   };
 
+  const registrationButtonText: string | JSX.Element = (
+    <>
+      Csapat regisztrálása <PaperAirplaneIcon className="w-5" />
+    </>
+  );
+
   const onSubmit = () => {
     const newFields = { ...fields } as Optional<
       typeof fields,
@@ -50,17 +57,20 @@ export const Registration = () => {
     });
   };
   return (
-    <div className="w-full flex flex-col gap-2 items-center">
-      <h1 className="text-center text-4xl w-fit">Register</h1>
-      <Artboard className="gap-2 p-4 bg-white w-fit">
+    <div className="max-w-3xl flex flex-col gap-4 justify-center">
+      <MiddlePanel title="Regisztráció" leftButtonTitle={"Főoldal"} leftButtonURL={"/"}>
+      <div className="form-width">
+
+      
         <FormFactory
           configs={GetRegistrationConfig(onChange, fields)}
           submit={{
             onSubmit,
-            text: "Register",
+            text: registrationButtonText,
           }}
         />
-      </Artboard>
+        </div>
+      </MiddlePanel>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { Config, GetConfig } from "../FormFactory.tsx";
 import { Button } from "react-daisyui";
+import { UserMinusIcon, UserPlusIcon } from "@heroicons/react/16/solid";
 
 type LoginFields = {
   username: string;
@@ -45,12 +46,12 @@ type EditFields = {
 };
 
 export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
-  const classOptions = ["9", "10", "11", "12", "13"];
+  const classOptions = ["?", "9", "10", "11", "12", "13"];
   const config: Config[] = [
     [
       {
         key: "name1",
-        label: "Name 1",
+        label: "1. csapattag",
         errorFlag: false,
         errorMsg: "",
         value: fields.name1,
@@ -59,7 +60,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
       },
       {
         key: "class1",
-        label: "Class 1",
+        label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
         value: fields.class1,
@@ -71,7 +72,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
     [
       {
         key: "name2",
-        label: "Name 2",
+        label: "2. csapattag",
         errorFlag: false,
         errorMsg: "",
         value: fields.name2,
@@ -80,7 +81,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
       },
       {
         key: "class2",
-        label: "Class 2",
+        label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
         value: fields.class2,
@@ -92,7 +93,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
     [
       {
         key: "name3",
-        label: "Name 3",
+        label: "3. csapattag",
         errorFlag: false,
         errorMsg: "",
         value: fields.name3,
@@ -101,7 +102,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
       },
       {
         key: "class3",
-        label: "Class 3",
+        label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
         value: fields.class3,
@@ -113,7 +114,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
     [
       {
         key: "extraName",
-        label: "Extra name",
+        label: "Pót csapattag",
         errorFlag: false,
         errorMsg: "",
         value: fields.extraName,
@@ -122,7 +123,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
       },
       {
         key: "extraClass",
-        label: "Extra class",
+        label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
         value: fields.extraClass,
@@ -133,7 +134,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
     ],
     {
       key: "teachers",
-      label: "Teachers",
+      label: "Felkészítő tanárok",
       errorFlag: false,
       errorMsg: "",
       type: "multi-input",
@@ -145,7 +146,7 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
           }}
           color={"primary"}
         >
-          Add teacher
+          Felkészítőtanár hozzáadása <UserPlusIcon className="w-5"/>
         </Button>
       ),
       getRemoveButton: (index) => (
@@ -155,14 +156,15 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
             newTeachers.splice(index, 1);
             onChange("teachers", newTeachers);
           }}
+          className="btn"
           color={"error"}
         >
-          Remove
+          <UserMinusIcon className="w-5 text-slate-50"/>
         </Button>
       ),
       configs: fields.teachers.map((teacher, index) => ({
         key: `teacher-${index}`,
-        label: `Teacher ${index + 1}`,
+        label: `${index + 1}. felkészítő tanár`,
         errorFlag: false,
         errorMsg: "",
         value: teacher,
@@ -176,13 +178,13 @@ export const GetEditConfig: GetConfig<EditFields> = (onChange, fields) => {
     },
     {
       key: "language",
-      label: "Programming language",
+      label: "Programozási nyelv",
       errorFlag: false,
       errorMsg: "",
       value: fields.language,
       type: "dropdown",
       onChange: (e) => onChange("language", e.target.value),
-      options: ["C++", "Java", "Python"],
+      options: ["Válassz nyelvet", "C++", "Java", "Python"],
     },
   ];
 
@@ -208,7 +210,7 @@ export const GetRegistrationConfig: GetConfig<RegistrationFields> = (
   config = config.concat([
     {
       key: "schoolName",
-      label: "School name",
+      label: "Iskola neve",
       errorFlag: false,
       errorMsg: "",
       value: fields.schoolName,
@@ -217,7 +219,7 @@ export const GetRegistrationConfig: GetConfig<RegistrationFields> = (
     },
     {
       key: "teamName",
-      label: "Team name",
+      label: "Csapatnév",
       errorFlag: false,
       errorMsg: "",
       value: fields.teamName,
