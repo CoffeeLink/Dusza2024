@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Table } from "react-daisyui";
 import axios from "axios";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 type Team = {
   id: number;
@@ -85,10 +86,10 @@ export const Teams = () => {
               <span>{team.hostApproval ? "Folyamatban" : "Jóváhagyva"}</span>
               <span className="flex gap-2">
                 <Button color="success" onClick={() => onApprove(team.id)}>
-                  Jóváhagy
+                  <CheckCircleIcon className="w-6"/>
                 </Button>
                 <Button color="warning" onClick={() => onReject(team.id)}>
-                  Elutasít
+                  <XCircleIcon className="w-6"/>
                 </Button>
               </span>
             </Table.Row>
