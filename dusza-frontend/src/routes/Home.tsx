@@ -1,4 +1,6 @@
+import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import { MiddlePanel } from "../components/middle/MiddlePanel.tsx";
+import { Button } from "react-daisyui";
 
 export const Home = () => {
   return (
@@ -34,7 +36,19 @@ export const Home = () => {
             lépj be
           </a>
           .
+
+          
         </p>
+        <div className="text-center pt-4">
+
+        <a href="https://docs.google.com/document/d/1JNqhN0r94sDhKR_QHdWUVLa5mF2sL9gW/edit?usp=sharing&ouid=101270343276873567969&rtpof=true&sd=true" target="_blank">
+        <Button className="bg-amber-800 hover:bg-amber-700 active:bg-amber-900 text-slate-50">
+          <DocumentTextIcon className="w-5" /> Az alkalmazás működési leírása
+        </Button>
+        </a>
+        </div>
+        
+
         </div>
       </MiddlePanel>
     </div>
