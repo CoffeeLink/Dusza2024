@@ -40,6 +40,18 @@ struct DatabaseConfig {
     pub database: String,
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+struct HostConfig {
+    pub ip_address: String,
+    pub port: u16,
+}
+#[derive(Debug, Deserialize, Serialize)]
+struct DebugConfig {
+    pub enable_registration_endpoint: bool,
+    pub logging_level: String,
+    pub backtrace: bool,
+}
+
 #[derive(Debug, Deserialize, Serialize, Clone)]
 struct AuthConfig {
     pub password_salt: String,
@@ -47,8 +59,10 @@ struct AuthConfig {
 
 #[derive(Debug, Deserialize, Serialize)]
 struct Config {
+    host: HostConfig,
     database: DatabaseConfig,
     auth: AuthConfig,
+    debug: DebugConfig
 }
 
 #[actix_web::main]
@@ -59,6 +73,8 @@ async fn main() {
 
 
     let conf = load_config();
+    std::env::set_var("RUST_LOG", conf.debug.logging_level);
+    std::env::set_var("RUST_BACKTRACE", format!("{}", conf.debug.backtrace as u8));
     let pool = MySqlPoolOptions::new()
         .max_connections(5)
         .connect(&format!(
@@ -69,7 +85,10 @@ async fn main() {
             conf.database.database
         ))
         .await
-        .unwrap();
+        .map_err(|e| {
+            error!("failed to connect to MYSQL server: {e}");
+            exit(-1);
+        }).expect("Fail");
 
     HttpServer::new(move || {
         App::new()
@@ -96,17 +115,17 @@ async fn main() {
                     .max_age(3600),
             )
     })
-    .bind(("0.0.0.0", 8080))
-    .map_err(|_| {
+    .bind((conf.host.ip_address, conf.host.port))
+    .map_err(|e| {
         error!("Failed to bind: {e}");
         exit(-1);
-    })
+    }).expect("failed to bind")
     .run()
     .await
-        .map_err(|_| {
+        .map_err(|e| {
             error!("Something went wrong: {e}");
             exit(-1);
-        })
+        }).expect("failed to exit")
 }
 
 fn load_config() -> Config {
@@ -117,6 +136,10 @@ fn load_config() -> Config {
         let mut writer = BufWriter::new(file);
 
         let config = Config {
+            host: HostConfig {
+                ip_address: "127.0.0.1".to_string(),
+                port: 8000,
+            },
             auth: AuthConfig {
                 password_salt: "default".to_string(),
             },
@@ -127,6 +150,11 @@ fn load_config() -> Config {
                 password: "".to_string(),
                 database: "".to_string(),
             },
+            debug: DebugConfig {
+                enable_registration_endpoint: false,
+                logging_level: "debug".to_string(),
+                backtrace: false,
+            }
         };
 
         writer
