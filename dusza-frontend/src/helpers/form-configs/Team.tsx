@@ -5,13 +5,12 @@ import {
 } from "../../components/FormFactory.tsx";
 import { Button } from "react-daisyui";
 import { UserPlusIcon, UserMinusIcon } from "@heroicons/react/24/outline";
+import { Team, TeamRegistration, UsernamePassword } from "../models.ts";
 
-type LoginFields = {
-  username: string;
-  password: string;
-};
-
-export const GetLoginConfig: GetConfig<LoginFields> = (onChange, fields) => {
+export const GetLoginConfig: GetConfig<UsernamePassword> = (
+  onChange,
+  fields,
+) => {
   const config: Config[] = [
     {
       key: "username",
@@ -38,26 +37,26 @@ export const GetLoginConfig: GetConfig<LoginFields> = (onChange, fields) => {
   return config;
 };
 
-type EditFields = {
-  name1: string;
-  class1: string;
-  name2: string;
-  class2: string;
-  name3: string;
-  class3: string;
-  extraName: string;
-  extraClass: string;
-  teachers: string[];
-  language: string;
-  category: string;
-};
+// type EditFields = {
+//   name1: string;
+//   class1: string;
+//   name2: string;
+//   class2: string;
+//   name3: string;
+//   class3: string;
+//   extraName: string;
+//   extraClass: string;
+//   teachers: string[];
+//   language: string;
+//   category: string;
+// };
 
 export const GetEditConfig: GetConfig<
-  EditFields,
+  Team,
   { languages: string[]; categories: string[] }
 > = (onChange, fields, { languages, categories }) => {
   const classOptions = ["9", "10", "11", "12", "13"];
-  const isTeachersEnough = fields.teachers.length >= 1;
+  const isTeachersEnough = fields.sherpa_teachers.length >= 1;
 
   const config: Config[] = [
     [
@@ -66,21 +65,31 @@ export const GetEditConfig: GetConfig<
         label: "1. csapattag",
         errorFlag: false,
         errorMsg: "",
-        value: fields.name1,
+        value: fields.members[0].name,
         type: "text",
         required: true,
-        onChange: (e) => onChange("name1", e.target.value),
+        onChange: (e) =>
+          onChange("members", [
+            { ...fields.members[0], name: e.target.value },
+            fields.members[1],
+            fields.members[2],
+          ]),
       },
       {
         key: "class1",
         label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
-        value: fields.class1,
+        value: fields.members[0].class,
         type: "dropdown",
         options: classOptions,
         required: true,
-        onChange: (e) => onChange("class1", e.target.value),
+        onChange: (e) =>
+          onChange("members", [
+            { ...fields.members[0], class: e.target.value },
+            fields.members[1],
+            fields.members[2],
+          ]),
       },
     ],
     [
@@ -89,21 +98,31 @@ export const GetEditConfig: GetConfig<
         label: "2. csapattag",
         errorFlag: false,
         errorMsg: "",
-        value: fields.name2,
+        value: fields.members[1].name,
         type: "text",
         required: true,
-        onChange: (e) => onChange("name2", e.target.value),
+        onChange: (e) =>
+          onChange("members", [
+            fields.members[0],
+            { ...fields.members[1], name: e.target.value },
+            fields.members[2],
+          ]),
       },
       {
         key: "class2",
         label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
-        value: fields.class2,
+        value: fields.members[1].class,
         type: "dropdown",
         options: classOptions,
         required: true,
-        onChange: (e) => onChange("class2", e.target.value),
+        onChange: (e) =>
+          onChange("members", [
+            fields.members[0],
+            { ...fields.members[1], class: e.target.value },
+            fields.members[2],
+          ]),
       },
     ],
     [
@@ -112,21 +131,31 @@ export const GetEditConfig: GetConfig<
         label: "3. csapattag",
         errorFlag: false,
         errorMsg: "",
-        value: fields.name3,
+        value: fields.members[2].name,
         type: "text",
         required: true,
-        onChange: (e) => onChange("name3", e.target.value),
+        onChange: (e) =>
+          onChange("members", [
+            fields.members[0],
+            fields.members[1],
+            { ...fields.members[2], name: e.target.value },
+          ]),
       },
       {
         key: "class3",
         label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
-        value: fields.class3,
+        value: fields.members[2].name,
         type: "dropdown",
         options: classOptions,
         required: true,
-        onChange: (e) => onChange("class3", e.target.value),
+        onChange: (e) =>
+          onChange("members", [
+            fields.members[0],
+            fields.members[1],
+            { ...fields.members[2], class: e.target.value },
+          ]),
       },
     ],
     [
@@ -135,19 +164,34 @@ export const GetEditConfig: GetConfig<
         label: "Pót csapattag",
         errorFlag: false,
         errorMsg: "",
-        value: fields.extraName,
+        value: fields.replacement_member?.name ?? "",
         type: "text",
-        onChange: (e) => onChange("extraName", e.target.value),
+        onChange: (e) =>
+          onChange(
+            "replacement_member",
+            e.target.value
+              ? {
+                  name: e.target.value,
+                  class: fields.replacement_member?.class ?? "",
+                }
+              : null,
+          ),
       },
       {
         key: "extraClass",
         label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
-        value: fields.extraClass,
+        value: fields.replacement_member?.class ?? "",
         type: "dropdown",
         options: classOptions,
-        onChange: (e) => onChange("extraClass", e.target.value),
+        onChange: (e) =>
+          onChange(
+            "replacement_member",
+            fields.replacement_member
+              ? { name: fields.replacement_member.name, class: e.target.value }
+              : null,
+          ),
       },
     ],
     {
@@ -156,11 +200,11 @@ export const GetEditConfig: GetConfig<
       errorFlag: !isTeachersEnough,
       errorMsg: "Min. egy tanár megadása kötelező!",
       type: "multi-input",
-      values: fields.teachers,
+      values: fields.sherpa_teachers,
       getAddButton: () => (
         <Button
           onClick={() => {
-            onChange("teachers", [...fields.teachers, ""]);
+            onChange("sherpa_teachers", [...fields.sherpa_teachers, ""]);
           }}
           color={"primary"}
         >
@@ -170,16 +214,16 @@ export const GetEditConfig: GetConfig<
       getRemoveButton: (index) => (
         <Button
           onClick={() => {
-            const newTeachers = fields.teachers.slice();
+            const newTeachers = fields.sherpa_teachers.slice();
             newTeachers.splice(index, 1);
-            onChange("teachers", newTeachers);
+            onChange("sherpa_teachers", newTeachers);
           }}
           color={"error"}
         >
           <UserMinusIcon className="w-5 text-slate-50" />
         </Button>
       ),
-      configs: fields.teachers.map((teacher, index) => ({
+      configs: fields.sherpa_teachers.map((teacher, index) => ({
         key: `teacher-${index}`,
         label: `${index + 1}. felkészítő tanár`,
         errorFlag: false,
@@ -188,9 +232,9 @@ export const GetEditConfig: GetConfig<
         type: "text",
         required: true,
         onChange: (e) => {
-          const newTeachers = fields.teachers.slice();
+          const newTeachers = fields.sherpa_teachers.slice();
           newTeachers[index] = e.target.value;
-          onChange("teachers", newTeachers);
+          onChange("sherpa_teachers", newTeachers);
         },
       })),
     },
@@ -199,7 +243,7 @@ export const GetEditConfig: GetConfig<
       label: "Kategória",
       errorFlag: false,
       errorMsg: "",
-      value: fields.category,
+      value: fields.category.category_name,
       type: "dropdown",
       required: true,
       onChange: (e) => onChange("category", e.target.value),
@@ -210,10 +254,10 @@ export const GetEditConfig: GetConfig<
       label: "Programozási nyelv",
       errorFlag: false,
       errorMsg: "",
-      value: fields.language,
+      value: fields.lang.lang_name,
       type: "dropdown",
       required: true,
-      onChange: (e) => onChange("language", e.target.value),
+      onChange: (e) => onChange("lang", e.target.value),
       options: languages,
     },
   ];
@@ -221,14 +265,8 @@ export const GetEditConfig: GetConfig<
   return config;
 };
 
-type RegistrationFields = LoginFields &
-  EditFields & {
-    schoolName: string;
-    teamName: string;
-  };
-
 export const GetRegistrationConfig: GetConfig<
-  RegistrationFields,
+  TeamRegistration,
   { schools: string[]; languages: string[]; categories: string[] }
 > = (onChange, fields, { schools, languages, categories }): Config[] => {
   // extend LoginConfig
@@ -249,21 +287,23 @@ export const GetRegistrationConfig: GetConfig<
       label: "Iskola neve",
       errorFlag: false,
       errorMsg: "",
-      value: fields.schoolName,
+      value: fields.school.school_name,
       type: "dropdown",
       options: schools,
       required: true,
-      onChange: (e) => onChange("schoolName", e.target.value),
+      onChange: (e) =>
+        onChange("school", { ...fields.school, school_name: e.target.value }),
     },
     {
       key: "teamName",
       label: "Csapatnév",
       errorFlag: false,
       errorMsg: "",
-      value: fields.teamName,
+      value: fields.school.school_name,
       type: "text",
       required: true,
-      onChange: (e) => onChange("teamName", e.target.value),
+      onChange: (e) =>
+        onChange("school", { ...fields.school, school_name: e.target.value }),
     },
   ]);
 

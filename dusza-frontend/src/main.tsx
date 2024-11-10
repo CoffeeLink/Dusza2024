@@ -27,13 +27,14 @@ import { AddLanguage } from "./routes/host/language/AddLanguage.tsx";
 import { EditLanguage } from "./routes/host/language/EditLanguage.tsx";
 import { Statistics } from "./routes/host/statistics/Statistics.tsx";
 import { Team } from "./routes/team/Team.tsx";
-import { Applications } from "./routes/team/application/Applications.tsx";
-import { AddApplication } from "./routes/team/application/AddApplication.tsx";
-import { EditApplication } from "./routes/team/application/EditApplication.tsx";
+// import { Applications } from "./routes/team/application/Applications.tsx";
+// import { AddApplication } from "./routes/team/application/AddApplication.tsx";
+// import { EditApplication } from "./routes/team/application/EditApplication.tsx";
 import { Logout } from "./routes/Logout.tsx";
 import { School } from "./routes/school/School.tsx";
 import { Error } from "./Error.tsx";
 import { Theme } from "react-daisyui";
+import { View } from "./routes/team/View.tsx";
 
 export const API_URL = "http://localhost:8080/api";
 
@@ -65,10 +66,11 @@ const router = createBrowserRouter(
         <Route path="statistics" element={<Statistics />} />
       </Route>
       <Route path="team" element={<Team />}>
-        <Route path="" element={<Navigate to="applications" />} />
-        <Route path="applications" element={<Applications />} />
-        <Route path="applications/add" element={<AddApplication />} />
-        <Route path="applications/:id" element={<EditApplication />} />
+        <Route path="" element={<Navigate to="view" />} />
+        {/*<Route path="applications" element={<Applications />} />*/}
+        {/*<Route path="applications/add" element={<AddApplication />} />*/}
+        {/*<Route path="applications/:id" element={<EditApplication />} />*/}
+        <Route path="view" element={<View />} />
         <Route path="edit" element={<Edit />} />
       </Route>
       <Route path="school" element={<School />}>

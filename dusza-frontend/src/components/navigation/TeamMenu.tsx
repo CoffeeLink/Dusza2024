@@ -17,8 +17,8 @@ export const TeamMenu = () => {
           {/*  </Link>*/}
           {/*</Menu.Item>*/}
           <Menu.Item>
-            <Link to="/team/applications">
-              <AcademicCapIcon className="w-5" /> Jelentkezések
+            <Link to="/team/view">
+              <AcademicCapIcon className="w-5" /> Csapat megtekintése
             </Link>
           </Menu.Item>
           <Menu.Item>
