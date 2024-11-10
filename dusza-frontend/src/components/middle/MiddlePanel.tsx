@@ -32,9 +32,11 @@ export const MiddlePanel = ({
         </div>
       )}
       <div className="w-full flex justify-between items-center mb-4">
-        <h1 className="text-center text-4xl font-bold text-gray-800">
-          {title}
-        </h1>
+        {title && title !== "Főoldal" && (
+          <h1 className="text-center text-4xl font-bold text-gray-800">
+            {title}
+          </h1>
+        )}
         {rightButton && (
           <div className="text-gray-500 ml-4">{rightButton}</div>
         )}
