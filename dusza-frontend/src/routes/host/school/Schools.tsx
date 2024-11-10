@@ -2,7 +2,7 @@ import { Button, Table } from "react-daisyui";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
-import { AcademicCapIcon } from "@heroicons/react/24/outline";
+import { AcademicCapIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
 import { SchoolWithIdAndUser } from "../../../helpers/models.ts";
 
@@ -53,13 +53,13 @@ export const Schools = () => {
               <span>{school.school_rep_email}</span>
               <span className="flex gap-2">
                 <Link to={`/host/schools/${school.school_id}`}>
-                  <Button>Szerkesztés</Button>
+                <Button className="bg-gray-200"><PencilSquareIcon className="w-5"/> Szerkesztés</Button>
                 </Link>
                 <Button
                   color="error"
                   onClick={() => onDelete(school.school_id)}
                 >
-                  Törlés
+                  <TrashIcon className="w-5"/> Törlés
                 </Button>
               </span>
             </Table.Row>

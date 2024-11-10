@@ -3,7 +3,7 @@
 -- Host: 127.0.0.1    Database: verseny_db_base
 -- ------------------------------------------------------
 -- Server version	10.5.23-MariaDB
-
+use dusza_db;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -39,7 +39,7 @@ CREATE TABLE `auth_tokens` (
 
 LOCK TABLES `auth_tokens` WRITE;
 /*!40000 ALTER TABLE `auth_tokens` DISABLE KEYS */;
-INSERT INTO `auth_tokens` VALUES ('“¥|Â¢£MÙÅ–H}',4,'2024-11-11 11:17:56','2024-11-09 11:17:56'),('“í7†s`™¤¯ìA)',4,'2024-11-11 18:16:19','2024-11-09 18:16:19'),('“E£ˆqÐ±x¦\Z×±\Z8',4,'2024-11-11 19:52:54','2024-11-09 19:52:54'),('“d(Ózp˜Ïné##',4,'2024-11-11 20:26:14','2024-11-09 20:26:14'),('“pE¼p±¶•ÊÎ¾',4,'2024-11-11 20:39:28','2024-11-09 20:39:28'),('“6¸vQŸê6ý“T)a',4,'2024-11-12 13:21:00','2024-11-10 13:21:00'),('“Úµ×Q¦‹‹ØèW',10,'2024-11-12 17:14:12','2024-11-10 17:14:12'),('“ßžÖs¢˜i„G!',10,'2024-11-12 17:19:34','2024-11-10 17:19:34'),('“ñÉ	rS¾ˆÿ“­¿;‚',4,'2024-11-12 17:39:24','2024-11-10 17:39:24');
+INSERT INTO `auth_tokens` VALUES ('ï¿½ï¿½|Â¢ï¿½Mï¿½Å–H}',4,'2024-11-11 11:17:56','2024-11-09 11:17:56'),('ï¿½ï¿½7ï¿½s`ï¿½ï¿½ï¿½ï¿½A)',4,'2024-11-11 18:16:19','2024-11-09 18:16:19'),('ï¿½Eï¿½ï¿½qÐ±xï¿½\Z×±\Z8',4,'2024-11-11 19:52:54','2024-11-09 19:52:54'),('ï¿½d(ï¿½zpï¿½ï¿½nï¿½##',4,'2024-11-11 20:26:14','2024-11-09 20:26:14'),('ï¿½pEï¿½pï¿½ï¿½ï¿½ï¿½ï¿½Î¾',4,'2024-11-11 20:39:28','2024-11-09 20:39:28'),('ï¿½6ï¿½vQï¿½ï¿½6ï¿½ï¿½T)a',4,'2024-11-12 13:21:00','2024-11-10 13:21:00'),('ï¿½Úµï¿½Qï¿½ï¿½ï¿½ï¿½ï¿½W',10,'2024-11-12 17:14:12','2024-11-10 17:14:12'),('ï¿½ßžï¿½sï¿½ï¿½iï¿½G!',10,'2024-11-12 17:19:34','2024-11-10 17:19:34'),('ï¿½ï¿½ï¿½	rSï¿½ï¿½ï¿½ï¿½ï¿½ï¿½;ï¿½',4,'2024-11-12 17:39:24','2024-11-10 17:39:24');
 /*!40000 ALTER TABLE `auth_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,7 +223,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (4,'test','ÆYÊ„\\š5út9¦RÞÿÝ|¤±<P÷XþÂzQ',3,NULL,NULL),(5,'aron','ÆYÊ„\\š5út9¦RÞÿÝ|¤±<P÷XþÂzQ',1,NULL,NULL),(7,'school_acc','ÆYÊ„\\š5út9¦RÞÿÝ|¤±<P÷XþÂzQ',2,NULL,2),(10,'String','Õh^;ð\\ÈAã)924î)Fd\n€KÚïR[³¬\\',1,2,NULL);
+INSERT INTO `user` VALUES (4,'test','ï¿½YÊ„\\ï¿½5ï¿½t9ï¿½RÞï¿½ï¿½|ï¿½ï¿½<Pï¿½Xï¿½ï¿½zï¿½Q',3,NULL,NULL),(5,'aron','ï¿½YÊ„\\ï¿½5ï¿½t9ï¿½RÞï¿½ï¿½|ï¿½ï¿½<Pï¿½Xï¿½ï¿½zï¿½Q',1,NULL,NULL),(7,'school_acc','ï¿½YÊ„\\ï¿½5ï¿½t9ï¿½RÞï¿½ï¿½|ï¿½ï¿½<Pï¿½Xï¿½ï¿½zï¿½Q',2,NULL,2),(10,'String','ï¿½hï¿½^;ï¿½\\ï¿½Aï¿½)924ï¿½)Fd\nï¿½KÚï¿½R[ï¿½ï¿½\\',1,2,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

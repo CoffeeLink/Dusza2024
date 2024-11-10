@@ -44,18 +44,30 @@ export const Registration = () => {
 
   useEffect(() => {
     AXIOS_INSTANCE.get("/school/").then((res) => {
+      setFields((prev) => ({
+        ...prev,
+        school_id: JSON.parse(res.data)[0].school_id,
+      }));
       setSchools(JSON.parse(res.data));
     });
   }, []);
 
   useEffect(() => {
     AXIOS_INSTANCE.get("/language/").then((res) => {
+      setFields((prev) => ({
+        ...prev,
+        lang_id: JSON.parse(res.data)[0].lang_id,
+      }));
       setLanguages(JSON.parse(res.data));
     });
   }, []);
 
   useEffect(() => {
     AXIOS_INSTANCE.get("/category/").then((res) => {
+      setFields((prev) => ({
+        ...prev,
+        category_id: JSON.parse(res.data)[0].category_id,
+      }));
       setCategories(JSON.parse(res.data));
     });
   }, []);

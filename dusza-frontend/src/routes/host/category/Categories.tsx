@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button, Table } from "react-daisyui";
 import { useEffect, useState } from "react";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
-import { SquaresPlusIcon } from "@heroicons/react/24/outline";
+import { LockClosedIcon, LockOpenIcon, PencilSquareIcon, SquaresPlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
 import { Category, CategoryWithId } from "../../../helpers/models.ts";
 import { countDown } from "../../../helpers/time.ts";
@@ -113,7 +113,7 @@ export const Categories = () => {
                       setCategoryState(category.category_id, "Closed")
                     }
                   >
-                    Lezárás
+                    <LockClosedIcon className="w-5"/> Lezárás
                   </Button>
                 ) : (
                   <Button
@@ -122,17 +122,17 @@ export const Categories = () => {
                       setCategoryState(category.category_id, "Open")
                     }
                   >
-                    Megnyitás
+                    <LockOpenIcon className="w-5" /> Megnyitás
                   </Button>
                 )}
                 <Link to={`/host/categories/${category.category_id}`}>
-                  <Button>Szerkesztés</Button>
+                  <Button className="bg-gray-200"><PencilSquareIcon className="w-5"/> Szerkesztés</Button>
                 </Link>
                 <Button
                   color="error"
                   onClick={() => onDelete(category.category_id)}
                 >
-                  Törlés
+                  <TrashIcon className="w-5"/> Törlés
                 </Button>
               </span>
             </Table.Row>

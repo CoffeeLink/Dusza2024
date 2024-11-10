@@ -32,29 +32,32 @@ export const Teams = () => {
       <Table>
         <Table.Head>
           <span>Csapatnév</span>
+          <span>Felhasználónév</span>
           <span>Kategória</span>
           <span>Tagok</span>
           <span>Tanárok</span>
           <span>Prog. nyelv</span>
           <span>Iskola</span>
-          <span>Igazgatói jóváhagyás</span>
-          <span>Szervezői jóváhagyás</span>
-          {/* <span>Műveletek</span> */}
+          <span>Jóváhagyás</span>
         </Table.Head>
         <Table.Body>
           {teams.map((team) => (
             <Table.Row key={team.team_id}>
               <span>{team.team_name}</span>
+              <span>{team.user.username}</span>
               <span>{team.category.category_name}</span>
               <span>
                 {team.members.map((member) => member.member_name).join(", ")}
               </span>
-              <span>{team.sherpa_teachers.join(", ")}</span>
+              <span>
+                {team.sherpa_teachers
+                  .map((teacher) => teacher.teacher_name)
+                  .join(", ")}
+              </span>
               <span>{team.lang.lang_name}</span>
               <span>{team.school.school_name}</span>
               <span>
-                {team.team_approval_state === "Approved" ||
-                team.team_approval_state === "ApprovedBySchoolRep" ? (
+                {team.team_approval_state === "Approved" ? (
                   <span className="text-green-700 font-bold">Jóváhagyva</span>
                 ) : (
                   <span className="text-red-700 font-bold">Folyamatban</span>
@@ -70,7 +73,7 @@ export const Teams = () => {
               {/*</span> : <span className="text-green-700 font-bold">Jóváhagyva</span>}</span>*/}
 
               <span>
-                {team.team_approval_state === "ApprovedBySchoolRep" ? (
+                {team.team_approval_state === "Approved" ? (
                   <span className="flex gap-2">
                     <Button
                       size="sm"

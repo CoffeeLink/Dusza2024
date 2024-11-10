@@ -6,6 +6,9 @@
   ],
   "include": ["src/**/*.ts"],
   "compilerOptions": {
+//    "emitDeclarationOnly": true,
+//    "esModuleInterop": true,
+//    "composite": true,
     "types": ["babel__generator"],
     "typeRoots": ["node_modules/@types", "node_modules/@babel/types"]
   }
