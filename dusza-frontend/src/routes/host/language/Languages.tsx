@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button, Table } from "react-daisyui";
 import { LanguageWithId } from "../../../helpers/models.ts";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
-import { CodeBracketIcon } from "@heroicons/react/24/outline";
+import { CodeBracketIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export const Languages = () => {
   const [languages, setLanguages] = useState<LanguageWithId[]>([]);
@@ -46,13 +46,13 @@ export const Languages = () => {
               <span>{language.lang_name}</span>
               <span className="flex gap-2">
                 <Link to={`/host/languages/${language.lang_id}`}>
-                  <Button>Szerkesztés</Button>
+                <Button className="bg-gray-200"><PencilSquareIcon className="w-5"/>Szerkesztés</Button>
                 </Link>
                 <Button
                   color="error"
                   onClick={() => onDelete(language.lang_id)}
                 >
-                  Törlés
+                  <TrashIcon className="w-5"/> Törlés
                 </Button>
               </span>
             </Table.Row>
