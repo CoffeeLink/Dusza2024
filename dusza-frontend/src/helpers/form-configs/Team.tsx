@@ -62,7 +62,7 @@ export const GetEditConfig: GetConfig<
   TeamEdit,
   { languages: LanguageWithId[]; categories: CategoryWithId[] }
 > = (onChange, fields, { languages, categories }) => {
-  const classOptions = ["9", "10", "11", "12", "13"];
+  const classOptions = ["8", "9", "10", "11", "12", "13"];
   const isTeachersEnough = fields.sherpa_teachers.length >= 1;
 
   const config: Config[] = [
