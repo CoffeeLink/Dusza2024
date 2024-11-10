@@ -1,7 +1,7 @@
 use std::convert::Into;
 use std::os::unix::process::parent_id;
 use actix_web::web::ServiceConfig;
-use actix_web::{delete, get, put, web, Responder};
+use actix_web::{delete, get, put, web, HttpResponse, Responder};
 use log::error;
 use serde::{Deserialize, Serialize};
 use crate::auth::AuthToken;
@@ -86,5 +86,5 @@ async fn update_school_by_id(
     path: web::Path<(u32, )>,
     auth_token: AuthToken
 ) -> Result<impl Responder, DuszaBackendError<DBError>> {
-    todo!()
+    Ok(HttpResponse::NotImplemented())
 }
