@@ -7,7 +7,7 @@ use sqlx::{query, query_as, Error, FromRow, Row};
 use sqlx::mysql::MySqlRow;
 use crate::models::user::{User, UserId, UserType};
 
-#[derive(Debug, Deserialize, Serialize, FromRow, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct SchoolData {
     pub school_id: u32,
     pub school_name: String,

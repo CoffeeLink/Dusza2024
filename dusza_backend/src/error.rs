@@ -3,6 +3,7 @@ use actix_web::ResponseError;
 use derive_more::Display;
 use std::error::Error;
 use std::fmt::{Debug, Formatter};
+use crate::models::DBError;
 
 #[derive(Debug, Clone, Display)]
 pub enum DuszaBackendError<T: Debug + Clone + Display> {
@@ -41,14 +42,3 @@ where
 pub enum NoError {}
 
 impl ResponseError for NoError {}
-
-
-impl<T> Into<DuszaBackendError<T>> for DuszaBackendError<NoError> {
-    fn into(self) -> DuszaBackendError<T> {
-        match self {
-            DuszaBackendError::InternalError => { DuszaBackendError::InternalError }
-            DuszaBackendError::AuthError(a) => { DuszaBackendError::Other(a) }
-            DuszaBackendError::Other(_) => unreachable!("No error type gave Error")
-        }
-    }
-}

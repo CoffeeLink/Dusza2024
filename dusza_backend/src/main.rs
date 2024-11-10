@@ -17,6 +17,7 @@ use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::process::exit;
 use std::sync::Arc;
+use crate::schools::configure_school_endpoints;
 use crate::user::configure_user_endpoints;
 
 mod auth;
@@ -85,7 +86,7 @@ async fn main() {
                     .configure(configure_language_endpoints)
                     .configure(configure_category_endpoints)
                     .configure(configure_user_endpoints)
-                    .service(web::scope("/school").service(schools::register_school_post)),
+                    .configure(configure_school_endpoints)
             )
             .wrap(Logger::default())
             .wrap(
@@ -159,7 +160,7 @@ async fn gen_user(
         .await
         .map_err(|e| {
             error!("{e}");
-            DuszaBackendError::InternalError
+            DuszaBackendError::<NoError>::InternalError
         })?;
 
     Ok(web::Json("Success!"))
