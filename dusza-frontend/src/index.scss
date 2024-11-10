@@ -22,3 +22,6 @@ body {
 }
 
 
+select:has(option[value="9"]) {
+    width: 136px;
+  }

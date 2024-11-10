@@ -17,7 +17,7 @@ export const MiddlePanel = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="w-full flexgap-2 flex-col gap-6 justify-center items-center p-6 bg-slate-100 border border-1 rounded-lg border-slate-500 shadow-lg">
+    <div className="w-full flexgap-2 flex-col gap-6 justify-center items-center p-6 bg-slate-100 border border-1 rounded-lg border-slate-500 shadow-lg middle-panel">
       {leftButtonTitle && (
         <div className="w-full flex justify-start items-center mb-4">
           {leftButtonURL ? (

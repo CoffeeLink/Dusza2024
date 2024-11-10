@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Table } from "react-daisyui";
 import { Link } from "react-router-dom";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
+import { DocumentPlusIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 
 type Application = {
   id: number;
@@ -49,7 +50,7 @@ export const Applications = () => {
       title={"Jelentkezések"}
       rightButton={
         <Link to="/team/applications/add">
-          <Button color="success">Új jelentkezés</Button>
+          <Button className="text-white bg-green-700 hover:bg-green-600 active:bg-green-800"><DocumentPlusIcon className="w-5"/> Új jelentkezés</Button>
         </Link>
       }
     >
@@ -75,7 +76,7 @@ export const Applications = () => {
               <span>{application.state_host}</span>
               <span className="flex flex-row gap-2">
                 <Link to={`/team/applications/${application.id}`}>
-                  <Button color="primary">Szerkesztés</Button>
+                  <Button color="primary"><PencilSquareIcon className="w-5" />Szerkesztés</Button>
                 </Link>
               </span>
             </Table.Row>
