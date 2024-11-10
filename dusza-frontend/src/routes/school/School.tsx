@@ -88,17 +88,17 @@ export const School = () => {
   return (
     <div className="w-full flex flex-row gap-4 justify-center">
       <div className="max-w-5xl w-full">
-        <MiddlePanel title={"Applications"}>
+        <MiddlePanel title={"Jelentkezések"}>
           <Table>
             <Table.Head>
-              <span>Name</span>
-              <span>Category</span>
-              <span>Language</span>
-              <span>School</span>
-              <span>Registered At</span>
-              <span>State School</span>
-              <span>State Host</span>
-              <span>Actions</span>
+              <span>Név</span>
+              <span>Kategória</span>
+              <span>Nyelv</span>
+              <span>Iskola</span>
+              <span>Regisztrált</span>
+              <span>Jóváhagyás (iskola)</span>
+              <span>Jóváhagyás (szervező)</span>
+              <span>Műveletek</span>
             </Table.Head>
             <Table.Body>
               {applications.map((application, index) => (
