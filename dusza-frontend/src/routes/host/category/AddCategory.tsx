@@ -16,8 +16,8 @@ export const AddCategory = () => {
     category_state: "open",
   });
 
-  const onChange = (key: string, value: string) => {
-    setFields((prev) => ({ ...prev, [key]: value }));
+  const onChange = (fieldName: keyof typeof fields, value: string) => {
+    setFields((prev) => ({ ...prev, [fieldName]: value }));
   };
 
   const onSubmit = () => {
