@@ -32,6 +32,8 @@ import { AddApplication } from "./routes/team/application/AddApplication.tsx";
 import { EditApplication } from "./routes/team/application/EditApplication.tsx";
 import { Logout } from "./routes/Logout.tsx";
 import { School } from "./routes/school/School.tsx";
+import { Error } from "./Error.tsx";
+import { Theme } from "react-daisyui";
 
 export const API_URL = "http://localhost:8080/api";
 
@@ -42,7 +44,7 @@ export const AXIOS_INSTANCE = axios.create({
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route path="/" element={<App />} errorElement={<Error />}>
       <Route path="" element={<Home />} />
       <Route path="register" element={<Registration />} />
       <Route path="login" element={<Login />} />
@@ -78,6 +80,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Theme dataTheme={"light"}>
+      <RouterProvider router={router} />
+    </Theme>
   </StrictMode>,
 );
