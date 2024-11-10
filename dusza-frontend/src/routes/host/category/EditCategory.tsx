@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
 import { Category } from "../../../helpers/models.ts";
+import { formatDateToStupidRustFormat } from "../../../helpers/time.ts";
 
 export const EditCategory = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export const EditCategory = () => {
     category_name: "",
     category_description: "",
     category_deadline: "",
-    category_state: "open",
+    category_state: "Open",
   });
 
   useEffect(() => {
@@ -30,7 +31,10 @@ export const EditCategory = () => {
   };
 
   const onSubmit = () => {
-    AXIOS_INSTANCE.put(`/category/${id}`, { ...fields }).then(() => {
+    AXIOS_INSTANCE.put(`/category/${id}`, {
+      ...fields,
+      category_deadline: formatDateToStupidRustFormat(fields.category_deadline),
+    }).then(() => {
       console.log("Edited category with name", fields.category_name);
       navigate("/host/categories");
     });

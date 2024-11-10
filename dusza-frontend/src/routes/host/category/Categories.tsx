@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { SquaresPlusIcon } from "@heroicons/react/24/outline";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
-import { CategoryWithId } from "../../../helpers/models.ts";
+import { Category, CategoryWithId } from "../../../helpers/models.ts";
 import { countDown } from "../../../helpers/time.ts";
 
 export const Categories = () => {
@@ -17,20 +17,58 @@ export const Categories = () => {
     });
   }, []);
 
-  const onClose = (id: number) => {
+  // const onClose = (id: number) => {
+  //   // Get the category with the given id and set its state to "closed"
+  //   const category = categories.find((category) => category.category_id === id);
+  //
+  //   AXIOS_INSTANCE.put(`/category/${id}`, {
+  //     ...category,
+  //     category_state: "Closed",
+  //   }).then(() => {
+  //     // update the category in the list
+  //     setCategories((prev) =>
+  //       prev.map((category) =>
+  //         category.category_id === id
+  //           ? {
+  //               ...category,
+  //               category_state: "Closed" as Category["category_state"],
+  //             }
+  //           : category,
+  //       ),
+  //     );
+  //     console.log("Closed category with id", id);
+  //   });
+  // };
+
+  const setCategoryState = (id: number, state: "Open" | "Closed") => {
     // Get the category with the given id and set its state to "closed"
     const category = categories.find((category) => category.category_id === id);
 
     AXIOS_INSTANCE.put(`/category/${id}`, {
       ...category,
-      category_state: "closed",
+      category_state: state,
     }).then(() => {
-      console.log("Closed category with id", id);
+      // update the category in the list
+      setCategories((prev) =>
+        prev.map((category) =>
+          category.category_id === id
+            ? {
+                ...category,
+                category_state: state as Category["category_state"],
+              }
+            : category,
+        ),
+      );
+      console.log("Changed category state to", state, "with id", id);
     });
   };
 
   const onDelete = (id: number) => {
     AXIOS_INSTANCE.delete(`/category/${id}`).then(() => {
+      // remove the category from the list
+      setCategories((prev) =>
+        prev.filter((category) => category.category_id !== id),
+      );
       console.log("Deleted category with id", id);
     });
   };
@@ -62,12 +100,31 @@ export const Categories = () => {
                 {countDown(new Date(Date.parse(category.category_deadline)))}
               </span>
               <span className="flex gap-2">
-                <Button
-                  color="warning"
-                  onClick={() => onClose(category.category_id)}
-                >
-                  Lezárás
-                </Button>
+                {/*<Button*/}
+                {/*  color="warning"*/}
+                {/*  onClick={() => onClose(category.category_id)}*/}
+                {/*>*/}
+                {/*  Lezárás*/}
+                {/*</Button>*/}
+                {category.category_state === "Open" ? (
+                  <Button
+                    color="warning"
+                    onClick={() =>
+                      setCategoryState(category.category_id, "Closed")
+                    }
+                  >
+                    Lezárás
+                  </Button>
+                ) : (
+                  <Button
+                    color="success"
+                    onClick={() =>
+                      setCategoryState(category.category_id, "Open")
+                    }
+                  >
+                    Megnyitás
+                  </Button>
+                )}
                 <Link to={`/host/categories/${category.category_id}`}>
                   <Button>Szerkesztés</Button>
                 </Link>
