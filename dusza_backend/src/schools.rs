@@ -101,7 +101,7 @@ async fn update_school_by_id(
         let school_owner_id = SchoolData::get_school_by_id(path.0, &**db).await
             .map_err(|_| DuszaBackendError::InternalError)?
             .ok_or(DuszaBackendError::Other(DBError::NotFound))?
-            .school_id;
+            .user.user_id;
 
         school_owner_id == user_id
     });

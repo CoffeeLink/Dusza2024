@@ -1,20 +1,25 @@
 use crate::error::DuszaBackendError;
-use crate::teams::TeamError::NumberBiggerThan4;
 use actix_web::http::StatusCode;
-use actix_web::{delete, get, post, put, web, Responder, ResponseError};
+use actix_web::{delete, get, post, put, web, HttpResponse, Responder, ResponseError};
 use actix_web::cookie::time::macros::date;
 use actix_web::web::ServiceConfig;
 use derive_more::Display;
 use log::error;
 use serde::{Deserialize, Serialize};
+use sqlx::query;
 use thiserror::Error;
 use crate::{AuthConfig, Database};
+use crate::auth::AuthToken;
 use crate::category::CategoryError;
 use crate::models::category::CompetitionCategory;
 use crate::models::lang::ProgrammingLanguage;
 use crate::models::school::SchoolData;
 use crate::models::team::{SherpaTeacher, TeamApprovalState, TeamData, TeamMember};
 use crate::models::user::{User, UserType};
+use crate::auth;
+use crate::error::AuthorizationError::Unauthorized;
+use crate::error::DuszaBackendError::InternalError;
+use crate::models::user::UserType::Organizer;
 
 pub fn configure_team_endpoints(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -31,7 +36,7 @@ pub fn configure_team_endpoints(cfg: &mut web::ServiceConfig) {
 
 #[derive(Debug, Copy, Clone, Deserialize, Serialize, Display, Error)]
 enum TeamError {
-    NumberBiggerThan4,
+    TeamNotFound,
 }
 
 impl ResponseError for TeamError {
@@ -40,29 +45,102 @@ impl ResponseError for TeamError {
     }
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize)]
+struct TeamUpdatePayload {
+    team_name: String,
+    team_members: [TeamMember; 3],
+    team_replacement: Option<TeamMember>,
+    team_lang_id: u32
+}
+
 #[put("/{id}")]
 async fn team_put_id(
     id: web::Path<(u32,)>,
+    auth_token: AuthToken,
+    db: web::Data<Database>,
+    data: web::Json<TeamUpdatePayload>
 ) -> Result<impl Responder, DuszaBackendError<TeamError>> {
-    if id.0 > 4u32 {
-        Err(DuszaBackendError::Other(TeamError::NumberBiggerThan4))
-    } else {
-        Ok(web::Json("Hi"))
+    let authorized = auth::verify_permission_level(auth_token.clone(), UserType::Organizer, &**db)
+        .await
+        .map_err(|e| DuszaBackendError::InternalError)?;
+
+    let authorized = authorized || ({
+        let user_id = User::from_auth_token(auth_token.token, &**db).await
+            .map_err(|e| DuszaBackendError::InternalError)?
+            .ok_or(DuszaBackendError::AuthError(Unauthorized))?
+            .user_id;
+        let team_owner_id = TeamData::get_team_by_id(id.0, &**db).await
+            .map_err(|_| DuszaBackendError::InternalError)?
+            .ok_or(DuszaBackendError::Other(TeamError::TeamNotFound))?
+            .user.user_id;
+
+        team_owner_id == user_id
+    });
+    if !authorized {
+        return Err(DuszaBackendError::AuthError(Unauthorized));
     }
+
+    TeamData::update_team_by_id(id.0, &**db, &data.team_name, data.team_members.clone(), data.team_replacement.clone(), data.team_lang_id)
+        .await
+        .map_err(|_| DuszaBackendError::InternalError)?;
+
+
+    let team = TeamData::get_team_by_id(id.0, &**db)
+        .await.map_err(|_| DuszaBackendError::InternalError)?
+        .unwrap();
+
+    if team.disapproval_message.is_some() {
+        let sql = r#"
+UPDATE team_data
+SET dissapproval_msg = ?
+WHERE team_id = ?
+        "#;
+        let _ = query(sql)
+            .bind(None::<String>)
+            .bind(id.0)
+            .execute(&**db)
+            .await
+            .map_err(|_| DuszaBackendError::InternalError)?;
+    }
+
+    Ok(HttpResponse::Ok())
 }
 
 #[delete("/{id}")]
 async fn team_delete_id(
     id: web::Path<(u32,)>,
+    db: web::Data<Database>,
+    auth_token: AuthToken
 ) -> Result<impl Responder, DuszaBackendError<TeamError>> {
-    Ok(web::Json("Grr"))
+    if !auth::verify_permission_level(auth_token, Organizer, &db).await.map_err(|_| DuszaBackendError::InternalError)? {
+        return Err(DuszaBackendError::AuthError(Unauthorized))
+    }
+
+    TeamData::delete_team_by_id(&db, id.0)
+        .await
+        .map_err(|_| InternalError)?;
+
+    Ok(HttpResponse::Ok())
 }
 
 #[get("/{id}")]
 async fn team_get_id(
     id: web::Path<(u32,)>,
+    db: web::Data<Database>
 ) -> Result<impl Responder, DuszaBackendError<TeamError>> {
-    Ok(web::Json(format!("{:?}", id)))
+    let team = TeamData::get_team_by_id(id.0, &db)
+        .await
+        .map_err(|_| DuszaBackendError::InternalError)?
+        .ok_or(DuszaBackendError::Other(TeamError::TeamNotFound))?;
+
+    Ok(
+        web::Json(
+            serde_json::to_string(&team).map_err(|e|{
+                error!("JSON ERR: {e}");
+                DuszaBackendError::InternalError
+            })?
+        )
+    )
 }
 
 #[get("/")]
@@ -149,12 +227,70 @@ async fn team_push_register(
     )
 }
 
-#[post("/approve/{id}")]
-async fn team_push_approve() -> Result<impl Responder, DuszaBackendError<TeamError>> {
-    Ok(web::Json("success"))
+#[derive(Debug, Clone, Deserialize)]
+struct TeamDisapprovalPayload {
+    message: String
 }
 
-#[post("/register/disapprove/{id}")]
-async fn team_push_disapprove() -> Result<impl Responder, DuszaBackendError<TeamError>> {
-    Ok(web::Json("success"))
+#[post("/approve/{id}")]
+async fn team_push_approve(
+    path: web::Path<(u32, )>,
+    auth_token: AuthToken,
+    db: web::Data<Database>,
+) -> Result<impl Responder, DuszaBackendError<TeamError>> {
+    let authorized = auth::verify_permission_level(auth_token, UserType::SchoolRepresentative, &db)
+        .await
+        .map_err(|_| DuszaBackendError::InternalError)?;
+
+    if !authorized {
+        return Err(DuszaBackendError::AuthError(Unauthorized))
+    }
+
+    let sql = r#"
+UPDATE team_data
+SET approval_state = ?, dissapproval_msg = ?
+WHERE team_id = ?
+    "#;
+
+    let _ = query(sql)
+        .bind(TeamApprovalState::Approved)
+        .bind(None::<String>)
+        .bind(path.0)
+        .execute(&**db)
+        .await
+        .map_err(|_| DuszaBackendError::InternalError)?;
+
+    Ok(HttpResponse::Ok())
+}
+
+#[post("/disapprove/{id}")]
+async fn team_push_disapprove(
+    path: web::Path<(u32, )>,
+    auth_token: AuthToken,
+    db: web::Data<Database>,
+    data: web::Json<TeamDisapprovalPayload>
+) -> Result<impl Responder, DuszaBackendError<TeamError>> {
+    let authorized = auth::verify_permission_level(auth_token, UserType::SchoolRepresentative, &db)
+        .await
+        .map_err(|_| DuszaBackendError::InternalError)?;
+
+    if !authorized {
+        return Err(DuszaBackendError::AuthError(Unauthorized))
+    }
+
+    let sql = r#"
+UPDATE team_data
+SET approval_state = ?, dissapproval_msg = ?
+WHERE team_id = ?
+    "#;
+
+    let _ = query(sql)
+        .bind(TeamApprovalState::WaitingForApproval)
+        .bind(data.message.clone())
+        .bind(path.0)
+        .execute(&**db)
+        .await
+        .map_err(|_| DuszaBackendError::InternalError)?;
+
+    Ok(HttpResponse::Ok())
 }

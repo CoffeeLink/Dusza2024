@@ -34,6 +34,8 @@ impl FromRequest for AuthToken {
         match req.cookie(AUTH_COOKIE_NAME) {
             None => err(AuthorizationError::Unauthorized),
             Some(auth_token) => {
+                dbg!(auth_token.value());
+                dbg!(Uuid::from_str(auth_token.value()));
                 match Uuid::from_str(auth_token.value())
                     .map_err(|_| AuthorizationError::InvalidAuthToken)
                 {
