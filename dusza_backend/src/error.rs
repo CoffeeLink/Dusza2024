@@ -41,3 +41,14 @@ where
 pub enum NoError {}
 
 impl ResponseError for NoError {}
+
+
+impl<T> Into<DuszaBackendError<T>> for DuszaBackendError<NoError> {
+    fn into(self) -> DuszaBackendError<T> {
+        match self {
+            DuszaBackendError::InternalError => { DuszaBackendError::InternalError }
+            DuszaBackendError::AuthError(a) => { DuszaBackendError::Other(a) }
+            DuszaBackendError::Other(_) => unreachable!("No error type gave Error")
+        }
+    }
+}
