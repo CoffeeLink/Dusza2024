@@ -5,6 +5,7 @@ import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
 import { Category } from "../../../helpers/models.ts";
 import { useNavigate } from "react-router-dom";
+import { formatDateToStupidRustFormat } from "../../../helpers/time.ts";
 
 export const AddCategory = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export const AddCategory = () => {
     category_name: "",
     category_description: "",
     category_deadline: "",
-    category_state: "open",
+    category_state: "Open",
   });
 
   const onChange = (fieldName: keyof typeof fields, value: string) => {
@@ -21,7 +22,11 @@ export const AddCategory = () => {
   };
 
   const onSubmit = () => {
-    AXIOS_INSTANCE.post("/category/", fields).then(() => {
+    // parse date to rfc3339 and remove trailing Z
+    AXIOS_INSTANCE.post("/category/", {
+      ...fields,
+      category_deadline: formatDateToStupidRustFormat(fields.category_deadline),
+    }).then(() => {
       console.log("Added category with name", fields.category_name);
       navigate("/host/categories");
     });

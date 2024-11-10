@@ -10,7 +10,7 @@ export type Category = {
   category_name: string;
   category_description: string | null;
   category_deadline: string;
-  category_state: "open" | "closed";
+  category_state: "Open" | "Closed";
 };
 
 export type CategoryWithId = Category & {

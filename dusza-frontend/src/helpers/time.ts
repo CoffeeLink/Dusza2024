@@ -27,3 +27,8 @@ export function countDown(deadline: Date) {
     return `${seconds} másodperc`;
   }
 }
+
+export function formatDateToStupidRustFormat(date: string) {
+  // Remove trailing Z
+  return new Date(Date.parse(date)).toISOString().slice(0, -1);
+}
