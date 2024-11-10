@@ -35,6 +35,8 @@ export const AddCategory = () => {
   return (
     <MiddlePanel title={"Add Category"}>
       <FormFactory
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         configs={GetAddCategoryConfig(onChange, fields, null)}
         submit={{
           text: "Hozzáadás",

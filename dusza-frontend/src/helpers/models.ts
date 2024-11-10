@@ -55,18 +55,20 @@ export type TeamMember = {
   member_class: string;
 };
 
+export type SherpaTeacher = {
+  teacher_name: string;
+};
+
 export type Team = {
   team_name: string;
+  user: UserWithId<"TeamAccount">;
   school: SchoolWithId;
   members: TeamMember[];
   replacement_member: TeamMember | null;
   category: CategoryWithId;
   lang: LanguageWithId;
-  sherpa_teachers: string[];
-  team_approval_state:
-    | "WaitingForApproval"
-    | "ApprovedBySchoolRep"
-    | "Approved";
+  sherpa_teachers: SherpaTeacher[];
+  team_approval_state: "WaitingForApproval" | "Approved";
 };
 
 export type TeamWithId = Team & {

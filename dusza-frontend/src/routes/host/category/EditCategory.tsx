@@ -43,6 +43,8 @@ export const EditCategory = () => {
   return (
     <MiddlePanel title={"Kategória szerkesztése"}>
       <FormFactory
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         configs={GetEditCategoryConfig(onChange, fields, null)}
         submit={{
           text: "Mentés",
