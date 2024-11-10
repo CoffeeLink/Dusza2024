@@ -7,7 +7,7 @@ pub mod category;
 pub mod lang;
 pub mod school;
 pub mod user;
-mod team;
+pub mod team;
 
 #[derive(Debug, Copy, Clone, Display)]
 pub enum DBError {

@@ -1,3 +1,4 @@
+use std::mem::take;
 use log::error;
 use serde::{Deserialize, Serialize};
 use sqlx::{query, query_as, Error, FromRow, MySql, Row, Type};
@@ -104,7 +105,7 @@ pub enum TeamApprovalState {
     Approved = 3 // mind2 party Approve-olt
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TeamData {
     pub team_id: u32,
     pub team_name: String,
@@ -115,7 +116,9 @@ pub struct TeamData {
     pub lang: ProgrammingLanguage,
     pub sherpa_teachers: Vec<SherpaTeacher>,
     pub team_approval_state: TeamApprovalState,
-    pub disapproval_message: Option<String>
+    pub disapproval_message: Option<String>,
+
+    pub user: User
 }
 
 
@@ -139,8 +142,13 @@ SELECT
 
     t.school_id,
     t.programming_language_id,
-    t.category_id
+    t.category_id,
+
+    u.user_id,
+    u.username
+
 FROM team_data t
+JOIN user u ON t.team_id = u.team_data_id
         "#;
         let team_info = query(sql)
             .fetch_all(db)
@@ -195,6 +203,11 @@ FROM team_data t
                 sherpa_teachers: teachers,
                 team_approval_state: result.try_get("approval_state").unwrap(),
                 disapproval_message: result.try_get("dissapproval_msg").ok(),
+                user: User {
+                    user_id: result.try_get("user_id").unwrap(),
+                    username: result.try_get("username").unwrap(),
+                    user_type: UserType::TeamAccount,
+                }
             };
 
             teams.push(team)
@@ -219,7 +232,7 @@ FROM team_data t
         replacement_member: Option<TeamMember>,
         category: CompetitionCategory,
         lang: ProgrammingLanguage,
-        sherpa_teachers: Vec<SherpaTeacher>,
+        sherpa_teachers: Vec<String>,
         team_approval_state: TeamApprovalState,
         disapproval_message: Option<String>
     ) -> Result<TeamData, DuszaBackendError<NoError>> {
@@ -268,6 +281,17 @@ INSERT INTO team_data (team_name,
                 DuszaBackendError::InternalError
             })?
             .last_insert_id() as u32;
+
+        SherpaTeacher::add_teachers_to_group(team_id, sherpa_teachers, &db)
+            .await.map_err(|_| DuszaBackendError::InternalError)?;
+
+        let sql = r#"
+UPDATE user
+SET team_data_id = ?
+WHERE user_id = ?
+        "#;
+
+        let _ = query(sql).bind(team_id).bind(user.user_id).execute(*&db).await.map_err(|_| DuszaBackendError::InternalError)?;
 
         Ok(Self::get_team_by_id(team_id, db).await?.unwrap())
     }
@@ -330,6 +354,7 @@ WHERE team_id = ?
                 if new_replacement.is_none() {None} else { Some(new_replacement.clone().unwrap().member_class) }
             })
             .bind(new_lang_id)
+            .bind(team_id)
             .execute(db)
             .await
             .map_err(|e|{
