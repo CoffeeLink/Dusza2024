@@ -49,13 +49,13 @@ type EditFields = {
   extraClass: string;
   teachers: string[];
   language: string;
+  category: string;
 };
 
-export const GetEditConfig: GetConfig<EditFields, { languages: string[] }> = (
-  onChange,
-  fields,
-  { languages },
-) => {
+export const GetEditConfig: GetConfig<
+  EditFields,
+  { languages: string[]; categories: string[] }
+> = (onChange, fields, { languages, categories }) => {
   const classOptions = ["9", "10", "11", "12", "13"];
   const isTeachersEnough = fields.teachers.length >= 1;
 
@@ -195,6 +195,17 @@ export const GetEditConfig: GetConfig<EditFields, { languages: string[] }> = (
       })),
     },
     {
+      key: "category",
+      label: "Kategória",
+      errorFlag: false,
+      errorMsg: "",
+      value: fields.category,
+      type: "dropdown",
+      required: true,
+      onChange: (e) => onChange("category", e.target.value),
+      options: categories,
+    },
+    {
       key: "language",
       label: "Programozási nyelv",
       errorFlag: false,
@@ -218,8 +229,8 @@ type RegistrationFields = LoginFields &
 
 export const GetRegistrationConfig: GetConfig<
   RegistrationFields,
-  { schools: string[]; languages: string[] }
-> = (onChange, fields, { schools, languages }): Config[] => {
+  { schools: string[]; languages: string[]; categories: string[] }
+> = (onChange, fields, { schools, languages, categories }): Config[] => {
   // extend LoginConfig
   let config = GetLoginConfig(
     onChange,
@@ -229,7 +240,9 @@ export const GetRegistrationConfig: GetConfig<
     },
     null,
   );
-  config = config.concat(GetEditConfig(onChange, fields, { languages }));
+  config = config.concat(
+    GetEditConfig(onChange, fields, { languages, categories }),
+  );
   config = config.concat([
     {
       key: "schoolName",

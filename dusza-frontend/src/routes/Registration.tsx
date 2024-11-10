@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
-import { FormFactory } from "../../components/FormFactory.tsx";
-import { GetRegistrationConfig } from "../../helpers/form-configs/Team.tsx";
+import { FormFactory } from "../components/FormFactory.tsx";
+import { GetRegistrationConfig } from "../helpers/form-configs/Team.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
-import { MiddlePanel } from "../../components/middle/MiddlePanel.tsx";
+import { MiddlePanel } from "../components/middle/MiddlePanel.tsx";
+import { Category, Language, School } from "../helpers/models.ts";
+import { AXIOS_INSTANCE } from "../main.tsx";
 
 export const Registration = () => {
+  const [languages, setLanguages] = useState<Language[]>([]);
+  const [schools, setSchools] = useState<School[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const [fields, setFields] = useState({
     username: "",
     password: "",
@@ -22,25 +28,25 @@ export const Registration = () => {
     teamName: "",
     language: "",
     schoolName: "",
+    category: "",
   });
 
-  const [schools, setSchools] = useState<string[]>([]);
-  const [languages, setLanguages] = useState<string[]>([]);
-
   useEffect(() => {
-    // axios.get("/api/schools").then((res) => {
-    //   setSchools(res.data);
-    // });
-
-    setSchools(["School 1", "School 2", "School 3"]);
+    AXIOS_INSTANCE.get("/school/").then((res) => {
+      setSchools(JSON.parse(res.data));
+    });
   }, []);
 
   useEffect(() => {
-    // axios.get("/api/languages").then((res) => {
-    //   setLanguages(res.data);
-    // });
+    AXIOS_INSTANCE.get("/language/").then((res) => {
+      setLanguages(JSON.parse(res.data));
+    });
+  }, []);
 
-    setLanguages(["Language 1", "Language 2", "Language 3"]);
+  useEffect(() => {
+    AXIOS_INSTANCE.get("/category/").then((res) => {
+      setCategories(JSON.parse(res.data));
+    });
   }, []);
 
   const onChange = (
@@ -86,8 +92,9 @@ export const Registration = () => {
         <div className="form-width">
           <FormFactory
             configs={GetRegistrationConfig(onChange, fields, {
-              schools,
-              languages,
+              schools: schools.map((school) => school.school_name),
+              languages: languages.map((language) => language.lang_name),
+              categories: categories.map((category) => category.category_name),
             })}
             submit={{
               onSubmit,
