@@ -73,6 +73,7 @@ export const Registration = () => {
 
     axios.post("/api/team/register", newFields).then((res) => {
       console.log(res.data);
+      window.location.href = "/";
     });
   };
   return (

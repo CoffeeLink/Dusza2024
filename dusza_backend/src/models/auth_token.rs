@@ -44,4 +44,16 @@ impl AuthTokenData {
 
         Ok(token)
     }
+
+    pub async fn delete_token_by_id(
+        token_id: Uuid,
+        db: &Pool<MySql>,
+    ) -> Result<(), sqlx::Error> {
+        let _ = sqlx::query("DELETE FROM auth_tokens WHERE token_id = ?")
+            .bind(&token_id.as_bytes()[..])
+            .execute(db)
+            .await?;
+
+        Ok(())
+    }
 }

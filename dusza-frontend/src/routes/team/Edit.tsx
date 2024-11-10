@@ -3,9 +3,12 @@ import { FormFactory } from "../../components/FormFactory.tsx";
 import { GetEditConfig } from "../../helpers/form-configs/Team.tsx";
 import axios from "axios";
 import { Optional } from "utility-types";
-import { Artboard } from "react-daisyui";
+import { useNavigate } from "react-router-dom";
+import { MiddlePanel } from "../../components/middle/MiddlePanel.tsx";
 
 export const Edit = () => {
+  const navigate = useNavigate();
+
   const [languages, setLanguages] = React.useState<string[]>([]);
 
   React.useEffect(() => {
@@ -53,21 +56,21 @@ export const Edit = () => {
 
     axios.post("/api/team/edit", newFields).then((res) => {
       console.log(res.data);
+      navigate("/team");
     });
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 items-center">
-      <h1 className="text-center text-4xl w-fit">Edit team</h1>
-      <Artboard className="gap-2 p-4 bg-white w-fit">
-        <FormFactory
-          configs={GetEditConfig(onChange, fields, { languages })}
-          submit={{
-            onSubmit,
-            text: "Edit",
-          }}
-        />
-      </Artboard>
-    </div>
+    // <div className="w-full flex flex-col gap-2 items-center">
+    //   <h1 className="text-center text-4xl w-fit">Edit team</h1>
+    <MiddlePanel title="Edit team">
+      <FormFactory
+        configs={GetEditConfig(onChange, fields, { languages })}
+        submit={{
+          onSubmit,
+          text: "Edit",
+        }}
+      />
+    </MiddlePanel>
   );
 };

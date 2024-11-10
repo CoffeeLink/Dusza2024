@@ -1,10 +1,13 @@
-import axios from "axios";
 import { FormFactory } from "../../../components/FormFactory.tsx";
 import { GetAddSchoolConfig } from "../../../helpers/form-configs/School.tsx";
 import { useState } from "react";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
+import { AXIOS_INSTANCE } from "../../../main.tsx";
+import { useNavigate } from "react-router-dom";
 
 export const AddSchool = () => {
+  const navigate = useNavigate();
+
   const [fields, setFields] = useState({
     name: "",
     location: "",
@@ -22,8 +25,9 @@ export const AddSchool = () => {
   };
 
   const onSubmit = () => {
-    axios.post("/api/schools", fields).then((res) => {
-      console.log(res.data);
+    AXIOS_INSTANCE.post("/school/", fields).then(() => {
+      console.log("Added school with name", fields.name);
+      navigate("/host/schools");
     });
   };
 

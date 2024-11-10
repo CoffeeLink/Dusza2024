@@ -137,3 +137,11 @@ pub async fn login_post(
         )
         .finish())
 }
+
+// TODO: ezt csak idehanytam, nezd at
+#[post("/logout")]
+pub async fn logout_post() -> impl Responder {
+    HttpResponse::build(StatusCode::OK)
+        .cookie(Cookie::build(AUTH_COOKIE_NAME, "").finish())
+        .finish()
+}

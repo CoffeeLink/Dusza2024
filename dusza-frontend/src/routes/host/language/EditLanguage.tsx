@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { FormFactory } from "../../../components/FormFactory.tsx";
 import { GetEditLanguageConfig } from "../../../helpers/form-configs/Language.tsx";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { Language, LanguageWithId } from "../../../helpers/models.ts";
 import { API_URL, AXIOS_INSTANCE } from "../../../main.tsx";
 
 export const EditLanguage = () => {
+  const navigate = useNavigate();
+
   const { id } = useParams<{ id: string }>();
 
   const [fields, setFields] = useState<Language>({
@@ -20,13 +22,14 @@ export const EditLanguage = () => {
     });
   }, [id]);
 
-  const onChange = (key: string, value: string) => {
-    setFields((prev) => ({ ...prev, [key]: value }));
+  const onChange = (fieldName: keyof typeof fields, value: string) => {
+    setFields((prev) => ({ ...prev, [fieldName]: value }));
   };
 
   const onSubmit = () => {
     AXIOS_INSTANCE.put(`/language/${id}`, { ...fields }).then(() => {
       console.log("Edited category with name", fields.lang_name);
+      navigate("/host/languages");
     });
   };
 

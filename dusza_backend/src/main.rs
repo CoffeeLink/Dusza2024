@@ -1,4 +1,4 @@
-use crate::auth::{login_post, salt};
+use crate::auth::{login_post, logout_post, salt};
 use crate::category::configure_category_endpoints;
 use crate::error::{DuszaBackendError, NoError};
 use crate::languages::configure_language_endpoints;
@@ -80,6 +80,7 @@ async fn main() {
             .service(
                 web::scope("/api")
                     .service(login_post)
+                    .service(logout_post)
                     .configure(configure_team_endpoints)
                     .configure(configure_language_endpoints)
                     .configure(configure_category_endpoints)

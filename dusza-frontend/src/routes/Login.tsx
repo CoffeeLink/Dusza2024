@@ -32,6 +32,8 @@ export const Login = () => {
   const onSubmit = () => {
     AXIOS_INSTANCE.post("/login", fields).then((res) => {
       console.log(res.data);
+      // force refresh
+      window.location.href = "/";
     });
   };
 

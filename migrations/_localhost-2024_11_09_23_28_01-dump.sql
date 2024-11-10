@@ -4,6 +4,7 @@
 -- ------------------------------------------------------
 -- Server version	10.5.23-MariaDB
 
+use dusza_db;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -39,7 +40,7 @@ CREATE TABLE `auth_tokens` (
 
 LOCK TABLES `auth_tokens` WRITE;
 /*!40000 ALTER TABLE `auth_tokens` DISABLE KEYS */;
-INSERT INTO `auth_tokens` VALUES ('⌠╔|б╒ёMые√H}',4,'2024-11-11 11:17:56','2024-11-09 11:17:56'),('⌠М7├s`≥╓╞ЛA)',4,'2024-11-11 18:16:19','2024-11-09 18:16:19'),('⌠Eё┬qп╠x╕\Zв╠\Z8',4,'2024-11-11 19:52:54','2024-11-09 19:52:54'),('⌠d(сzp≤оnИ##',4,'2024-11-11 20:26:14','2024-11-09 20:26:14'),('⌠pE╪p╠│╤∙йн╬',4,'2024-11-11 20:39:28','2024-11-09 20:39:28');
+INSERT INTO `auth_tokens` VALUES ('О©╫О©╫|б╒О©╫MО©╫е√H}',4,'2024-11-11 11:17:56','2024-11-09 11:17:56'),('О©╫О©╫7О©╫s`О©╫О©╫О©╫О©╫A)',4,'2024-11-11 18:16:19','2024-11-09 18:16:19'),('О©╫EО©╫О©╫qп╠xО©╫\Zв╠\Z8',4,'2024-11-11 19:52:54','2024-11-09 19:52:54'),('О©╫d(О©╫zpО©╫О©╫nО©╫##',4,'2024-11-11 20:26:14','2024-11-09 20:26:14'),('О©╫pEО©╫pО©╫О©╫О©╫О©╫О©╫н╬',4,'2024-11-11 20:39:28','2024-11-09 20:39:28');
 /*!40000 ALTER TABLE `auth_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,7 +249,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (4,'test','фYй└\\ 5Зt9╕Rч█Ъщ|╓╠<PВXЧбz│Q',3,NULL,NULL),(5,'aron','фYй└\\ 5Зt9╕Rч█Ъщ|╓╠<PВXЧбz│Q',1,NULL,NULL);
+INSERT INTO `user` VALUES (4,'test','О©╫Yй└\\О©╫5О©╫t9О©╫Rч█О©╫О©╫|О©╫О©╫<PО©╫XО©╫О©╫zО©╫Q',3,NULL,NULL),(5,'aron','О©╫Yй└\\О©╫5О©╫t9О©╫Rч█О©╫О©╫|О©╫О©╫<PО©╫XО©╫О©╫zО©╫Q',1,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

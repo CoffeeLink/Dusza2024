@@ -5,13 +5,14 @@ import App from "./App.tsx";
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
   Route,
   RouterProvider,
 } from "react-router-dom";
+import axios from "axios";
 import { Registration } from "./routes/team/Registration.tsx";
 import { Edit } from "./routes/team/Edit.tsx";
 import { Login } from "./routes/Login.tsx";
-import { Overview } from "./routes/host/Overview.tsx";
 import { Host } from "./routes/host/Host.tsx";
 import { Schools } from "./routes/host/school/Schools.tsx";
 import { AddSchool } from "./routes/host/school/AddSchool.tsx";
@@ -27,7 +28,10 @@ import { EditLanguage } from "./routes/host/language/EditLanguage.tsx";
 import { Statistics } from "./routes/host/statistics/Statistics.tsx";
 import { Team } from "./routes/team/Team.tsx";
 import { Applications } from "./routes/team/application/Applications.tsx";
-import axios from "axios";
+import { AddApplication } from "./routes/team/application/AddApplication.tsx";
+import { EditApplication } from "./routes/team/application/EditApplication.tsx";
+import { Logout } from "./routes/Logout.tsx";
+import { School } from "./routes/school/School.tsx";
 
 export const API_URL = "http://localhost:8080/api";
 
@@ -42,8 +46,10 @@ const router = createBrowserRouter(
       <Route path="" element={<Home />} />
       <Route path="register" element={<Registration />} />
       <Route path="login" element={<Login />} />
+      <Route path="logout" element={<Logout />} />
       <Route path="host" element={<Host />}>
-        <Route path="" element={<Overview />} />
+        {/*<Route path="" element={<Overview />} />*/}
+        <Route path="" element={<Navigate to="schools" />} />
         <Route path="schools" element={<Schools />} />
         <Route path="schools/add" element={<AddSchool />} />
         <Route path="schools/:id" element={<EditSchool />} />
@@ -57,8 +63,14 @@ const router = createBrowserRouter(
         <Route path="statistics" element={<Statistics />} />
       </Route>
       <Route path="team" element={<Team />}>
+        <Route path="" element={<Navigate to="applications" />} />
         <Route path="applications" element={<Applications />} />
+        <Route path="applications/add" element={<AddApplication />} />
+        <Route path="applications/:id" element={<EditApplication />} />
         <Route path="edit" element={<Edit />} />
+      </Route>
+      <Route path="school" element={<School />}>
+        {/*<Route path="applications" element={<App*/}
       </Route>
     </Route>,
   ),

@@ -1,9 +1,9 @@
 import { Button, Table } from "react-daisyui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
+import { AXIOS_INSTANCE } from "../../../main.tsx";
 
 type School = {
   id: number;
@@ -15,35 +15,17 @@ type School = {
 };
 
 export const Schools = () => {
-  const [schools] = useState<School[]>([
-    {
-      id: 1,
-      name: "School 1",
-      location: "Location",
-      username: "Username",
-      contactName: "Contact Name",
-      contactEmail: "Contact Email",
-    },
-    {
-      id: 2,
-      name: "School 2",
-      location: "Location",
-      username: "Username",
-      contactName: "Contact Name",
-      contactEmail: "Contact Email",
-    },
-    {
-      id: 3,
-      name: "School 3",
-      location: "Location",
-      username: "Username",
-      contactName: "Contact Name",
-      contactEmail: "Contact Email",
-    },
-  ]);
+  const [schools, setSchools] = useState<School[]>([]);
+
+  useEffect(() => {
+    AXIOS_INSTANCE.get("/school/").then((res) => {
+      const data = JSON.parse(res.data);
+      setSchools(data);
+    });
+  }, []);
 
   const onDelete = (id: number) => {
-    axios.delete(`/api/schools/${id}`).then(() => {
+    AXIOS_INSTANCE.delete(`/school/${id}`).then(() => {
       console.log("Deleted school with id", id);
     });
   };
@@ -53,7 +35,9 @@ export const Schools = () => {
       title="Iskolák"
       rightButton={
         <Link to="/host/schools/add">
-          <Button className="text-white bg-green-700 hover:bg-green-600 active:bg-green-800"><AcademicCapIcon className="w-5" /> Új iskola</Button>
+          <Button className="text-white bg-green-700 hover:bg-green-600 active:bg-green-800">
+            <AcademicCapIcon className="w-5" /> Új iskola
+          </Button>
         </Link>
       }
     >

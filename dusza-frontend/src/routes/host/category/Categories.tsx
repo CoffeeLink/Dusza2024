@@ -5,6 +5,7 @@ import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { SquaresPlusIcon } from "@heroicons/react/24/outline";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
 import { CategoryWithId } from "../../../helpers/models.ts";
+import { countDown } from "../../../helpers/time.ts";
 
 export const Categories = () => {
   const [categories, setCategories] = useState<CategoryWithId[]>([]);
@@ -49,6 +50,7 @@ export const Categories = () => {
         <Table.Head>
           <span>Név</span>
           <span>Leírás</span>
+          <span>Határidő</span>
           <span>Műveletek</span>
         </Table.Head>
         <Table.Body>
@@ -56,6 +58,9 @@ export const Categories = () => {
             <Table.Row key={category.category_id}>
               <span>{category.category_name}</span>
               <span>{category.category_description}</span>
+              <span>
+                {countDown(new Date(Date.parse(category.category_deadline)))}
+              </span>
               <span className="flex gap-2">
                 <Button
                   color="warning"

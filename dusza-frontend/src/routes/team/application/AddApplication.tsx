@@ -5,6 +5,8 @@ import { GetAddApplicationConfig } from "../../../helpers/form-configs/Applicati
 
 export const AddApplication = () => {
   const [categories, setCategories] = useState<string[]>([]);
+  const [schools, setSchools] = useState<string[]>([]);
+  const [languages, setLanguages] = useState<string[]>([]);
 
   useEffect(() => {
     // Fetch categories
@@ -15,8 +17,28 @@ export const AddApplication = () => {
     setCategories(["Category 1", "Category 2", "Category 3"]);
   }, []);
 
+  useEffect(() => {
+    // Fetch schools
+    // axios.get("/api/schools/available").then((response) => {
+    //   // Set schools
+    // }
+
+    setSchools(["School 1", "School 2", "School 3"]);
+  }, []);
+
+  useEffect(() => {
+    // Fetch languages
+    // axios.get("/api/languages/available").then((response) => {
+    //   // Set languages
+    // }
+
+    setLanguages(["Language 1", "Language 2", "Language 3"]);
+  }, []);
+
   const [fields, setFields] = useState({
     category: "",
+    school: "",
+    language: "",
   });
 
   const onChange = (fieldName: keyof typeof fields, value: string) => {
@@ -35,7 +57,11 @@ export const AddApplication = () => {
   return (
     <MiddlePanel title={"Új jelentkezés"}>
       <FormFactory
-        configs={GetAddApplicationConfig(onChange, fields, { categories })}
+        configs={GetAddApplicationConfig(onChange, fields, {
+          categories,
+          schools,
+          languages,
+        })}
         submit={{
           onSubmit,
           text: "Jelentkezés",
