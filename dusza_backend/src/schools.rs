@@ -145,7 +145,7 @@ enum SchoolRegistrationError {
 }
 impl ResponseError for SchoolRegistrationError {}
 
-#[post("/register")]
+#[post("/")]
 async fn create_school_account(
     db: web::Data<Database>,
     payload: web::Json<SchoolRegisterPayload>,
