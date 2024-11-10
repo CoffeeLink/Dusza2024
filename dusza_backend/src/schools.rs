@@ -41,7 +41,7 @@ async fn get_schools(
     let schools = SchoolData::get_all_schools(&db)
         .await?;
 
-    Ok(web::Json(serde_json::to_string_pretty(&schools).map_err(|e| {
+    Ok(web::Json(serde_json::to_string(&schools).map_err(|e| {
         error!("SERDE SERIALIZE ERROR: {e}");
         DuszaBackendError::InternalError
     })?))
@@ -56,7 +56,7 @@ async fn get_school_by_id(
         .await?
         .ok_or(DuszaBackendError::Other(DBError::NotFound))?;
 
-    Ok(web::Json(serde_json::to_string_pretty(&school).map_err(|e| {
+    Ok(web::Json(serde_json::to_string(&school).map_err(|e| {
         error!("SERDE SERIALIZE ERROR: {e}");
         DuszaBackendError::InternalError
     })?))

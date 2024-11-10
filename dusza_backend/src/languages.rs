@@ -71,7 +71,7 @@ async fn lang_create(
             DuszaBackendError::InternalError
         })?;
 
-    Ok(web::Json(serde_json::to_string_pretty(&lang).map_err(
+    Ok(web::Json(serde_json::to_string(&lang).map_err(
         |e| {
             error!("{e}");
             DuszaBackendError::InternalError
@@ -105,7 +105,7 @@ async fn lang_put_update(
             DuszaBackendError::InternalError
         })?;
 
-    Ok(web::Json(serde_json::to_string_pretty(&changes).map_err(
+    Ok(web::Json(serde_json::to_string(&changes).map_err(
         |e| {
             error!("{e}");
             DuszaBackendError::InternalError
@@ -150,7 +150,7 @@ async fn lang_get_all(
     })?;
 
     Ok(web::Json(
-        serde_json::to_string_pretty(&languages).map_err(|e| {
+        serde_json::to_string(&languages).map_err(|e| {
             error!("{}", e);
             DuszaBackendError::InternalError
         })?,
@@ -170,7 +170,7 @@ async fn lang_get_by_id(
         })?
         .ok_or(DuszaBackendError::Other(NoSuchLanguage))?;
 
-    Ok(web::Json(serde_json::to_string_pretty(&lang).map_err(
+    Ok(web::Json(serde_json::to_string(&lang).map_err(
         |e| {
             error!("{e}");
             DuszaBackendError::InternalError

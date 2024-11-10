@@ -35,7 +35,7 @@ async fn get_user_by_id(
         .map_err(|_| DuszaBackendError::InternalError)?
         .ok_or(DuszaBackendError::Other(UserNotFound))?;
 
-    Ok(web::Json(serde_json::to_string_pretty(&user).map_err(|e| {
+    Ok(web::Json(serde_json::to_string(&user).map_err(|e| {
         error!("{e}");
         DuszaBackendError::InternalError
     })?))
@@ -49,7 +49,7 @@ async fn get_all_users(
         .await
         .map_err(|_| DuszaBackendError::InternalError)?;
 
-    Ok(web::Json(serde_json::to_string_pretty(&users).map_err(|e|{
+    Ok(web::Json(serde_json::to_string(&users).map_err(|e|{
         error!("{e}");
         DuszaBackendError::InternalError
     })?))
@@ -68,7 +68,7 @@ async fn get_self(
         })?
         .ok_or(DuszaBackendError::AuthError(Unauthorized))?;
 
-    Ok(web::Json(serde_json::to_string_pretty(&user).map_err(|e|{
+    Ok(web::Json(serde_json::to_string(&user).map_err(|e|{
         error!("e: {e}");
         DuszaBackendError::InternalError
     })?))

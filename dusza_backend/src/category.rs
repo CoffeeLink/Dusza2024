@@ -45,7 +45,7 @@ async fn category_get_all(
     })?;
 
     Ok(web::Json(
-        serde_json::to_string_pretty(&categories).map_err(|e| {
+        serde_json::to_string(&categories).map_err(|e| {
             error!("{}", e);
             DuszaBackendError::InternalError
         })?,
@@ -65,7 +65,7 @@ async fn category_get_by_id(
         })?
         .ok_or(DuszaBackendError::Other(LangErr::NoSuchLanguage))?;
 
-    Ok(serde_json::to_string_pretty(&categ).map_err(|e| {
+    Ok(serde_json::to_string(&categ).map_err(|e| {
         error!("{}", e);
         DuszaBackendError::InternalError
     })?)
@@ -108,7 +108,7 @@ async fn category_create(
         DuszaBackendError::InternalError
     })?;
 
-    Ok(serde_json::to_string_pretty(&category).map_err(|e| {
+    Ok(serde_json::to_string(&category).map_err(|e| {
         error!("{e}");
         DuszaBackendError::InternalError
     })?)
@@ -145,7 +145,7 @@ async fn category_update(
         DuszaBackendError::InternalError
     })?;
 
-    Ok(serde_json::to_string_pretty(&category).map_err(|e| {
+    Ok(serde_json::to_string(&category).map_err(|e| {
         error!("{e}");
         DuszaBackendError::InternalError
     })?)
