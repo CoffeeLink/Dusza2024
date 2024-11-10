@@ -10,7 +10,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import axios from "axios";
-import { Registration } from "./routes/team/Registration.tsx";
+import { Registration } from "./routes/Registration.tsx";
 import { Edit } from "./routes/team/Edit.tsx";
 import { Login } from "./routes/Login.tsx";
 import { Host } from "./routes/host/Host.tsx";

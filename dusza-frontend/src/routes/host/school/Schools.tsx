@@ -4,18 +4,10 @@ import { Link } from "react-router-dom";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
-
-type School = {
-  id: number;
-  name: string;
-  location: string;
-  username: string;
-  contactName: string;
-  contactEmail: string;
-};
+import { SchoolWithIdAndUser } from "../../../helpers/models.ts";
 
 export const Schools = () => {
-  const [schools, setSchools] = useState<School[]>([]);
+  const [schools, setSchools] = useState<SchoolWithIdAndUser[]>([]);
 
   useEffect(() => {
     AXIOS_INSTANCE.get("/school/").then((res) => {
@@ -26,6 +18,7 @@ export const Schools = () => {
 
   const onDelete = (id: number) => {
     AXIOS_INSTANCE.delete(`/school/${id}`).then(() => {
+      setSchools(schools.filter((school) => school.school_id !== id));
       console.log("Deleted school with id", id);
     });
   };
@@ -52,17 +45,20 @@ export const Schools = () => {
         </Table.Head>
         <Table.Body>
           {schools.map((school) => (
-            <Table.Row key={school.id}>
-              <span>{school.name}</span>
-              <span>{school.location}</span>
-              <span>{school.username}</span>
-              <span>{school.contactName}</span>
-              <span>{school.contactEmail}</span>
+            <Table.Row key={school.school_id}>
+              <span>{school.school_name}</span>
+              <span>{school.school_address}</span>
+              <span>{school.user.username}</span>
+              <span>{school.school_rep_name}</span>
+              <span>{school.school_rep_email}</span>
               <span className="flex gap-2">
-                <Link to={`/host/schools/${school.id}`}>
+                <Link to={`/host/schools/${school.school_id}`}>
                   <Button>Szerkesztés</Button>
                 </Link>
-                <Button color="error" onClick={() => onDelete(school.id)}>
+                <Button
+                  color="error"
+                  onClick={() => onDelete(school.school_id)}
+                >
                   Törlés
                 </Button>
               </span>

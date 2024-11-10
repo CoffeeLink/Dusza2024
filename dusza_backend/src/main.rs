@@ -98,7 +98,7 @@ async fn main() {
                     .max_age(3600),
             )
     })
-    .bind(("127.0.0.1", 8080))
+    .bind(("0.0.0.0", 8080))
     .expect("Failed to bind on addr")
     .run()
     .await

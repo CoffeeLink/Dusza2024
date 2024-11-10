@@ -5,19 +5,20 @@ export const Home = () => {
     
     <div className="w-full max-w-3xl flex flex-col gap-4 justify-center">
       <MiddlePanel title={"Főoldal"}>
+        <div className="items-center pb-8 w-full">
         <h1 className="text-2xl text-center pb-8 pt-8">
           Üdvözlünk a <br />
           <span className="text-4xl font-bold text-amber-600">
-            Dusza Árpád Programozási Emlékverseny
+            Dusza Árpád<br/><span className="text-3xl">Országos Programozói Emlékverseny</span>
           </span>
           <br />
           <div className="p-1">jelentkezési felületén!</div>
         </h1>
-        <p className="text-md md:text-xl text-center text-gray-700 max-w-2xl pb-4">
+        <p className="text-md md:text-xl text-center text-gray-700 pb-4">
           Ezen a felületen regisztrálhatod a csapatodat a különböző <br />
-          Dusza Árpád Programozási versenyekre.
+          Dusza Árpád Programozói versenyekre.
         </p>
-        <p className="text-lg">
+        <p className="text-lg text-center">
           A kezdéshez{" "}
           <a
             href="/register"
@@ -34,6 +35,7 @@ export const Home = () => {
           </a>
           .
         </p>
+        </div>
       </MiddlePanel>
     </div>
   );

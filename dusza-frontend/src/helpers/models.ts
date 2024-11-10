@@ -28,11 +28,22 @@ export type SchoolWithId = School & {
   school_id: number;
 };
 
-export type User = {
-  username: string;
-  user_type: "TeamAccount" | "SchoolRepresentative" | "Organizer";
+export type SchoolWithIdAndUser = SchoolWithId & {
+  user: UserWithId<"SchoolRepresentative">;
 };
 
-export type UserWithId = User & {
+export type SchoolRegistration = School & {
+  username: string;
+  password: string;
+};
+
+type UserType = "TeamAccount" | "SchoolRepresentative" | "Organizer";
+
+export type User<T extends UserType = UserType> = {
+  username: string;
+  user_type: T;
+};
+
+export type UserWithId<T extends UserType = UserType> = User<T> & {
   user_id: number;
 };
