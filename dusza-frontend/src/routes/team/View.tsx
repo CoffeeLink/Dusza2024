@@ -2,6 +2,7 @@ import { Team } from "../../helpers/models.ts";
 import { useEffect, useState } from "react";
 import { AXIOS_INSTANCE } from "../../main.tsx";
 import { MiddlePanel } from "../../components/middle/MiddlePanel.tsx";
+import { Table } from "react-daisyui";
 
 export const View = () => {
   const [team, setTeam] = useState<Team | null>(null);
@@ -41,7 +42,7 @@ export const View = () => {
         lang_name: "Nyelv 1",
       },
       sherpa_teachers: ["Tanár 1", "Tanár 2"],
-      team_approval_state: "pending",
+      team_approval_state: "Approved",
     });
   }, []);
 
@@ -51,42 +52,33 @@ export const View = () => {
 
   return (
     <MiddlePanel title={"Csapat"}>
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-row gap-4">
-          <div className="flex flex-col gap-2">
-            <span className="font-bold">Név</span>
+      <Table>
+        <Table.Head>
+          
+            <span>Csapatnév</span>
+            <span>Iskola</span>
+            <span>Csapattagok</span>
+            <span>Póttag</span>
+            <span>Kategória</span>
+            <span>Nyelv</span>
+            <span>Tanárok</span>
+            <span>Állapot</span>
+          
+        </Table.Head>
+        <Table.Body>
+          <Table.Row>
             <span>{team.team_name}</span>
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-bold">Iskola</span>
             <span>{team.school.school_name}</span>
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-bold">Csapattagok</span>
             <span>{team.members.map((member) => member.name).join(", ")}</span>
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-bold">Póttag</span>
             <span>{team.replacement_member?.name || "Nincs"}</span>
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-bold">Kategória</span>
             <span>{team.category.category_name}</span>
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-bold">Nyelv</span>
             <span>{team.lang.lang_name}</span>
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-bold">Tanárok</span>
             <span>{team.sherpa_teachers.join(", ")}</span>
-          </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-bold">Állapot</span>
-            <span>{team.team_approval_state}</span>
-          </div>
-        </div>
-      </div>
+            <span>{team.team_approval_state === "Approved" ? <span className="text-green-700 font-bold">Jóváhagyva</span> : "Folyamatban van"}</span>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+
     </MiddlePanel>
   );
 };
