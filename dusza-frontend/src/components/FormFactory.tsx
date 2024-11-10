@@ -116,7 +116,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
             <Select
               onChange={onChange}
               value={value}
-              className={`bg-slate-50 ${errorFlag ? "border-error" : ""}`}
+              className={`bg-slate-50 w-full ${errorFlag ? "border-error" : ""}`}
               required={required}
             >
               {config.options.map((option) => {

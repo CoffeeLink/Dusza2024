@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { Link } from "react-router-dom";
 import { Button, Table } from "react-daisyui";
-import axios from "axios";
 import { LanguageWithId } from "../../../helpers/models.ts";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
+import { CodeBracketIcon } from "@heroicons/react/24/outline";
 
 export const Languages = () => {
   const [languages, setLanguages] = useState<LanguageWithId[]>([]);
@@ -28,7 +28,7 @@ export const Languages = () => {
       title="Programozási nyelvek"
       rightButton={
         <Link to="/host/languages/add">
-          <Button color="success">Új nyelv</Button>
+          <Button className="text-white bg-green-700 hover:bg-green-600 active:bg-green-800"><CodeBracketIcon className="w-5"/> Új programozási nyelv</Button>
         </Link>
       }
     >

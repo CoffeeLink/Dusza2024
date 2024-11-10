@@ -40,8 +40,8 @@ export const Teams = () => {
       teachers: ["Teacher 1", "Teacher 2"],
       language: "Language",
       school: "School",
-      schoolApproval: true,
-      hostApproval: true,
+      schoolApproval: false,
+      hostApproval: false,
     },
   ]);
 
@@ -70,7 +70,7 @@ export const Teams = () => {
           <span>Iskola</span>
           <span>Igazgatói jóváhagyás</span>
           <span>Szervezői jóváhagyás</span>
-          <span>Műveletek</span>
+          {/* <span>Műveletek</span> */}
         </Table.Head>
         <Table.Body>
           {teams.map((team) => (
@@ -82,16 +82,16 @@ export const Teams = () => {
               <span>{team.teachers.join(", ")}</span>
               <span>{team.language}</span>
               <span>{team.school}</span>
-              <span>{team.schoolApproval ? "Folyamatban" : "Jóváhagyva"}</span>
-              <span>{team.hostApproval ? "Folyamatban" : "Jóváhagyva"}</span>
-              <span className="flex gap-2">
-                <Button color="success" onClick={() => onApprove(team.id)}>
+              <span>{team.schoolApproval ? "Folyamatban" : <span className="text-green-700 font-bold">Jóváhagyva</span>}</span>
+              <span>{team.hostApproval ? <span className="flex gap-2">
+                <Button size="sm" color="success" onClick={() => onApprove(team.id)}>
                   <CheckCircleIcon className="w-6"/>
                 </Button>
-                <Button color="warning" onClick={() => onReject(team.id)}>
+                <Button size="sm" color="warning" onClick={() => onReject(team.id)}>
                   <XCircleIcon className="w-6"/>
                 </Button>
-              </span>
+              </span> : <span className="text-green-700 font-bold">Jóváhagyva</span>}</span>
+              
             </Table.Row>
           ))}
         </Table.Body>
