@@ -5,11 +5,11 @@ export const Home = () => {
     
     <div className="w-full max-w-3xl flex flex-col gap-4 justify-center">
       <MiddlePanel title={"Főoldal"}>
-        <div className="items-center pb-8">
+        <div className="items-center pb-8 w-full">
         <h1 className="text-2xl text-center pb-8 pt-8">
           Üdvözlünk a <br />
           <span className="text-4xl font-bold text-amber-600">
-            Dusza Árpád Országos Programozói Emlékverseny
+            Dusza Árpád<br/><span className="text-3xl">Országos Programozói Emlékverseny</span>
           </span>
           <br />
           <div className="p-1">jelentkezési felületén!</div>
