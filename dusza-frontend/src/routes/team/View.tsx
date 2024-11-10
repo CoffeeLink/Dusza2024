@@ -70,17 +70,14 @@ export const View = () => {
             <span>{team.team_name}</span>
             <span>{team.school.school_name}</span>
             <div className="flex flex-col gap-2">
-              <span className="font-bold">Csapattagok</span>
               <span>
                 {team.members.map((member) => member.member_name).join(", ")}
               </span>
             </div>
             <div className="flex flex-col gap-2">
-              <span className="font-bold">Póttag</span>
               <span>{team.replacement_member?.member_name || "Nincs"}</span>
             </div>
-            <div className="flex flex-col gap-2">
-              <span className="font-bold">Kategória</span>
+           
               <span>{team.category.category_name}</span>
               <span>{team.lang.lang_name}</span>
               <span>{team.sherpa_teachers.join(", ")}</span>
@@ -91,7 +88,7 @@ export const View = () => {
                   "Folyamatban van"
                 )}
               </span>
-            </div>
+          
           </Table.Row>
         </Table.Body>
       </Table>
