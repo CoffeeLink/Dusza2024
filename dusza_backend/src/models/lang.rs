@@ -3,8 +3,8 @@ use sqlx::{query, query_as, FromRow, MySql, Pool};
 
 #[derive(Debug, Deserialize, Serialize, FromRow, Clone)]
 pub struct ProgrammingLanguage {
-    lang_id: u32,
-    lang_name: String,
+    pub lang_id: u32,
+    pub lang_name: String,
 }
 
 impl ProgrammingLanguage {
