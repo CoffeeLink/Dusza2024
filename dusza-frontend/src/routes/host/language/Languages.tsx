@@ -28,7 +28,7 @@ export const Languages = () => {
       title="Programozási nyelvek"
       rightButton={
         <Link to="/host/languages/add">
-          <Button className="text-white bg-green-700 hover:bg-green-600 active:bg-green-800"><CodeBracketIcon className="w-5"/> Új nyelv</Button>
+          <Button className="text-white bg-green-700 hover:bg-green-600 active:bg-green-800"><CodeBracketIcon className="w-5"/> Új programozási nyelv</Button>
         </Link>
       }
     >

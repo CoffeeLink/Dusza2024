@@ -85,10 +85,10 @@ export const Teams = () => {
               <span>{team.schoolApproval ? "Folyamatban" : "Jóváhagyva"}</span>
               <span>{team.hostApproval ? "Folyamatban" : "Jóváhagyva"}</span>
               <span className="flex gap-2">
-                <Button color="success" onClick={() => onApprove(team.id)}>
+                <Button size="sm" color="success" onClick={() => onApprove(team.id)}>
                   <CheckCircleIcon className="w-6"/>
                 </Button>
-                <Button color="warning" onClick={() => onReject(team.id)}>
+                <Button size="sm" color="warning" onClick={() => onReject(team.id)}>
                   <XCircleIcon className="w-6"/>
                 </Button>
               </span>
