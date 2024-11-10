@@ -56,7 +56,7 @@ SELECT
     s.school_name,
     s.school_address,
     s.school_representative_name as 'school_rep_name',
-    s.school_representative_email as 'school_rep_name',
+    s.school_representative_email as 'school_rep_email',
 
     u.user_id,
     u.username,
@@ -89,7 +89,7 @@ SELECT
     s.school_name,
     s.school_address,
     s.school_representative_name as 'school_rep_name',
-    s.school_representative_email as 'school_rep_name',
+    s.school_representative_email as 'school_rep_email',
 
     u.user_id,
     u.username,
@@ -115,6 +115,7 @@ JOIN user u ON
                              new_address: impl Into<String>,
                              new_rep_name: impl Into<String>,
                              new_rep_email: impl Into<String>,
+                             id: u32,
                              db: &Database) -> Result<(), DuszaBackendError<DBError>> {
         let sql = r#"
 UPDATE
@@ -133,6 +134,7 @@ WHERE
             .bind(new_address.into())
             .bind(new_rep_name.into())
             .bind(new_rep_email.into())
+            .bind(id)
             .execute(db)
             .await
             .map_err(|e|{

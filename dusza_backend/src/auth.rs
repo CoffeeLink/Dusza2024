@@ -21,7 +21,7 @@ use uuid::Uuid;
 
 pub const AUTH_COOKIE_NAME: &'static str = "Authorization";
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AuthToken {
     pub token: Uuid,
 }
