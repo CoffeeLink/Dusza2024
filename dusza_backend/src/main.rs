@@ -54,11 +54,9 @@ struct Config {
 #[actix_web::main]
 async fn main() {
     std::env::set_var("RUST_LOG", "debug");
-    std::env::set_var("RUST_BACKTRACE", "1");
+    std::env::set_var("RUST_BACKTRACE", "0");
     env_logger::init();
 
-    // DEBUG
-    dbg!("{}", serde_json::to_string(&Local::now().naive_utc()));
 
     let conf = load_config();
     let pool = MySqlPoolOptions::new()
@@ -99,16 +97,22 @@ async fn main() {
             )
     })
     .bind(("0.0.0.0", 8080))
-    .expect("Failed to bind on addr")
+    .map_err(|_| {
+        error!("Failed to bind: {e}");
+        exit(-1);
+    })
     .run()
     .await
-    .expect("Something went wrong")
+        .map_err(|_| {
+            error!("Something went wrong: {e}");
+            exit(-1);
+        })
 }
 
 fn load_config() -> Config {
     let conf = std::fs::read_to_string("../config.toml");
     if conf.is_err() {
-        eprintln!("No config file found. Generating template config in config.toml");
+        error!("No config file found. Generating template config in config.toml");
         let file = File::create("../config.toml").expect("Failed to create Config");
         let mut writer = BufWriter::new(file);
 
