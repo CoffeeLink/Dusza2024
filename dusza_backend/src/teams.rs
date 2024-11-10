@@ -4,7 +4,7 @@ use actix_web::{delete, get, post, put, web, HttpResponse, Responder, ResponseEr
 use actix_web::cookie::time::macros::date;
 use actix_web::web::ServiceConfig;
 use derive_more::Display;
-use log::error;
+use log::{error, warn};
 use serde::{Deserialize, Serialize};
 use sqlx::query;
 use thiserror::Error;
@@ -187,18 +187,39 @@ async fn team_push_register(
         UserType::TeamAccount,
         &db,
         &auth_config,
-    ).await.map_err(|_| {DuszaBackendError::InternalError})?;
+    ).await.map_err(|_| {
+        warn!("Create User Failed");
+        DuszaBackendError::InternalError
+    })?;
 
-    let school = SchoolData::get_school_by_id(data.school_id, &db).await.map_err(|_| {DuszaBackendError::InternalError})?.ok_or({DuszaBackendError::InternalError})?;
+    let school = SchoolData::get_school_by_id(data.school_id, &db).await.map_err(|_| {
+        warn!("Find School Failed");
+        DuszaBackendError::InternalError
+    })?.ok_or({
+        warn!("Find school returned without a school");
+        DuszaBackendError::InternalError
+    })?;
     let category = CompetitionCategory::get_comp_by_id(data.category_id, &db)
         .await
-        .map_err(|_| {DuszaBackendError::InternalError})?
-        .ok_or({DuszaBackendError::InternalError})?;
+        .map_err(|_| {
+            warn!("Find Comp fail");
+            DuszaBackendError::InternalError
+        })?
+        .ok_or({
+            warn!("Find comp didnt find");
+            DuszaBackendError::InternalError
+        })?;
 
     let lang = ProgrammingLanguage::get_lang_by_id(data.lang_id, &db)
         .await
-        .map_err(|_| {DuszaBackendError::InternalError})?
-        .ok_or({DuszaBackendError::InternalError})?;
+        .map_err(|_| {
+            warn!("Find find lang failed");
+            DuszaBackendError::InternalError
+        })?
+        .ok_or({
+            warn!("Find lang returned none");
+            DuszaBackendError::InternalError
+        })?;
 
     let team = TeamData::create_and_assign_team(
         &db,
@@ -214,6 +235,7 @@ async fn team_push_register(
         None
     ).await
         .map_err(|e| {
+            warn!("team create and assign failed: {e}");
             DuszaBackendError::InternalError
         })?;
 
