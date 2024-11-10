@@ -1,18 +1,7 @@
 import { Config, GetConfig } from "../../components/FormFactory.tsx";
+import { School, SchoolRegistration } from "../models.ts";
 
-type SchoolFields = {
-  name: string;
-  location: string;
-  username: string;
-  password: string;
-  contactName: string;
-  contactEmail: string;
-};
-
-export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
-  onChange,
-  fields,
-) => {
+export const GetEditSchoolConfig: GetConfig<School> = (onChange, fields) => {
   const config: Config[] = [
     [
       {
@@ -20,22 +9,51 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
         label: "Iskola neve",
         errorFlag: false,
         errorMsg: "",
-        value: fields.name,
+        value: fields.school_name,
         type: "text",
         required: true,
-        onChange: (e) => onChange("name", e.target.value),
+        onChange: (e) => onChange("school_name", e.target.value),
       },
       {
         key: "location",
         label: "Iskola címe",
         errorFlag: false,
         errorMsg: "",
-        value: fields.location,
+        value: fields.school_address,
         type: "text",
         required: true,
-        onChange: (e) => onChange("location", e.target.value),
+        onChange: (e) => onChange("school_address", e.target.value),
       },
     ],
+    [
+      {
+        key: "contactName",
+        label: "Kapcsolattartó neve",
+        errorFlag: false,
+        errorMsg: "",
+        value: fields.school_rep_name,
+        type: "text",
+        onChange: (e) => onChange("school_rep_name", e.target.value),
+      },
+      {
+        key: "contactEmail",
+        label: "Kapcsolattartó e-mail címe",
+        errorFlag: false,
+        errorMsg: "",
+        value: fields.school_rep_email,
+        type: "email",
+        onChange: (e) => onChange("school_rep_email", e.target.value),
+      },
+    ],
+  ];
+  return config;
+};
+
+export const GetAddSchoolConfig: GetConfig<SchoolRegistration> = (
+  onChange,
+  fields,
+) => {
+  let config: Config[] = [
     [
       {
         key: "username",
@@ -58,35 +76,9 @@ export const GetAddSchoolConfig: GetConfig<SchoolFields> = (
         onChange: (e) => onChange("password", e.target.value),
       },
     ],
-    [
-      {
-        key: "contactName",
-        label: "Kapcsolattartó neve",
-        errorFlag: false,
-        errorMsg: "",
-        value: fields.contactName,
-        type: "text",
-        onChange: (e) => onChange("contactName", e.target.value),
-      },
-      {
-        key: "contactEmail",
-        label: "Kapcsolattartó e-mail címe",
-        errorFlag: false,
-        errorMsg: "",
-        value: fields.contactEmail,
-        type: "email",
-        onChange: (e) => onChange("contactEmail", e.target.value),
-      },
-    ],
   ];
 
-  return config;
-};
+  config = config.concat(GetEditSchoolConfig(onChange, fields, null));
 
-export const GetEditSchoolConfig: GetConfig<SchoolFields> = (
-  onChange,
-  fields,
-) => {
-  // Not much different
-  return GetAddSchoolConfig(onChange, fields, null);
+  return config;
 };

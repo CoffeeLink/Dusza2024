@@ -4,17 +4,18 @@ import { useState } from "react";
 import { MiddlePanel } from "../../../components/middle/MiddlePanel.tsx";
 import { AXIOS_INSTANCE } from "../../../main.tsx";
 import { useNavigate } from "react-router-dom";
+import { SchoolRegistration } from "../../../helpers/models.ts";
 
 export const AddSchool = () => {
   const navigate = useNavigate();
 
-  const [fields, setFields] = useState({
-    name: "",
-    location: "",
+  const [fields, setFields] = useState<SchoolRegistration>({
     username: "",
     password: "",
-    contactName: "",
-    contactEmail: "",
+    school_name: "",
+    school_address: "",
+    school_rep_name: "",
+    school_rep_email: "",
   });
 
   const onChange = (fieldName: keyof typeof fields, value: string) => {
@@ -26,7 +27,7 @@ export const AddSchool = () => {
 
   const onSubmit = () => {
     AXIOS_INSTANCE.post("/school/", fields).then(() => {
-      console.log("Added school with name", fields.name);
+      console.log("Added school with name", fields.school_name);
       navigate("/host/schools");
     });
   };

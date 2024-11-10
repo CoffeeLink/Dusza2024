@@ -19,6 +19,9 @@ export const Languages = () => {
 
   const onDelete = (id: number) => {
     AXIOS_INSTANCE.delete(`/language/${id}`).then(() => {
+      setLanguages((prev) =>
+        prev.filter((language) => language.lang_id !== id),
+      );
       console.log("Deleted language with id", id);
     });
   };
