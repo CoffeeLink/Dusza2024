@@ -1,34 +1,45 @@
 import { useState, useEffect } from "react";
 import { FormFactory } from "../components/FormFactory.tsx";
 import { GetRegistrationConfig } from "../helpers/form-configs/Team.tsx";
-import axios from "axios";
 import { Optional } from "utility-types";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { MiddlePanel } from "../components/middle/MiddlePanel.tsx";
-import { Category, Language, School } from "../helpers/models.ts";
+import {
+  CategoryWithId,
+  LanguageWithId,
+  SchoolWithId,
+  TeamRegistration,
+} from "../helpers/models.ts";
 import { AXIOS_INSTANCE } from "../main.tsx";
 
 export const Registration = () => {
-  const [languages, setLanguages] = useState<Language[]>([]);
-  const [schools, setSchools] = useState<School[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [languages, setLanguages] = useState<LanguageWithId[] | null>(null);
+  const [schools, setSchools] = useState<SchoolWithId[] | null>(null);
+  const [categories, setCategories] = useState<CategoryWithId[] | null>(null);
 
-  const [fields, setFields] = useState({
+  const [fields, setFields] = useState<TeamRegistration>({
+    team_name: "",
+    school_id: 0,
+    members: [
+      {
+        member_name: "",
+        member_class: "",
+      },
+      {
+        member_name: "",
+        member_class: "",
+      },
+      {
+        member_name: "",
+        member_class: "",
+      },
+    ],
+    replacement_member: null,
+    category_id: 0,
+    lang_id: 0,
+    sherpa_teachers: [],
     username: "",
     password: "",
-    name1: "",
-    class1: "",
-    name2: "",
-    class2: "",
-    name3: "",
-    class3: "",
-    extraName: "",
-    extraClass: "",
-    teachers: [""],
-    teamName: "",
-    language: "",
-    schoolName: "",
-    category: "",
   });
 
   useEffect(() => {
@@ -69,19 +80,23 @@ export const Registration = () => {
   const onSubmit = () => {
     const newFields = { ...fields } as Optional<
       typeof fields,
-      "extraName" | "extraClass"
+      "replacement_member"
     >;
 
-    if (newFields.extraName === "") {
-      delete newFields.extraName;
-      delete newFields.extraClass;
+    if (newFields.replacement_member?.member_name === "") {
+      delete newFields.replacement_member;
     }
 
-    axios.post("/api/team/register", newFields).then((res) => {
-      console.log(res.data);
+    AXIOS_INSTANCE.post("/team/", newFields).then(() => {
+      console.log("Registered team with name", fields.team_name);
       window.location.href = "/";
     });
   };
+
+  if (!schools || !languages || !categories) {
+    return null;
+  }
+
   return (
     <div className="max-w-3xl flex flex-col gap-4 justify-center">
       <MiddlePanel
@@ -92,9 +107,9 @@ export const Registration = () => {
         <div className="form-width">
           <FormFactory
             configs={GetRegistrationConfig(onChange, fields, {
-              schools: schools.map((school) => school.school_name),
-              languages: languages.map((language) => language.lang_name),
-              categories: categories.map((category) => category.category_name),
+              schools,
+              languages,
+              categories,
             })}
             submit={{
               onSubmit,

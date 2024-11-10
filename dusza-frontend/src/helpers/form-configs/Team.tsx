@@ -5,7 +5,14 @@ import {
 } from "../../components/FormFactory.tsx";
 import { Button } from "react-daisyui";
 import { UserPlusIcon, UserMinusIcon } from "@heroicons/react/24/outline";
-import { Team, TeamRegistration, UsernamePassword } from "../models.ts";
+import {
+  CategoryWithId,
+  LanguageWithId,
+  SchoolWithId,
+  TeamEdit,
+  TeamRegistration,
+  UsernamePassword,
+} from "../models.ts";
 
 export const GetLoginConfig: GetConfig<UsernamePassword> = (
   onChange,
@@ -52,8 +59,8 @@ export const GetLoginConfig: GetConfig<UsernamePassword> = (
 // };
 
 export const GetEditConfig: GetConfig<
-  Team,
-  { languages: string[]; categories: string[] }
+  TeamEdit,
+  { languages: LanguageWithId[]; categories: CategoryWithId[] }
 > = (onChange, fields, { languages, categories }) => {
   const classOptions = ["9", "10", "11", "12", "13"];
   const isTeachersEnough = fields.sherpa_teachers.length >= 1;
@@ -65,12 +72,12 @@ export const GetEditConfig: GetConfig<
         label: "1. csapattag",
         errorFlag: false,
         errorMsg: "",
-        value: fields.members[0].name,
+        value: fields.members[0].member_name,
         type: "text",
         required: true,
         onChange: (e) =>
           onChange("members", [
-            { ...fields.members[0], name: e.target.value },
+            { ...fields.members[0], member_name: e.target.value },
             fields.members[1],
             fields.members[2],
           ]),
@@ -80,13 +87,13 @@ export const GetEditConfig: GetConfig<
         label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
-        value: fields.members[0].class,
+        value: fields.members[0].member_class,
         type: "dropdown",
         options: classOptions,
         required: true,
         onChange: (e) =>
           onChange("members", [
-            { ...fields.members[0], class: e.target.value },
+            { ...fields.members[0], member_class: e.target.value },
             fields.members[1],
             fields.members[2],
           ]),
@@ -98,13 +105,13 @@ export const GetEditConfig: GetConfig<
         label: "2. csapattag",
         errorFlag: false,
         errorMsg: "",
-        value: fields.members[1].name,
+        value: fields.members[1].member_name,
         type: "text",
         required: true,
         onChange: (e) =>
           onChange("members", [
             fields.members[0],
-            { ...fields.members[1], name: e.target.value },
+            { ...fields.members[1], member_name: e.target.value },
             fields.members[2],
           ]),
       },
@@ -113,14 +120,14 @@ export const GetEditConfig: GetConfig<
         label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
-        value: fields.members[1].class,
+        value: fields.members[1].member_class,
         type: "dropdown",
         options: classOptions,
         required: true,
         onChange: (e) =>
           onChange("members", [
             fields.members[0],
-            { ...fields.members[1], class: e.target.value },
+            { ...fields.members[1], member_class: e.target.value },
             fields.members[2],
           ]),
       },
@@ -131,14 +138,14 @@ export const GetEditConfig: GetConfig<
         label: "3. csapattag",
         errorFlag: false,
         errorMsg: "",
-        value: fields.members[2].name,
+        value: fields.members[2].member_name,
         type: "text",
         required: true,
         onChange: (e) =>
           onChange("members", [
             fields.members[0],
             fields.members[1],
-            { ...fields.members[2], name: e.target.value },
+            { ...fields.members[2], member_name: e.target.value },
           ]),
       },
       {
@@ -146,7 +153,7 @@ export const GetEditConfig: GetConfig<
         label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
-        value: fields.members[2].name,
+        value: fields.members[2].member_name,
         type: "dropdown",
         options: classOptions,
         required: true,
@@ -154,7 +161,7 @@ export const GetEditConfig: GetConfig<
           onChange("members", [
             fields.members[0],
             fields.members[1],
-            { ...fields.members[2], class: e.target.value },
+            { ...fields.members[2], member_class: e.target.value },
           ]),
       },
     ],
@@ -164,15 +171,15 @@ export const GetEditConfig: GetConfig<
         label: "Pót csapattag",
         errorFlag: false,
         errorMsg: "",
-        value: fields.replacement_member?.name ?? "",
+        value: fields.replacement_member?.member_name ?? "",
         type: "text",
         onChange: (e) =>
           onChange(
             "replacement_member",
             e.target.value
               ? {
-                  name: e.target.value,
-                  class: fields.replacement_member?.class ?? "",
+                  member_name: e.target.value,
+                  member_class: fields.replacement_member?.member_class ?? "",
                 }
               : null,
           ),
@@ -182,14 +189,17 @@ export const GetEditConfig: GetConfig<
         label: "Évfolyam",
         errorFlag: false,
         errorMsg: "",
-        value: fields.replacement_member?.class ?? "",
+        value: fields.replacement_member?.member_class ?? "",
         type: "dropdown",
         options: classOptions,
         onChange: (e) =>
           onChange(
             "replacement_member",
             fields.replacement_member
-              ? { name: fields.replacement_member.name, class: e.target.value }
+              ? {
+                  member_name: fields.replacement_member.member_name,
+                  member_class: e.target.value,
+                }
               : null,
           ),
       },
@@ -243,22 +253,39 @@ export const GetEditConfig: GetConfig<
       label: "Kategória",
       errorFlag: false,
       errorMsg: "",
-      value: fields.category.category_name,
+      value:
+        categories.find(
+          (category) => category.category_id === fields.category_id,
+        )?.category_name ?? "",
       type: "dropdown",
       required: true,
-      onChange: (e) => onChange("category", e.target.value),
-      options: categories,
+      onChange: (e) => {
+        onChange(
+          "category_id",
+          categories.find(
+            (category) => category.category_name === e.target.value,
+          )?.category_id ?? 0,
+        );
+      },
+      options: categories.map((category) => category.category_name),
     },
     {
       key: "language",
       label: "Programozási nyelv",
       errorFlag: false,
       errorMsg: "",
-      value: fields.lang.lang_name,
+      value:
+        languages.find((lang) => lang.lang_id === fields.lang_id)?.lang_name ??
+        "",
       type: "dropdown",
       required: true,
-      onChange: (e) => onChange("lang", e.target.value),
-      options: languages,
+      onChange: (e) =>
+        onChange(
+          "lang_id",
+          languages.find((lang) => lang.lang_name === e.target.value)
+            ?.lang_id ?? 0,
+        ),
+      options: languages.map((lang) => lang.lang_name),
     },
   ];
 
@@ -267,7 +294,11 @@ export const GetEditConfig: GetConfig<
 
 export const GetRegistrationConfig: GetConfig<
   TeamRegistration,
-  { schools: string[]; languages: string[]; categories: string[] }
+  {
+    schools: SchoolWithId[];
+    languages: LanguageWithId[];
+    categories: CategoryWithId[];
+  }
 > = (onChange, fields, { schools, languages, categories }): Config[] => {
   // extend LoginConfig
   let config = GetLoginConfig(
@@ -287,23 +318,28 @@ export const GetRegistrationConfig: GetConfig<
       label: "Iskola neve",
       errorFlag: false,
       errorMsg: "",
-      value: fields.school.school_name,
+      value:
+        schools.find((school) => school.school_id === fields.school_id)
+          ?.school_name ?? "",
       type: "dropdown",
-      options: schools,
+      options: schools.map((school) => school.school_name),
       required: true,
       onChange: (e) =>
-        onChange("school", { ...fields.school, school_name: e.target.value }),
+        onChange(
+          "school_id",
+          schools.find((school) => school.school_name === e.target.value)
+            ?.school_id ?? 0,
+        ),
     },
     {
       key: "teamName",
       label: "Csapatnév",
       errorFlag: false,
       errorMsg: "",
-      value: fields.school.school_name,
+      value: fields.team_name,
       type: "text",
       required: true,
-      onChange: (e) =>
-        onChange("school", { ...fields.school, school_name: e.target.value }),
+      onChange: (e) => onChange("team_name", e.target.value),
     },
   ]);
 

@@ -51,8 +51,8 @@ export type UserWithId<T extends UserType = UserType> = User<T> & {
 };
 
 export type TeamMember = {
-  name: string;
-  class: string;
+  member_name: string;
+  member_class: string;
 };
 
 export type Team = {
@@ -73,4 +73,14 @@ export type TeamWithId = Team & {
   team_id: number;
 };
 
-export type TeamRegistration = Team & UsernamePassword;
+export type TeamEdit = {
+  team_name: string;
+  school_id: number;
+  members: TeamMember[];
+  replacement_member: TeamMember | null;
+  category_id: number;
+  lang_id: number;
+  sherpa_teachers: string[];
+};
+
+export type TeamRegistration = TeamEdit & UsernamePassword;

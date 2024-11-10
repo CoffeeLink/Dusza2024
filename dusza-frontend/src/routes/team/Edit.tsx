@@ -5,11 +5,14 @@ import axios from "axios";
 import { Optional } from "utility-types";
 import { useNavigate } from "react-router-dom";
 import { MiddlePanel } from "../../components/middle/MiddlePanel.tsx";
+import { SchoolWithId, TeamWithId } from "../../helpers/models.ts";
 
 export const Edit = () => {
   const navigate = useNavigate();
 
   const [languages, setLanguages] = React.useState<string[]>([]);
+  const [categories, setCategories] = React.useState<string[]>([]);
+  const [schools, setSchools] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     // axios.get("/api/languages").then((res) => {
@@ -19,17 +22,44 @@ export const Edit = () => {
     setLanguages(["Language 1", "Language 2", "Language 3"]);
   }, []);
 
+  React.useEffect(() => {
+    // axios.get("/api/categories").then((res) => {
+    //   setCategories(res.data);
+    // });
+
+    setCategories(["Category 1", "Category 2", "Category 3"]);
+  }, []);
+
+  React.useEffect(() => {
+    // axios.get("/api/schools").then((res) => {
+    //   setSchools(res.data);
+    // });
+
+    setSchools(["School 1", "School 2", "School 3"]);
+  }, []);
+
   const [fields, setFields] = React.useState({
-    name1: "",
-    class1: "",
-    name2: "",
-    class2: "",
-    name3: "",
-    class3: "",
-    extraName: "",
-    extraClass: "",
-    teachers: [""],
-    language: "",
+    team_id: 1,
+    team_name: "Team 1",
+    schoolId: 1,
+    members: [
+      {
+        name: "Member 1",
+        class: "Class 1",
+      },
+      {
+        name: "Member 2",
+        class: "Class 2",
+      },
+    ],
+    replacement_member: {
+      name: "Replacement 1",
+      class: "Class 1",
+    },
+    categoryId: 1,
+    langId: 1,
+    sherpa_teachers: ["Teacher 1", "Teacher 2"],
+    team_approval_state: "WaitingForApproval",
   });
 
   const onChange = (
@@ -46,12 +76,11 @@ export const Edit = () => {
   const onSubmit = () => {
     const newFields = { ...fields } as Optional<
       typeof fields,
-      "extraName" | "extraClass"
+      "replacement_member"
     >;
 
-    if (newFields.extraName === "") {
-      delete newFields.extraName;
-      delete newFields.extraClass;
+    if (newFields.replacement_member === null) {
+      delete newFields.replacement_member;
     }
 
     axios.post("/api/team/edit", newFields).then((res) => {

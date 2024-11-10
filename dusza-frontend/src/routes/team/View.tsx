@@ -22,16 +22,16 @@ export const View = () => {
       members: [
         {
           member_id: 1,
-          name: "Tag 1",
+          member_name: "Tag 1",
         },
         {
           member_id: 2,
-          name: "Tag 2",
+          member_name: "Tag 2",
         },
       ],
       replacement_member: {
         member_id: 3,
-        name: "Póttag 1",
+        member_name: "Póttag 1",
       },
       category: {
         category_id: 1,
@@ -69,8 +69,19 @@ export const View = () => {
           <Table.Row>
             <span>{team.team_name}</span>
             <span>{team.school.school_name}</span>
-            <span>{team.members.map((member) => member.name).join(", ")}</span>
-            <span>{team.replacement_member?.name || "Nincs"}</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="font-bold">Csapattagok</span>
+            <span>
+              {team.members.map((member) => member.member_name).join(", ")}
+            </span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="font-bold">Póttag</span>
+            <span>{team.replacement_member?.member_name || "Nincs"}</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="font-bold">Kategória</span>
             <span>{team.category.category_name}</span>
             <span>{team.lang.lang_name}</span>
             <span>{team.sherpa_teachers.join(", ")}</span>
