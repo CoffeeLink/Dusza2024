@@ -189,7 +189,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
   };
 
   return (
-    <>
+    <div className="min-w-64 flex flex-col gap-2">
       {configs.map((config, indexA) => {
         if (Array.isArray(config)) {
           // recursively call FormFactory
@@ -211,7 +211,7 @@ const FormFactoryRecursive = ({ configs }: { configs: Config[] }) => {
           return getElement(config);
         }
       })}
-    </>
+    </div>
   );
 };
 
@@ -281,7 +281,6 @@ export const FormFactory = ({
       <FormFactoryRecursive configs={configs} />
       {submit && (
         <>
-          {/*<br />*/}
           <Button
             color="primary"
             className="w-full btn mt-4"
