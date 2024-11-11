@@ -210,7 +210,7 @@ export const Edit = () => {
       delete newFields.replacement_member;
     }
 
-    axios.post("/api/team/edit", newFields).then((res) => {
+    AXIOS_INSTANCE.put("/team/3", newFields).then((res) => {
       navigate("/team");
       console.log(res.data);
     });

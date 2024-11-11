@@ -6,10 +6,10 @@ use crate::teams::configure_team_endpoints;
 use actix_cors::Cors;
 use actix_web::middleware::Logger;
 use actix_web::web::{Data, ServiceConfig};
-use actix_web::{get, App, HttpServer, Responder};
+use actix_web::{get, App, HttpResponse, HttpServer, Responder};
 use actix_web::{post, web};
 use chrono::{Local, NaiveDateTime};
-use log::error;
+use log::{error, warn};
 use serde::{Deserialize, Serialize};
 use sqlx::mysql::MySqlPoolOptions;
 use sqlx::{query, MySql, Pool};
@@ -17,6 +17,7 @@ use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::process::exit;
 use std::sync::Arc;
+use actix_web::dev::Url;
 use crate::schools::configure_school_endpoints;
 use crate::user::configure_user_endpoints;
 
@@ -31,33 +32,31 @@ mod user;
 
 pub type Database = Pool<MySql>;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 struct DatabaseConfig {
-    pub ip_address: String,
-    pub port: u16,
+    pub host: String,
     pub user: String,
     pub password: String,
     pub database: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 struct HostConfig {
     pub ip_address: String,
     pub port: u16,
 }
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 struct DebugConfig {
     pub enable_registration_endpoint: bool,
-    pub logging_level: String,
     pub backtrace: bool,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 struct AuthConfig {
     pub password_salt: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 struct Config {
     host: HostConfig,
     database: DatabaseConfig,
@@ -73,7 +72,11 @@ async fn main() {
 
 
     let conf = load_config();
-    std::env::set_var("RUST_LOG", conf.debug.logging_level);
+    if conf.debug.enable_registration_endpoint {
+        warn!("Organizer Registration Endpoint Enabled in config! ( http POST /dev/register/{}/{}/ )", "{username}", "{password}");
+        warn!("This can be disabled in the config file under the \"debug\" tab with the \"enable_registration_endpoint\" set to false. ");
+    }
+    let config = conf.clone();
     std::env::set_var("RUST_BACKTRACE", format!("{}", conf.debug.backtrace as u8));
     let pool = MySqlPoolOptions::new()
         .max_connections(5)
@@ -81,7 +84,7 @@ async fn main() {
             "mysql://{}:{}@{}/{}",
             conf.database.user,
             conf.database.password,
-            conf.database.ip_address,
+            conf.database.host,
             conf.database.database
         ))
         .await
@@ -90,10 +93,12 @@ async fn main() {
             exit(-1);
         }).expect("Fail");
 
+    let config_ext = config.clone();
     HttpServer::new(move || {
         App::new()
             .app_data(Data::new(pool.clone()))
-            .app_data(Data::new(conf.auth.clone())) // for AUTH apps
+            .app_data(Data::new(config.auth.clone())) // for AUTH apps
+            .app_data(Data::new(config.clone()))
             .configure(config_dev_opts)
             .service(
                 web::scope("/api")
@@ -115,7 +120,7 @@ async fn main() {
                     .max_age(3600),
             )
     })
-    .bind((conf.host.ip_address, conf.host.port))
+    .bind((config_ext.host.ip_address, config_ext.host.port))
     .map_err(|e| {
         error!("Failed to bind: {e}");
         exit(-1);
@@ -129,10 +134,10 @@ async fn main() {
 }
 
 fn load_config() -> Config {
-    let conf = std::fs::read_to_string("../config.toml");
+    let conf = std::fs::read_to_string("./config.toml");
     if conf.is_err() {
         error!("No config file found. Generating template config in config.toml");
-        let file = File::create("../config.toml").expect("Failed to create Config");
+        let file = File::create("./config.toml").expect("Failed to create Config");
         let mut writer = BufWriter::new(file);
 
         let config = Config {
@@ -144,15 +149,13 @@ fn load_config() -> Config {
                 password_salt: "default".to_string(),
             },
             database: DatabaseConfig {
-                ip_address: "".to_string(),
-                port: 0,
+                host: "".to_string(),
                 user: "".to_string(),
                 password: "".to_string(),
                 database: "".to_string(),
             },
             debug: DebugConfig {
                 enable_registration_endpoint: false,
-                logging_level: "debug".to_string(),
                 backtrace: false,
             }
         };
@@ -174,7 +177,7 @@ fn load_config() -> Config {
 }
 
 fn config_dev_opts(cfg: &mut ServiceConfig) {
-    #[cfg(not(release))]
+    // #[cfg(not(release))]
     cfg.service(gen_user);
 }
 
@@ -183,7 +186,12 @@ async fn gen_user(
     db: web::Data<Database>,
     path: web::Path<(String, String)>,
     auth_config: web::Data<AuthConfig>,
+    config: web::Data<Config>
 ) -> Result<impl Responder, DuszaBackendError<NoError>> {
+    if !config.debug.enable_registration_endpoint {
+        return Ok(HttpResponse::NotFound());
+    }
+
     let (username, passwd) = path.into_inner();
     let _ = query("INSERT INTO user (username, password, user_type) VALUES (?, ?, 3)") // user type 3 is ORGANIZER
         .bind(username)
@@ -195,5 +203,5 @@ async fn gen_user(
             DuszaBackendError::<NoError>::InternalError
         })?;
 
-    Ok(web::Json("Success!"))
+    Ok(HttpResponse::Ok())
 }

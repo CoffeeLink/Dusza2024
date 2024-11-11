@@ -20,5 +20,11 @@ chrono = { version = "0.4.38", features = ["std", "alloc", "clock", "serde", "no
 futures = { version = "0.3.31" }
 http = "0.2.12"
 
+[dependencies.openssl]
+version = "0.10.29"
+features = [
+    "vendored"
+]
+
 [profile.dev.package.sqlx-macros]
 opt-level = 3

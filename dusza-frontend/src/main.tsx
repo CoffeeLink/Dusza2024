@@ -33,7 +33,7 @@ import { Error } from "./Error.tsx";
 import { Theme } from "react-daisyui";
 import { View } from "./routes/team/View.tsx";
 
-export const API_URL = "";
+export const API_URL = "http://0.0.0.0:8080/api/";
 
 export const AXIOS_INSTANCE = axios.create({
   baseURL: API_URL,
